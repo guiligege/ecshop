@@ -132,6 +132,9 @@ public class StoreClassSpider {
 				Semiconductor semiconductor=new Semiconductor();
 				for(int j = 0;j<cl2content.length;j++){
 					reg = "<td.*?>(.*?)<\\/td>";
+//					if(j==0 || j==1 || j==7){
+//						
+//					}
 					String[] class2 = regex.htmlregex(cl2content[j],reg,false);
 					
 					if(class2!=null&& class2.length>0){

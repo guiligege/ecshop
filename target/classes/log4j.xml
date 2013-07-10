@@ -32,7 +32,7 @@
 
 	<!-- 设置接收所有输出的通道 -->
 	<root>
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 
