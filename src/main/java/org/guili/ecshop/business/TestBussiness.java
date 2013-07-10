@@ -2,7 +2,9 @@ package org.guili.ecshop.business;
 
 import org.guili.ecshop.bean.Shop;
 import org.guili.ecshop.dao.ITestTableDao;
+import org.springframework.transaction.annotation.Transactional;
 
+@Transactional
 public class TestBussiness {
 	
 	private ITestTableDao testDao=null;
@@ -17,7 +19,7 @@ public class TestBussiness {
 	
 	public void add()throws Exception{
 		Shop shop=new Shop();
-		shop.setId(10L);
+		shop.setId(5L);
 		shop.setName("test");
 		try {
 			testDao.add(shop);

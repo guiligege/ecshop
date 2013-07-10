@@ -1,0 +1,8 @@
+org\guili\ecshop\util\BasicSqlSupport.class
+org\guili\ecshop\controller\ResultController.class
+org\guili\ecshop\impl\ITestTableDaoImpl.class
+org\guili\ecshop\util\SpiderRegex.class
+org\guili\ecshop\util\StoreClassSpider.class
+org\guili\ecshop\bean\Shop.class
+org\guili\ecshop\business\TestBussiness.class
+org\guili\ecshop\dao\ITestTableDao.class

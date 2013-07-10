@@ -8,6 +8,7 @@
           <string>WEB-INF/views/result.jsp</string>
           <string>WEB-INF/views/result1.jsp</string>
           <string>WEB-INF/web.xml</string>
+          <string>WEB-INF/classes/log4j.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/Shop.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/TestBussiness.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/ApplicationContext.xml</string>
@@ -54,6 +55,9 @@
           <string>WEB-INF/lib/commons-dbcp-1.4.jar</string>
           <string>WEB-INF/lib/javax.servlet-api-3.0.1.jar</string>
           <string>WEB-INF/lib/mysql-connector-java-5.1.24.jar</string>
+          <string>WEB-INF/lib/log4j-1.2.16.jar</string>
+          <string>WEB-INF/lib/c3p0-0.9.2.1.jar</string>
+          <string>WEB-INF/lib/mchange-commons-java-0.2.3.4.jar</string>
         </pathsSet>
       </path-set>
     </entry>
@@ -448,6 +452,32 @@
         <modelEncoding>UTF-8</modelEncoding>
       </dependency>
       <targetFileName>mysql-connector-java-5.1.24.jar</targetFileName>
+    </org.apache.maven.plugin.war.util.DependencyInfo>
+    <org.apache.maven.plugin.war.util.DependencyInfo>
+      <dependency>
+        <groupId>log4j</groupId>
+        <artifactId>log4j</artifactId>
+        <version>1.2.16</version>
+        <type>jar</type>
+        <scope>compile</scope>
+        <exclusions/>
+        <optional>false</optional>
+        <modelEncoding>UTF-8</modelEncoding>
+      </dependency>
+      <targetFileName>log4j-1.2.16.jar</targetFileName>
+    </org.apache.maven.plugin.war.util.DependencyInfo>
+    <org.apache.maven.plugin.war.util.DependencyInfo>
+      <dependency>
+        <groupId>com.mchange</groupId>
+        <artifactId>c3p0</artifactId>
+        <version>0.9.2.1</version>
+        <type>jar</type>
+        <scope>compile</scope>
+        <exclusions/>
+        <optional>false</optional>
+        <modelEncoding>UTF-8</modelEncoding>
+      </dependency>
+      <targetFileName>c3p0-0.9.2.1.jar</targetFileName>
     </org.apache.maven.plugin.war.util.DependencyInfo>
   </dependenciesInfo>
 </webapp-structure>
