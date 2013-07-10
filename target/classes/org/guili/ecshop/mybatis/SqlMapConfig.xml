@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd"> 
+<configuration>
+	<!-- 对象别名 ，用在mapper里面代替整个对象的访问-->
+    <typeAliases>
+       <typeAlias alias="shop" type="org.guili.ecshop.bean.Shop"/>
+    </typeAliases> 
+     
+	<mappers>
+		<!-- 数据库映射文件 -->
+	    <mapper resource="org/guili/ecshop/mybatis/mapper/shopMapper.xml"/>
+	</mappers>
+</configuration> 
