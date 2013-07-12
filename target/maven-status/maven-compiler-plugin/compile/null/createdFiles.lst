@@ -6,6 +6,7 @@ org\guili\ecshop\business\impl\AvnetSpiderServiceImpl.class
 org\guili\ecshop\business\impl\MouserSpiderServiceImpl.class
 org\guili\ecshop\util\StoreClassSpider.class
 org\guili\ecshop\util\ExcelWriter.class
+org\guili\ecshop\business\TestMuti$1.class
 org\guili\ecshop\util\BasicSqlSupport.class
 org\guili\ecshop\controller\ResultController.class
 org\guili\ecshop\business\ExpireJobTask.class
@@ -14,6 +15,6 @@ org\guili\ecshop\util\SpiderRegex.class
 org\guili\ecshop\bean\Semiconductor.class
 org\guili\ecshop\bean\Shop.class
 org\guili\ecshop\business\TestBussiness.class
-org\guili\ecshop\dao\ITestTableDao.class
 org\guili\ecshop\util\ImageUtils.class
+org\guili\ecshop\dao\ITestTableDao.class
 org\guili\ecshop\util\ResourceUtil.class

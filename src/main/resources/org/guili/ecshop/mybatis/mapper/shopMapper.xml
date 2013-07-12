@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.guili.ecshop.dao.ITestTableDao">
+ <!-- 要对应到所有属性 才能使用-->
+ <resultMap id="shopmap" type="shop">
+ 	<result property="id" column="id"/>
+ 	<result property="name" column="name"/>
+ </resultMap>
+ <!-- 这里namespace必须是UserMapper接口的路径，不然要运行的时候要报错 "is not known to the MapperRegistry" -->
+ <insert id="add" parameterType="shop">
+  <![CDATA[ 
+  insert into t_shop (id, name) values (#{id},#{name})
+  ]]>
+ </insert>
+ <select id="selectone" resultType="shop">
+  <![CDATA[ 
+  select * from t_shop where id=1;
+  ]]>
+ </select>
+</mapper>  
