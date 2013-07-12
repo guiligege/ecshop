@@ -99,4 +99,5 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     </bean>
     
     <import resource="ImplAndBusinessBeans.xml"/>
+    <import resource="spring-quartz.xml"/>
 </beans>

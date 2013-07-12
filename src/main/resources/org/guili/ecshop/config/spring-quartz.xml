@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+xmlns:aop="http://www.springframework.org/schema/aop"
+xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-3.0.xsd">
+           
+	<!-- 配置定时任务 -->
+	<!-- 业务对象 -->
+	<bean id="bizObject" class="org.guili.ecshop.business.ExpireJobTask" />
+	<!-- 多线程测试 -->
+	<bean id="mutiThreadTest" class="org.guili.ecshop.business.MutiThreadTest" scope="prototype">
+	</bean>
+	<!-- 线程执行器配置，用于任务注册 -->
+	<bean id="executor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		 <property name="corePoolSize" value="10" />
+		 <property name="maxPoolSize" value="100" />
+		 <property name="queueCapacity" value="500" />
+	</bean>
+	<!-- 调度业务 -->
+	<bean id="jobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		 <property name="targetObject" ref="bizObject" />
+		 <property name="targetMethod" value="doBiz" />
+	</bean>
+	<!-- 增加调度触发器,从10秒开始，每1分钟执行一次。(复杂版触发器) -->
+	<bean id="cronTrigger" class="org.springframework.scheduling.quartz.CronTriggerBean">
+		 <property name="jobDetail" ref="jobDetail" />
+		 <property name="cronExpression" value="10 0/1 * * * ?" />
+	</bean>
+	<!-- 增加调度触发器,该调度表示，延迟10秒启动，然后每隔1分钟执行一次。(简单版触发器)-->
+	<bean id="taskTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean">
+		 <property name="jobDetail" ref="jobDetail" />
+		 <property name="startDelay" value="10000" />
+		 <property name="repeatInterval" value="60000" />
+	</bean>
+	
+	<!-- 设置调度 -->
+	<bean id="startQuertz" lazy-init="false" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		 <property name="triggers">
+		  <list>
+		   <ref bean="cronTrigger" />
+		  </list>
+		 </property>
+		 <!-- <property name="taskExecutor" ref="executor" /> -->
+	</bean>
+
+</beans>

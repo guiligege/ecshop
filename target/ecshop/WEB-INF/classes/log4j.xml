@@ -25,14 +25,14 @@
 	<category name="com.feilong">
 		<priority value="debug" />
 	</category>
-
+	<!--包org.guili内的log捕捉  -->
 	<category name="org.guili">
-		<priority value="info" />
+		<priority value="debug" />
 	</category>
 
 	<!-- 设置接收所有输出的通道 -->
 	<root>
-		<level value="info" />
+		<level value="debug" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 
