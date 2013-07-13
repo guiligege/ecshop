@@ -15,7 +15,7 @@ import org.apache.log4j.Logger;
  */
 public class ImageUtils {
 	//图片根目录
-	private static String IMAGEHOME="F:/sources/images/";
+	private static String IMAGEHOME=ResourceUtil.getValue(ResourceUtil.FILEPATH,"IMAGEHOME");
 	private static String ERRORURL=ResourceUtil.getValue(ResourceUtil.FILEPATH,"ERRORURL");
 	private static Logger log=Logger.getLogger(ImageUtils.class);
 	    /** 

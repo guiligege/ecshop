@@ -6,6 +6,10 @@ import org.guili.ecshop.bean.Semiconductor;
 import org.guili.ecshop.business.ISpiderService;
 import org.guili.ecshop.util.SpiderRegex;
 
+/**
+ * avnet.com spider
+ * @author guili
+ */
 public class AvnetSpiderServiceImpl implements ISpiderService {
 
 	@Override

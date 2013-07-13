@@ -13,8 +13,8 @@ import org.guili.ecshop.bean.Semiconductor;
 import org.guili.ecshop.business.ISpiderService;
 import org.guili.ecshop.util.ExcelWriter;
 import org.guili.ecshop.util.ImageUtils;
+import org.guili.ecshop.util.ResourceUtil;
 import org.guili.ecshop.util.SpiderRegex;
-import org.guili.ecshop.util.StoreClassSpider;
 
 /**
  * Digikey.cn爬虫
@@ -22,8 +22,9 @@ import org.guili.ecshop.util.StoreClassSpider;
  */
 public class DigikeySpiderServiceImpl implements ISpiderService {
 
-	private static String PRICESPLIT="-";
+	private static String PRICESPLIT=ResourceUtil.getValue(ResourceUtil.FILEPATH,"PRICESPLIT");
 	private static Logger log=Logger.getLogger(DigikeySpiderServiceImpl.class);
+	private static String BASEURL=ResourceUtil.getValue(ResourceUtil.FILEPATH,"DIGIKEY");
 	
 	/**
 	 * 分析网页内容
@@ -31,7 +32,7 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
 		//网站地址
-		String baseurl="http://www.digikey.cn";
+		String baseurl=BASEURL;
 		SpiderRegex regex = new SpiderRegex();
 		List<Semiconductor> classlist = new ArrayList<Semiconductor>();
 		//通过网址获取网页内容
@@ -68,48 +69,51 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 				if(cl2content!=null&& cl2content.length>0){
 					Semiconductor semiconductor=new Semiconductor();
 					for(int j = 0;j<cl2content.length;j++){
-						reg = "<td.*?>(.*?)<\\/td>";
-						String[] class2 = regex.htmlregex(cl2content[j],reg,false);
-						//特殊处理数据start
-						reg="<td.*?>(.*?)<\\/td>";
-						String[] class3 = regex.htmlregex(cl2content[j],reg,true);
-						//规格
-						String guige=this.analysisGuige(class3[0],regex);
-						//图片
-						String imageurl=this.analysisImageUrl(class3[1],regex);
-						String imagepath=imageurl.substring(imageurl.lastIndexOf("/")+1);
-						log.debug("imageurl--->"+imageurl+"::"+"imagepath-->"+imagepath);
-						//下载图片
-						ImageUtils.writeImage(imageurl);
-						log.debug("aaa");
-						//单位价格
-						String priceurl=this.analysisPriceUrl(class3[7],regex);
-						//获取商品的多价格
-						String prices="";
-						if(priceurl!=null && !priceurl.equals("")){
-							prices=analysisPricesToString(baseurl+priceurl);
-						}
-						//end
-						if(class2!=null&& class2.length>0){
-							//转换为对象
-							semiconductor.setGuige(guige);
-							semiconductor.setImagepath(imagepath);
-							semiconductor.setProducterkey(class2[2]);
-							semiconductor.setCode(class2[3]);
-							semiconductor.setProducter(class2[4]);
-							semiconductor.setDesc(class2[5]);
-							semiconductor.setDiscount(class2[6]);
-//									semiconductor.setPrice(class2[7]);
-							semiconductor.setPrice(prices);
-							semiconductor.setLowestcount(class2[8]);
-							if(headlist.size()>9){
-								semiconductor.setFunction(buildDiscription(headlist,class2));
+						try {
+							
+							reg = "<td.*?>(.*?)<\\/td>";
+							String[] class2 = regex.htmlregex(cl2content[j],reg,false);
+							//特殊处理数据start
+							reg="<td.*?>(.*?)<\\/td>";
+							String[] class3 = regex.htmlregex(cl2content[j],reg,true);
+							//规格
+							String guige=this.analysisGuige(class3[0],regex);
+							//图片
+							String imageurl=this.analysisImageUrl(class3[1],regex);
+							String imagepath=imageurl.substring(imageurl.lastIndexOf("/")+1);
+							log.debug("imageurl--->"+imageurl+"::"+"imagepath-->"+imagepath);
+							//下载图片
+							ImageUtils.writeImage(imageurl);
+							log.debug("aaa");
+							//单位价格
+							String priceurl=this.analysisPriceUrl(class3[7],regex);
+							//获取商品的多价格
+							String prices="";
+							if(priceurl!=null && !priceurl.equals("")){
+								prices=analysisPricesToString(baseurl+priceurl);
 							}
-							classlist.add(semiconductor);
-							semiconductor=new Semiconductor();
+							//end
+							if(class2!=null&& class2.length>0){
+								//转换为对象
+								semiconductor.setGuige(guige);
+								semiconductor.setImagepath(imagepath);
+								semiconductor.setProducterkey(class2[2]);
+								semiconductor.setCode(class2[3]);
+								semiconductor.setProducter(class2[4]);
+								semiconductor.setDesc(class2[5]);
+								semiconductor.setDiscount(class2[6]);
+	//									semiconductor.setPrice(class2[7]);
+								semiconductor.setPrice(prices);
+								semiconductor.setLowestcount(class2[8]);
+								if(headlist.size()>9){
+									semiconductor.setFunction(buildDiscription(headlist,class2));
+								}
+								classlist.add(semiconductor);
+								semiconductor=new Semiconductor();
+							}
+						} catch (Exception e) {
 						}
 					}
-//						}
 			}
 		}
 		return classlist;

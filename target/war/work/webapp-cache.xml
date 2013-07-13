@@ -19,6 +19,7 @@
           <string>WEB-INF/classes/org/guili/ecshop/business/ISpiderService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/MutiThreadTest.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/TestBussiness.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/TestMuti$1.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/TestMuti.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/ApplicationContext.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/dispatcher-servlet.xml</string>
