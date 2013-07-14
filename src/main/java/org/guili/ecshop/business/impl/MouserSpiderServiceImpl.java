@@ -70,26 +70,15 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 						String[] tds = regex.htmlregex(clcontent[j],reg,true);
 						//特殊处理
 						//价格url
-//						reg = "<a title=\"单击查看其他价格间断。\" href=\"..\\/..\\/..\\/..\\/(.*?)\">查看";
-//						String[] urls = regex.htmlregex(clcontent[j],reg,false);
-//						if(urls!=null && urls.length>0){
-//							String priceurl=BASEURL+urls[0];
-//						}
 						String priceurl=this.analysisPriceUrl(clcontent[j], regex);
 						//图片
-						//<img title='Skyworks Solutions, Inc. SKY12207-306LF' alt='Skyworks Solutions, Inc. SKY12207-306LF' id=826709117 src='/images/skyworks/sm/qfn16.jpg' />
-//						reg="<a.*?>(.*?)</a>";
-//						String[] imgs = regex.htmlregex(tds[0],reg,true);
-//						int start=imgs[0].indexOf("src='")+"src='".length();
-////						int end=imgs[0].indexOf("' />");
-//						String img=imgs[0].substring(start,imgs[0].length()-3);
 						//初始化数据
 						imageurl="";guige="";prices="";
 						if(tds!=null && tds.length>0){
 							imageurl=this.analysisImageUrl(tds[0], regex);
-							//说明书
-//							String shuoming="";
-//							shuoming=tds[5].substring(tds[5].indexOf("href=\"")+"href=\"".length(), tds[5].indexOf("target")-2);
+							if(imageurl!=null && !imageurl.equals("")){
+								imageurl=BASEURL+imageurl.substring(1, imageurl.length());
+							}
 							guige=this.analysisGuige(tds[5], regex);
 						}
 						if(priceurl!=null && !"".equals(priceurl)){
@@ -158,6 +147,9 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 						imageurl="";guige="";prices="";
 						if(tds!=null && tds.length>0){
 							imageurl=this.analysisImageUrl(tds[0], regex);
+							if(imageurl!=null && !imageurl.equals("")){
+								imageurl=BASEURL+imageurl.substring(1, imageurl.length());
+							}
 							//说明书
 //							String shuoming="";
 //							shuoming=tds[5].substring(tds[5].indexOf("href=\"")+"href=\"".length(), tds[5].indexOf("target")-2);
@@ -181,7 +173,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 							semiconductor.setDiscount(class2[6]);
 //							semiconductor.setPrice(class2[8]);
 							semiconductor.setPrice(prices);
-							semiconductor.setLowestcount(class2.length>=9?class2[8]:"受限供货情况");
+							semiconductor.setLowestcount(class2.length>=9?"1":"受限供货情况");
 							if(headlist.size()>9 && class2.length>=9){
 								semiconductor.setFunction(buildDiscription(headlist,class2));
 							}else{
