@@ -22,9 +22,10 @@ import org.guili.ecshop.util.SpiderRegex;
  */
 public class DigikeySpiderServiceImpl implements ISpiderService {
 
-	private static String PRICESPLIT=ResourceUtil.getValue(ResourceUtil.FILEPATH,"PRICESPLIT");
+	private static final String PRICEINNERSPLIT=ResourceUtil.getValue(ResourceUtil.FILEPATH,"PRICESPLIT");
 	private static Logger log=Logger.getLogger(DigikeySpiderServiceImpl.class);
-	private static String BASEURL=ResourceUtil.getValue(ResourceUtil.FILEPATH,"DIGIKEY");
+	private static final String BASEURL=ResourceUtil.getValue(ResourceUtil.FILEPATH,"DIGIKEY");
+	private static String PRICESPLIT="$$";
 	
 	/**
 	 * 分析网页内容
@@ -148,7 +149,7 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 					reg = "<td.*?>(.*?)<\\/td>";
 					String[] class2 = regex.htmlregex(cl2content[j],reg,false);
 					if(class2!=null&& class2.length>0){
-						csb.append(class2[0]).append(PRICESPLIT).append(class2[1]);
+						csb.append(class2[0]).append(PRICEINNERSPLIT).append(class2[1]);
 						classlist.add(csb.toString());
 						price.append(csb.toString()+"$$");
 						csb = new StringBuffer();

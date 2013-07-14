@@ -83,9 +83,9 @@ public class ImageUtils {
 	    public static void writeImage(String url){
 	    	try {
 	    		//防止错误链接
-	    		if(ERRORURL.indexOf(url)>0){
-	    			return;
-	    		}
+//	    		if(ERRORURL.indexOf(url)>0){
+//	    			return;
+//	    		}
 	    		if(!url.isEmpty()){
 		    		byte[] btImg = getImageFromNetByUrl(url);  
 			        if(null != btImg && btImg.length > 0){  
@@ -117,6 +117,10 @@ public class ImageUtils {
 //	        }else{  
 //	            log.debug("没有从该连接获得内容");  
 //	        }
-	    	ImageUtils.writeImage("http://media.digikey.com/Photos/NoPhoto/NoPhoto_TMB.jpg");
+	    	try {
+	    		ImageUtils.writeImage("http://media.digikey.com/Photos/APEM%20Comp%20Photos/E10SW6A_tmb.jpg");
+			} catch (Exception e) {
+				e.getStackTrace();
+			}
 	    }  
 }
