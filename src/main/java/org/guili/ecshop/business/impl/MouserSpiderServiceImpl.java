@@ -1,5 +1,9 @@
 package org.guili.ecshop.business.impl;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -7,6 +11,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.guili.ecshop.bean.Semiconductor;
 import org.guili.ecshop.business.ISpiderService;
+import org.guili.ecshop.util.ExcelWriter;
 import org.guili.ecshop.util.ResourceUtil;
 import org.guili.ecshop.util.SpiderRegex;
 
@@ -49,6 +54,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 				headlist.add(headcontent[i]);
 			}
 			//具体内容部分的拆分
+			//奇数部分
 			reg = "<tr class=\"SearchResultsRowOdd\">(.*?)</td>				</tr>";
 			String[] clcontent = regex.htmlregex(htmltext,reg,true);
 			//定义变量存放需要处理的数据
@@ -89,6 +95,78 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 						if(priceurl!=null && !"".equals(priceurl)){
 							prices=this.analysisPricesToString(priceurl);
 						}
+						log.debug("imageurl:"+imageurl+",guige="+guige+",prices="+prices);
+						//特殊处理结束
+						if(class2!=null&& class2.length>0){
+							//转换为对象
+							//semiconductor.setGuige(class2[6]);
+//							semiconductor.setImagepath(class2[1]);
+							semiconductor.setImagepath(imageurl);
+							semiconductor.setProducterkey(class2[1]);
+							semiconductor.setCode(class2[2]);
+							semiconductor.setProducter(class2[3]);
+							semiconductor.setDesc(class2[4]);
+							semiconductor.setGuige(guige);
+							semiconductor.setDiscount(class2[6]);
+//							semiconductor.setPrice(class2[8]);
+							semiconductor.setPrice(prices);
+							semiconductor.setLowestcount(class2.length>=9?"1":"受限供货情况");
+							if(headlist.size()>9 && class2.length>=9){
+								semiconductor.setFunction(buildDiscription(headlist,class2));
+							}else{
+								semiconductor.setFunction("");
+							}
+							classlist.add(semiconductor);
+							semiconductor=new Semiconductor();
+						}
+//					} catch (Exception e) {
+//						e.printStackTrace();
+//					}
+				}
+			}
+			
+			//偶数部分
+			reg = "<tr class=\"SearchResultsRowEven\">(.*?)</td>				</tr>";
+			String[] oushuclcontent = regex.htmlregex(htmltext,reg,true);
+			//定义变量存放需要处理的数据
+			imageurl="";guige="";prices="";
+			if(oushuclcontent!=null && oushuclcontent.length>0){
+				for(int j=0;j<oushuclcontent.length;j++){
+//					try {
+						
+						Semiconductor semiconductor=new Semiconductor();
+						reg = "<td>(.*?)<\\/td>";
+						String[] class2 = regex.htmlregex(oushuclcontent[j],reg,false);
+						reg = "<td>(.*?)<\\/td>";
+						String[] tds = regex.htmlregex(oushuclcontent[j],reg,true);
+						//特殊处理
+						//价格url
+//						reg = "<a title=\"单击查看其他价格间断。\" href=\"..\\/..\\/..\\/..\\/(.*?)\">查看";
+//						String[] urls = regex.htmlregex(oushuclcontent[j],reg,false);
+//						if(urls!=null && urls.length>0){
+//							String priceurl=BASEURL+urls[0];
+//						}
+						String priceurl=this.analysisPriceUrl(oushuclcontent[j], regex);
+						//图片
+						//<img title='Skyworks Solutions, Inc. SKY12207-306LF' alt='Skyworks Solutions, Inc. SKY12207-306LF' id=826709117 src='/images/skyworks/sm/qfn16.jpg' />
+//						reg="<a.*?>(.*?)</a>";
+//						String[] imgs = regex.htmlregex(tds[0],reg,true);
+//						int start=imgs[0].indexOf("src='")+"src='".length();
+////						int end=imgs[0].indexOf("' />");
+//						String img=imgs[0].substring(start,imgs[0].length()-3);
+						//初始化数据
+						imageurl="";guige="";prices="";
+						if(tds!=null && tds.length>0){
+							imageurl=this.analysisImageUrl(tds[0], regex);
+							//说明书
+//							String shuoming="";
+//							shuoming=tds[5].substring(tds[5].indexOf("href=\"")+"href=\"".length(), tds[5].indexOf("target")-2);
+							guige=this.analysisGuige(tds[5], regex);
+						}
+						if(priceurl!=null && !"".equals(priceurl)){
+							prices=this.analysisPricesToString(priceurl);
+						}
+						log.debug("imageurl:"+imageurl+",guige="+guige+",prices="+prices);
 						//特殊处理结束
 						if(class2!=null&& class2.length>0){
 							//转换为对象
@@ -117,7 +195,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 //					}
 				}
 			}
-			
+			log.debug("one page success");
 		}
 		return classlist;
 	}
@@ -182,8 +260,49 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 	@Override
 	public void createSemiconductorExcel(List<Semiconductor> semiconductorList,
 			String file) {
-		// TODO Auto-generated method stub
-
+		log.debug(" 开始导出Excel文件 ");
+		  File f = new File("F:\\sources\\qt1.xls");
+		  ExcelWriter e = new ExcelWriter();
+		  try {
+		   e = new ExcelWriter(new FileOutputStream(f));
+		  } catch (FileNotFoundException e1) {
+		   e1.printStackTrace();
+		  }
+		  //excel头
+		  e.createRow(0);
+		  e.setCell(0, "规格书 ");
+		  e.setCell(1, "图像");
+		  e.setCell(2, "mouser-Key");
+		  e.setCell(3, "零件编号");
+		  e.setCell(4, "制造商");
+		  e.setCell(5, "描述");
+		  e.setCell(6, "现有数量");
+		  e.setCell(7, "单价 (USD)");
+		  e.setCell(8, "最低订购数量");
+		  e.setCell(9, "功能描述");
+		  if(semiconductorList!=null && semiconductorList.size()>0){
+			  for(int i=0;i<semiconductorList.size();i++){
+				  Semiconductor semiconductor=semiconductorList.get(i);
+				  e.createRow(i+1);
+				  e.setCell(0, semiconductor.getGuige());
+				  e.setCell(1, semiconductor.getImagepath());
+				  e.setCell(2, semiconductor.getProducterkey());
+				  e.setCell(3, semiconductor.getCode());
+				  e.setCell(4, semiconductor.getProducter());
+				  e.setCell(5, semiconductor.getDesc());
+				  e.setCell(6, semiconductor.getDiscount());
+				  e.setCell(7, semiconductor.getPrice());
+				  e.setCell(8, semiconductor.getLowestcount());
+				  e.setCell(9, semiconductor.getFunction());
+			  }
+		  }
+		  try {
+		   e.export();
+		   log.debug(" 导出Excel文件[成功] ");
+		  } catch (IOException ex) {
+		   log.debug(" 导出Excel文件[失败] ");
+		   ex.printStackTrace();
+		  }
 	}
 
 	/**
@@ -227,14 +346,24 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 		reg = "<a href='..\\/..\\/..\\/..\\/(.*?)' >查看";
 		String[]urls2=regex.htmlregex(basehtml,reg,false);
 		String priceurl="";
+		String url="";
 		if(urls!=null && urls.length>0){
-			
-			priceurl=BASEURL+urls[0];
+			url=urls[0];
+			if(urls[0].indexOf("../")>=0){
+				url=urls[0].replaceAll("\\.\\.\\/", "");
+			}
+			priceurl=BASEURL+url;
 		}
 		if(urls2!=null && urls2.length>0){
-			
-			priceurl=BASEURL+urls2[0];
+			url=urls2[0];
+			if(urls2[0].indexOf("../")>=0){
+				url=urls2[0].replaceAll("\\.\\.\\/", "");
+			}
+			priceurl=BASEURL+url;
 		}
+//		if(priceurl.indexOf("../")>=0){
+//			priceurl=priceurl.replaceAll("../", "");
+//		}
 		return priceurl;
 	}
 
@@ -262,7 +391,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 		public static void main(String[] args) throws Exception {
 			Date start=new Date();
 			ISpiderService scs = new MouserSpiderServiceImpl();
-			List<Semiconductor> semiconductorList=scs.analysisContent("http://www.mouser.cn/Semiconductors/Discrete-Semiconductors/_/N-awhng/?No=0");
+			List<Semiconductor> semiconductorList=scs.analysisContent("http://www.mouser.cn/Optoelectronics/LED-Lighting/LED-Lighting-Electronics/_/N-b1a48/?No=0");
 			scs.createSemiconductorExcel(semiconductorList, "");
 //			String temp=scs.analysisPricesToString("http://www.mouser.cn/ProductDetail/Skyworks-Solutions-Inc/SKY12207-306LF/?qs=sGAEpiMZZMvplms98TlKYxZLCcC6DAiBNMTlNJl6JDk%3d");
 //			System.out.println("analysisPricesToString-->"+temp);
