@@ -24,10 +24,20 @@ public class ResultController {
 	private Logger log=Logger.getLogger(ResultController.class);
 	@Resource(name="testBusiness")
 	private TestBussiness testBusiness=null;
+	//多线程测试
+	@Resource(name="mutiThreadTest")
+	private MutiThreadTest mutiThreadTest=null;
+	@Resource(name="executor")
+	private ThreadPoolTaskExecutor executor=null;
 
 	public void setTestBusiness(TestBussiness testBusiness) {
 		this.testBusiness = testBusiness;
 	}
+	
+	public void setMutiThreadTest(MutiThreadTest mutiThreadTest) {
+		this.mutiThreadTest = mutiThreadTest;
+	}
+
 	@RequestMapping(value="/add.htm")
 	public String addUser(HttpServletRequest request,ModelMap modelMap) throws Exception{
 		testBusiness.add();
@@ -45,6 +55,10 @@ public class ResultController {
 		Shop shop=testBusiness.getone();
 		log.debug("logger1--->"+shop.getName());
 		//多线程测试
+		mutiThreadTest.setTestBusiness(testBusiness);
+		for(int i=0;i<100;i++){
+			executor.execute(mutiThreadTest);
+		}
 		return new ModelAndView("result");
 	}
 	//取json数据例子,直接返回调用页面

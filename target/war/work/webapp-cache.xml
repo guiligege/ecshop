@@ -21,6 +21,7 @@
           <string>WEB-INF/classes/org/guili/ecshop/business/TestBussiness.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/TestMuti$1.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/TestMuti.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/ThreadUseExtends.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/ApplicationContext.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/dispatcher-servlet.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/ImplAndBusinessBeans.xml</string>

@@ -14,13 +14,10 @@ public class TestMuti {
 	public void setTaskExecutor(ThreadPoolTaskExecutor taskExecutor) {
 		this.taskExecutor = taskExecutor;
 	}
-	
+
 	public void testmuti(){
 		System.out.println("Start job");
-		taskExecutor.setCorePoolSize(5);
-		taskExecutor.setMaxPoolSize(100);
-		taskExecutor.setQueueCapacity(500);
-		
+
 		Thread thread = new Thread(new Runnable() {
 			@Override
 			public void run() {
@@ -35,7 +32,7 @@ public class TestMuti {
 			}
 		});
 		taskExecutor.execute(thread);
-		
+
 		for(;;){  
             int count = taskExecutor.getActiveCount();  
             System.out.println("Active Threads : " + count);  
@@ -51,7 +48,7 @@ public class TestMuti {
 		}  
 		System.out.println("end job");
 	}
-	
+
 	public static void main(String[] args) {
 		TestMuti testMuti=new TestMuti();
 		testMuti.testmuti();

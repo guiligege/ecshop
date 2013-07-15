@@ -7,25 +7,38 @@ import org.apache.log4j.Logger;
  * @author guili
  */
 public class MutiThreadTest implements Runnable {
+	private TestBussiness testBusiness;
 	String name;  
-    public void setName(String name) {  
+	
+    public void setName(String name,TestBussiness testBusiness) {  
             this.name = name;  
+            this.testBusiness=testBusiness;
     }
     MutiThreadTest(){
     }
-    MutiThreadTest(String name){
+    
+    public void setTestBusiness(TestBussiness testBusiness) {
+		this.testBusiness = testBusiness;
+	}
+	MutiThreadTest(String name,TestBussiness testBusiness){
     	this.name=name;
+    	this.testBusiness=testBusiness;
     }
 	/** Logger */
     private static final Logger logger = Logger.getLogger(MutiThreadTest.class);
 	@Override
 	public void run() {
 		System.out.println(name + " is running.");  
-        try{  
-                Thread.sleep(5000);  
-        }catch(InterruptedException e){  
-                e.printStackTrace();  
-        }  
+		
+//        try{  
+        	testBusiness.test();
+        	testBusiness.test1();
+        	testBusiness.test2();
+        	
+////                Thread.sleep(5000);  
+//        }catch(InterruptedException e){  
+//                e.printStackTrace();  
+//        }  
         System.out.println(name + " is running again.");
 	}
 

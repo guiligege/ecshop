@@ -31,5 +31,15 @@ public class TestBussiness {
 	public Shop getone()throws Exception{
 		return testDao.selectone();
 	}
+	
+	public void test(){
+		System.out.println("test");
+	}
 
+	public void test1(){
+		System.out.println("test1");
+	}
+	public void test2(){
+		System.out.println("test2");
+	}
 }

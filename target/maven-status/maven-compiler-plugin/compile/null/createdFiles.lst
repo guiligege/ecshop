@@ -1,3 +1,4 @@
+org\guili\ecshop\business\ThreadUseExtends.class
 org\guili\ecshop\business\impl\DigikeySpiderServiceImpl.class
 org\guili\ecshop\impl\ITestTableDaoImpl.class
 org\guili\ecshop\business\ISpiderService.class
