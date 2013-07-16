@@ -92,6 +92,8 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 									//获取最小的购买数
 									String minicount="";
 									minicount=analysisMiniCount(class3[8],regex);
+									//现有数量
+									String nowcount=this.getcount(class3[7], regex);
 									//end
 									if(class2!=null&& class2.length>0){
 										for(int i=0;i<class2.length;i++){
@@ -104,7 +106,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 										semiconductor.setCode(class2[2]);
 										semiconductor.setProducter(class2[3]);
 										semiconductor.setDesc(class2[5]);
-										semiconductor.setDiscount(class2[7]);
+										semiconductor.setDiscount(nowcount);
 			//									semiconductor.setPrice(class2[7]);
 										semiconductor.setPrice(prices);
 										semiconductor.setLowestcount(minicount);
@@ -245,7 +247,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 
 	@Override
 	public int getPageCount(String basehtml, SpiderRegex regex) {
-		String regpag="of <strong>(.*?)</strong>";
+		String regpag="/ <strong>(.*?)</strong>";
 		String[] pagecounts = regex.htmlregex(basehtml,regpag,false);
 		int pagecount=1;
 		if(pagecounts!=null && pagecounts.length>0){
@@ -253,12 +255,25 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 		}
 		return pagecount;
 	}
-	
+	private String getcount(String basehtml, SpiderRegex regex){
+		String regpag="</script>(.*?)<br/>";
+		String[] counts = regex.htmlregex(basehtml,regpag,false);
+		regpag="</a>(.*?)<!-- Symphony Changes Ends - View Parts on Order -->";
+		String[] counts1 = regex.htmlregex(basehtml,regpag,false);
+		StringBuffer count=new StringBuffer("");
+		if(counts!=null && counts.length>0){
+			count.append(counts[0].trim().replaceAll("&nbsp;", " ")+"$$");
+		}
+		if(counts1!=null && counts1.length>0){
+			count.append(counts1[0].replaceAll("\t", "").replaceAll("&nbsp;", " ")+"$$");
+		}
+		return count.toString();
+	}
 	//test
 	public static void main(String[] args) throws Exception {
 		Date start=new Date();
 		AvnetSpiderServiceImpl scs = new AvnetSpiderServiceImpl();
-		List<Semiconductor> semiconductorList=scs.analysisContent("https://avnetexpress.avnet.com/store/em/EMController/Communication/Analog-Front-End/_/N-100031?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-1&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+		List<Semiconductor> semiconductorList=scs.analysisContent("https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Sample-and-Hold/_/N-100383?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
 		scs.createSemiconductorExcel(semiconductorList, "");
 		log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
 	}
