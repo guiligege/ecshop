@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import org.guili.ecshop.bean.Semiconductor;
 import org.guili.ecshop.business.ISpiderService;
 import org.guili.ecshop.util.ExcelWriter;
+import org.guili.ecshop.util.ResourceProperty;
 import org.guili.ecshop.util.ResourceUtil;
 import org.guili.ecshop.util.SpiderRegex;
 
@@ -23,7 +24,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 
 	private static String PRICESPLIT=ResourceUtil.getValue(ResourceUtil.FILEPATH,"PRICESPLIT");
 	private static Logger log=Logger.getLogger(DigikeySpiderServiceImpl.class);
-	private static String BASEURL=ResourceUtil.getValue(ResourceUtil.FILEPATH,"MOUSECOM");
+	private static String BASEURL=ResourceProperty.MOUSECOM;
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
 		//网站地址
@@ -53,6 +54,13 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 			for(int i=1;i<headcontent.length;i++){
 				headlist.add(headcontent[i]);
 			}
+			//分类
+			String baseclass="";
+			reg = "<strong><\\/strong>(.*?)<hr \\/>";
+			String[] baseclasss=regex.htmlregex(htmltext,reg,false);
+			if(baseclasss!=null && baseclasss.length>0){
+				baseclass=baseclasss[0].replaceAll(">", "\\$\\$");
+			}
 			//具体内容部分的拆分
 			//奇数部分
 			reg = "<tr class=\"SearchResultsRowOdd\">(.*?)</td>				</tr>";
@@ -61,7 +69,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 			String imageurl="",guige="",prices="";
 			if(clcontent!=null && clcontent.length>0){
 				for(int j=0;j<clcontent.length;j++){
-//					try {
+					try {
 						
 						Semiconductor semiconductor=new Semiconductor();
 						reg = "<td>(.*?)<\\/td>";
@@ -74,12 +82,18 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 						//图片
 						//初始化数据
 						imageurl="";guige="";prices="";
+						String imagename="";
 						if(tds!=null && tds.length>0){
 							imageurl=this.analysisImageUrl(tds[0], regex);
 							if(imageurl!=null && !imageurl.equals("")){
 								imageurl=BASEURL+imageurl.substring(1, imageurl.length());
+								imagename=imageurl.substring(imageurl.lastIndexOf("/")+1);
 							}
 							guige=this.analysisGuige(tds[5], regex);
+							//把相对地址转化为绝对地址
+							if(!guige.equals("") && !guige.startsWith("http")){
+								guige=BASEURL+guige;
+							}
 						}
 						if(priceurl!=null && !"".equals(priceurl)){
 							prices=this.analysisPricesToString(priceurl);
@@ -90,7 +104,10 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 							//转换为对象
 							//semiconductor.setGuige(class2[6]);
 //							semiconductor.setImagepath(class2[1]);
+							semiconductor.setBasesiteclass(baseclass);
+							semiconductor.setSourcesite(ResourceProperty.MOUSECOM);
 							semiconductor.setImagepath(imageurl);
+							semiconductor.setImagename(imagename);
 							semiconductor.setProducterkey(class2[1]);
 							semiconductor.setCode(class2[2]);
 							semiconductor.setProducter(class2[3]);
@@ -108,9 +125,9 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 							classlist.add(semiconductor);
 							semiconductor=new Semiconductor();
 						}
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			
@@ -129,12 +146,6 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 						reg = "<td>(.*?)<\\/td>";
 						String[] tds = regex.htmlregex(oushuclcontent[j],reg,true);
 						//特殊处理
-						//价格url
-//						reg = "<a title=\"单击查看其他价格间断。\" href=\"..\\/..\\/..\\/..\\/(.*?)\">查看";
-//						String[] urls = regex.htmlregex(oushuclcontent[j],reg,false);
-//						if(urls!=null && urls.length>0){
-//							String priceurl=BASEURL+urls[0];
-//						}
 						String priceurl=this.analysisPriceUrl(oushuclcontent[j], regex);
 						//图片
 						//<img title='Skyworks Solutions, Inc. SKY12207-306LF' alt='Skyworks Solutions, Inc. SKY12207-306LF' id=826709117 src='/images/skyworks/sm/qfn16.jpg' />
@@ -154,6 +165,10 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 //							String shuoming="";
 //							shuoming=tds[5].substring(tds[5].indexOf("href=\"")+"href=\"".length(), tds[5].indexOf("target")-2);
 							guige=this.analysisGuige(tds[5], regex);
+							//把相对地址转化为绝对地址
+							if(!guige.equals("") && !guige.startsWith("http")){
+								guige=BASEURL+guige;
+							}
 						}
 						if(priceurl!=null && !"".equals(priceurl)){
 							prices=this.analysisPricesToString(priceurl);
@@ -179,6 +194,8 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 							}else{
 								semiconductor.setFunction("");
 							}
+							semiconductor.setBasesiteclass(baseclass);
+							semiconductor.setSourcesite(ResourceProperty.MOUSECOM);
 							classlist.add(semiconductor);
 							semiconductor=new Semiconductor();
 						}
@@ -253,7 +270,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 	public void createSemiconductorExcel(List<Semiconductor> semiconductorList,
 			String file) {
 		log.debug(" 开始导出Excel文件 ");
-		  File f = new File("F:\\sources\\qt1.xls");
+		  File f = new File("F:\\sources\\qtmouser.xls");
 		  ExcelWriter e = new ExcelWriter();
 		  try {
 		   e = new ExcelWriter(new FileOutputStream(f));
@@ -264,7 +281,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 		  e.createRow(0);
 		  e.setCell(0, "规格书 ");
 		  e.setCell(1, "图像");
-		  e.setCell(2, "mouser-Key");
+		  e.setCell(2, "Digi-Key");
 		  e.setCell(3, "零件编号");
 		  e.setCell(4, "制造商");
 		  e.setCell(5, "描述");
@@ -272,6 +289,8 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 		  e.setCell(7, "单价 (USD)");
 		  e.setCell(8, "最低订购数量");
 		  e.setCell(9, "功能描述");
+		  e.setCell(10, "网站");
+		  e.setCell(11, "源分类");
 		  if(semiconductorList!=null && semiconductorList.size()>0){
 			  for(int i=0;i<semiconductorList.size();i++){
 				  Semiconductor semiconductor=semiconductorList.get(i);
@@ -286,6 +305,8 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 				  e.setCell(7, semiconductor.getPrice());
 				  e.setCell(8, semiconductor.getLowestcount());
 				  e.setCell(9, semiconductor.getFunction());
+				  e.setCell(10, semiconductor.getSourcesite());
+				  e.setCell(11, semiconductor.getBasesiteclass());
 			  }
 		  }
 		  try {
@@ -295,6 +316,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 		   log.debug(" 导出Excel文件[失败] ");
 		   ex.printStackTrace();
 		  }
+
 	}
 
 	/**
@@ -309,6 +331,9 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+		if(shuoming.indexOf("../")>=0){
+			shuoming="/"+shuoming.replaceAll("\\.\\.\\/", "");
 		}
 		return shuoming;
 	}
@@ -383,10 +408,34 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 		public static void main(String[] args) throws Exception {
 			Date start=new Date();
 			ISpiderService scs = new MouserSpiderServiceImpl();
-			List<Semiconductor> semiconductorList=scs.analysisContent("http://www.mouser.cn/Optoelectronics/LED-Lighting/LED-Lighting-Electronics/_/N-b1a48/?No=0");
-			scs.createSemiconductorExcel(semiconductorList, "");
+//			List<Semiconductor> semiconductorList=scs.analysisContent("http://www.mouser.cn/Electromechanical/Industrial-Automation/Measurement/_/N-b12pl/?No=0");
+//			scs.createSemiconductorExcel(semiconductorList, "");
 //			String temp=scs.analysisPricesToString("http://www.mouser.cn/ProductDetail/Skyworks-Solutions-Inc/SKY12207-306LF/?qs=sGAEpiMZZMvplms98TlKYxZLCcC6DAiBNMTlNJl6JDk%3d");
 //			System.out.println("analysisPricesToString-->"+temp);
+			scs.analysisService("");
 			log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
+		}
+
+		@Override
+		public void analysisService(String url) {
+			//通过网址获取网页内容
+			SpiderRegex regex = new SpiderRegex();
+			List<String> urls=new ArrayList<String>();
+			String htmltext = regex.gethtmlContent("http://www.mouser.cn/search/default.aspx","UTF-8");
+			//匹配需要的那部分网页
+			String regbig = "<ul class=\"sub-cats\">(.*?)<\\/ul>";
+			String[] bigcontent = regex.htmlregex(htmltext,regbig,true);
+			if(bigcontent!=null && bigcontent.length>0){
+				for(int i=0;i<bigcontent.length;i++){
+					regbig = "href=\"\\.\\.\\/(.*?)\"";
+					String[] smallContent=regex.htmlregex(bigcontent[i],regbig,true);
+					log.debug(smallContent.length);
+					for(String smallurl:smallContent){
+						log.debug("smallurl--->"+BASEURL+smallurl+"?No=0");
+						analysisContent(BASEURL+smallurl+"?No=0");
+					}
+				}
+			}
+			
 		}
 }

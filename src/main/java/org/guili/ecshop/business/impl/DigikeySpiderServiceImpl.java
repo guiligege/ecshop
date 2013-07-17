@@ -13,6 +13,7 @@ import org.guili.ecshop.bean.Semiconductor;
 import org.guili.ecshop.business.ISpiderService;
 import org.guili.ecshop.util.ExcelWriter;
 import org.guili.ecshop.util.ImageUtils;
+import org.guili.ecshop.util.ResourceProperty;
 import org.guili.ecshop.util.ResourceUtil;
 import org.guili.ecshop.util.SpiderRegex;
 
@@ -24,7 +25,8 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 
 	private static final String PRICEINNERSPLIT=ResourceUtil.getValue(ResourceUtil.FILEPATH,"PRICESPLIT");
 	private static Logger log=Logger.getLogger(DigikeySpiderServiceImpl.class);
-	private static final String BASEURL=ResourceUtil.getValue(ResourceUtil.FILEPATH,"DIGIKEY");
+	private static final String BASEURL=ResourceProperty.DIGIKEY;
+	private static final String BASEURLSITE=ResourceProperty.DIGIKEYSITE;
 	private static String PRICESPLIT="$$";
 	
 	/**
@@ -61,6 +63,14 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 					}
 				}
 			}
+			//分类
+			String baseclass="";
+			reghead = "<h1 class=seohtagbold itemprop=\"breadcrumb\">(.*?)<\\/h1>";
+			String[] baseclasss=regex.htmlregex(htmltext,reghead,false);
+			if(baseclasss!=null && baseclasss.length>0){
+				baseclass=baseclasss[0].replaceAll("&nbsp;", "").replaceAll("&gt;", "\\$\\$");
+			}
+			//
 			String reg = "<tbody>(.*?)<\\/table>";
 			String[] clcontent = regex.htmlregex(htmltext,reg,true);
 			//具体内容部分的拆分
@@ -81,10 +91,10 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 							String guige=this.analysisGuige(class3[0],regex);
 							//图片
 							String imageurl=this.analysisImageUrl(class3[1],regex);
-							String imagepath=imageurl.substring(imageurl.lastIndexOf("/")+1);
-							log.debug("imageurl--->"+imageurl+"::"+"imagepath-->"+imagepath);
+							String imagename=imageurl.substring(imageurl.lastIndexOf("/")+1);
+							log.debug("imageurl--->"+imageurl+"::"+"imagepath-->"+imagename);
 							//下载图片
-							ImageUtils.writeImage(imageurl);
+//							ImageUtils.writeImage(imageurl);
 							log.debug("aaa");
 							//单位价格
 							String priceurl=this.analysisPriceUrl(class3[7],regex);
@@ -97,7 +107,8 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 							if(class2!=null&& class2.length>0){
 								//转换为对象
 								semiconductor.setGuige(guige);
-								semiconductor.setImagepath(imagepath);
+								semiconductor.setImagepath(imageurl);
+								semiconductor.setImagename(imagename);
 								semiconductor.setProducterkey(class2[2]);
 								semiconductor.setCode(class2[3]);
 								semiconductor.setProducter(class2[4]);
@@ -109,6 +120,8 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 								if(headlist.size()>9){
 									semiconductor.setFunction(buildDiscription(headlist,class2));
 								}
+								semiconductor.setBasesiteclass(baseclass);
+								semiconductor.setSourcesite(ResourceProperty.DIGIKEYSITE);
 								classlist.add(semiconductor);
 								semiconductor=new Semiconductor();
 							}
@@ -180,11 +193,10 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 	/**
 	 * 建excel
 	 */
-	@Override
 	public void createSemiconductorExcel(List<Semiconductor> semiconductorList,
 			String file) {
 		log.debug(" 开始导出Excel文件 ");
-		  File f = new File("F:\\sources\\qt1.xls");
+		  File f = new File("F:\\sources\\qtdigikey.xls");
 		  ExcelWriter e = new ExcelWriter();
 		  try {
 		   e = new ExcelWriter(new FileOutputStream(f));
@@ -203,6 +215,8 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 		  e.setCell(7, "单价 (USD)");
 		  e.setCell(8, "最低订购数量");
 		  e.setCell(9, "功能描述");
+		  e.setCell(10, "网站");
+		  e.setCell(11, "源分类");
 		  if(semiconductorList!=null && semiconductorList.size()>0){
 			  for(int i=0;i<semiconductorList.size();i++){
 				  Semiconductor semiconductor=semiconductorList.get(i);
@@ -217,6 +231,8 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 				  e.setCell(7, semiconductor.getPrice());
 				  e.setCell(8, semiconductor.getLowestcount());
 				  e.setCell(9, semiconductor.getFunction());
+				  e.setCell(10, semiconductor.getSourcesite());
+				  e.setCell(11, semiconductor.getBasesiteclass());
 			  }
 		  }
 		  try {
@@ -226,6 +242,7 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 		   log.debug(" 导出Excel文件[失败] ");
 		   ex.printStackTrace();
 		  }
+
 	}
 
 	/**
@@ -290,8 +307,34 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 	public static void main(String[] args) throws Exception {
 		Date start=new Date();
 		DigikeySpiderServiceImpl scs = new DigikeySpiderServiceImpl();
-		List<Semiconductor> semiconductorList=scs.analysisContent("http://www.digikey.cn/product-search/zh/optoelectronics/leds-lamp-replacements/524939/page/1");
-		scs.createSemiconductorExcel(semiconductorList, "");
+//		List<Semiconductor> semiconductorList=scs.analysisContent("http://www.digikey.cn/product-search/zh/optoelectronics/leds-lamp-replacements/524939/page/1");
+		scs.analysisService("");
+//		scs.createSemiconductorExcel(semiconductorList, "");
 		log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
+	}
+
+	//解析digikey的数据
+	@Override
+	public void analysisService(String url) {
+		//通过网址获取网页内容
+		SpiderRegex regex = new SpiderRegex();
+		List<String> urls=new ArrayList<String>();
+		String htmltext = regex.gethtmlContent("http://www.digikey.cn/scripts/DkSearch/dksus.dll?WT.z_header=search_go&lang=zhs&keywords=&x=20&y=15","UTF-8");
+		//匹配需要的那部分网页
+		String regbig = "<ul class=catfiltersub>(.*?)<\\/ul>";
+		String[] bigcontent = regex.htmlregex(htmltext,regbig,true);
+		if(bigcontent!=null && bigcontent.length>0){
+			for(int i=0;i<bigcontent.length;i++){
+				regbig = "<a href=\"\\/(.*?)\"";
+				String[] smallContent=regex.htmlregex(bigcontent[i],regbig,true);
+				log.debug(smallContent.length);
+				for(String smallurl:smallContent){
+					log.debug("smallurl--->"+BASEURLSITE+smallurl+"/page/1");
+					analysisContent(BASEURLSITE+smallurl+"/page/1");
+				}
+			}
+		}
+		
+		
 	}
 }

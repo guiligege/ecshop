@@ -72,5 +72,11 @@ public interface ISpiderService {
 	 * @return
 	 */
 	public int getPageCount(String basehtml,SpiderRegex regex);
+	
+	/**
+	 * 分析网站链接
+	 * @param url
+	 */
+	public void analysisService(String url);
 
 }

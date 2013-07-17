@@ -13,6 +13,7 @@ import org.guili.ecshop.bean.Semiconductor;
 import org.guili.ecshop.business.ISpiderService;
 import org.guili.ecshop.util.ExcelWriter;
 import org.guili.ecshop.util.ImageUtils;
+import org.guili.ecshop.util.ResourceProperty;
 import org.guili.ecshop.util.ResourceUtil;
 import org.guili.ecshop.util.SpiderRegex;
 
@@ -23,7 +24,7 @@ import org.guili.ecshop.util.SpiderRegex;
 public class AvnetSpiderServiceImpl implements ISpiderService {
 	private static final String PRICEINNERSPLIT=ResourceUtil.getValue(ResourceUtil.FILEPATH,"PRICESPLIT");
 	private static Logger log=Logger.getLogger(AvnetSpiderServiceImpl.class);
-	private static final String BASEURL=ResourceUtil.getValue(ResourceUtil.FILEPATH,"Avnet");
+	private static final String BASEURL=ResourceProperty.AVNET;
 	private static String PRICESPLIT="$$";
 	
 	@Override
@@ -59,6 +60,13 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 							}
 						}
 					}
+					//分类
+					String baseclass="";
+					reghead = "<div class=\"breadcrumbs\">(.*?)<\\/div>";
+					String[] baseclasss=regex.htmlregex(htmltext,reghead,false);
+					if(baseclasss!=null && baseclasss.length>0){
+						baseclass=baseclasss[0].replaceAll("\t", "").replaceAll(" ", "").replaceAll("X&nbsp;", "").replaceAll("&#187;", "\\$\\$");
+					}
 					String reg = "<table border=\"0\" cellspacing=\"0\" cellpadding=\"2\" class=\"dataTableParent resultsTbl\" id=\"resultsTbl1\" >(.*?)<\\/table>";
 					String[] clcontent = regex.htmlregex(htmltext,reg,true);
 					//具体内容部分的拆分
@@ -78,14 +86,6 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 									//规格
 									String guige=this.analysisGuige(class3[4],regex);
 //									//图片
-//									String imageurl=this.analysisImageUrl(class3[1],regex);
-//									String imagepath=imageurl.substring(imageurl.lastIndexOf("/")+1);
-//									log.debug("imageurl--->"+imageurl+"::"+"imagepath-->"+imagepath);
-//									//下载图片
-//									ImageUtils.writeImage(imageurl);
-//									log.debug("aaa");
-//									//单位价格
-//									String priceurl=this.analysisPriceUrl(class3[7],regex);
 //									//获取商品的多价格
 									String prices="";
 									prices=analysisPricesToString(class3[6],regex);
@@ -102,17 +102,19 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 										//转换为对象
 										semiconductor.setGuige(guige);
 										semiconductor.setImagepath("");
+										semiconductor.setImagename("");
 										semiconductor.setProducterkey(class2[1]);
 										semiconductor.setCode(class2[2]);
 										semiconductor.setProducter(class2[3]);
 										semiconductor.setDesc(class2[5]);
 										semiconductor.setDiscount(nowcount);
-			//									semiconductor.setPrice(class2[7]);
 										semiconductor.setPrice(prices);
 										semiconductor.setLowestcount(minicount);
 										if(headlist.size()>9){
 											semiconductor.setFunction(buildDiscription(headlist,class2));
 										}
+										semiconductor.setBasesiteclass(baseclass);
+										semiconductor.setSourcesite(ResourceProperty.AVNET);
 										classlist.add(semiconductor);
 										semiconductor=new Semiconductor();
 									}
@@ -152,7 +154,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 	}
 
 	public String analysisMiniCount(String basehtml, SpiderRegex regex) {
-		String reg = "Min:&nbsp;(.*?)&nbsp;";
+		String reg = "最小起订量：&nbsp;(.*?)&nbsp;";
 		String[] guiges=regex.htmlregex(basehtml,reg,true);
 		String count="";
 		if(guiges!=null && guiges.length>0){
@@ -176,7 +178,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 	public void createSemiconductorExcel(List<Semiconductor> semiconductorList,
 			String file) {
 		log.debug(" 开始导出Excel文件 ");
-		  File f = new File("F:\\sources\\qt1.xls");
+		  File f = new File("F:\\sources\\qtavent.xls");
 		  ExcelWriter e = new ExcelWriter();
 		  try {
 		   e = new ExcelWriter(new FileOutputStream(f));
@@ -195,6 +197,8 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 		  e.setCell(7, "单价 (USD)");
 		  e.setCell(8, "最低订购数量");
 		  e.setCell(9, "功能描述");
+		  e.setCell(10, "网站");
+		  e.setCell(11, "源分类");
 		  if(semiconductorList!=null && semiconductorList.size()>0){
 			  for(int i=0;i<semiconductorList.size();i++){
 				  Semiconductor semiconductor=semiconductorList.get(i);
@@ -209,6 +213,8 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 				  e.setCell(7, semiconductor.getPrice());
 				  e.setCell(8, semiconductor.getLowestcount());
 				  e.setCell(9, semiconductor.getFunction());
+				  e.setCell(10, semiconductor.getSourcesite());
+				  e.setCell(11, semiconductor.getBasesiteclass());
 			  }
 		  }
 		  try {
@@ -269,12 +275,19 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 		}
 		return count.toString();
 	}
+	
 	//test
 	public static void main(String[] args) throws Exception {
 		Date start=new Date();
 		AvnetSpiderServiceImpl scs = new AvnetSpiderServiceImpl();
-		List<Semiconductor> semiconductorList=scs.analysisContent("https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Sample-and-Hold/_/N-100383?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+		List<Semiconductor> semiconductorList=scs.analysisContent("https://avnetexpress.avnet.com/store/em/EMController/Batteries/_/N-100684?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
 		scs.createSemiconductorExcel(semiconductorList, "");
 		log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
+	}
+
+	@Override
+	public void analysisService(String url) {
+		// TODO Auto-generated method stub
+		
 	}
 }

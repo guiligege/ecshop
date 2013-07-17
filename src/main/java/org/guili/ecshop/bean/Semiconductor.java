@@ -16,6 +16,16 @@ public class Semiconductor {
 	private String price;		//单价 (USD）美元(以后是double)
 	private String lowestcount;	//最低订单量（未来是int）
 	private String function;	//功能描述
+	private String basesiteclass;	//原网站分类
+	private String sourcesite;	//源网站
+	private String imagename;
+	
+	public String getImagename() {
+		return imagename;
+	}
+	public void setImagename(String imagename) {
+		this.imagename = imagename;
+	}
 	public String getGuige() {
 		return guige;
 	}
@@ -76,4 +86,17 @@ public class Semiconductor {
 	public void setFunction(String function) {
 		this.function = function;
 	}
+	public String getBasesiteclass() {
+		return basesiteclass;
+	}
+	public void setBasesiteclass(String basesiteclass) {
+		this.basesiteclass = basesiteclass;
+	}
+	public String getSourcesite() {
+		return sourcesite;
+	}
+	public void setSourcesite(String sourcesite) {
+		this.sourcesite = sourcesite;
+	}
+	
 }
