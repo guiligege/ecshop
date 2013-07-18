@@ -51,6 +51,10 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 			List<String> headlist=new ArrayList<String>();
 			reg="<th.*?>(.*?)<\\/th>";
 			String[] headcontent=regex.htmlregex(header[0],reg,false);
+			//防止分页没有
+			if(headcontent==null || headcontent.length==0){
+				continue;
+			}
 			for(int i=1;i<headcontent.length;i++){
 				headlist.add(headcontent[i]);
 			}
@@ -67,6 +71,10 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 			String[] clcontent = regex.htmlregex(htmltext,reg,true);
 			//定义变量存放需要处理的数据
 			String imageurl="",guige="",prices="";
+			//防止页面访问错误
+			if(clcontent==null || clcontent.length==0){
+				continue;
+			}
 			if(clcontent!=null && clcontent.length>0){
 				for(int j=0;j<clcontent.length;j++){
 					try {
@@ -425,6 +433,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 			//匹配需要的那部分网页
 			String regbig = "<ul class=\"sub-cats\">(.*?)<\\/ul>";
 			String[] bigcontent = regex.htmlregex(htmltext,regbig,true);
+			int counturl=0;
 			if(bigcontent!=null && bigcontent.length>0){
 				for(int i=0;i<bigcontent.length;i++){
 					regbig = "href=\"\\.\\.\\/(.*?)\"";
@@ -432,10 +441,11 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 					log.debug(smallContent.length);
 					for(String smallurl:smallContent){
 						log.debug("smallurl--->"+BASEURL+smallurl+"?No=0");
+						counturl+=1;
 						analysisContent(BASEURL+smallurl+"?No=0");
 					}
 				}
+				log.debug("counturl-->"+counturl);
 			}
-			
 		}
 }

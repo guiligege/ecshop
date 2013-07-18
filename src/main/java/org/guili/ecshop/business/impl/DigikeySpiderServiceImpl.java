@@ -54,6 +54,10 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 			String[] headcontent = regex.htmlregex(htmltext,reghead,true);
 			//头部
 			List<String> headlist=new ArrayList<String>();
+			//防止分页没有
+			if(headcontent==null || headcontent.length==0){
+				continue;
+			}
 			for(int i =0;i<headcontent.length;i++){
 				reghead = "<th.*?>(.*?)<\\/th>";
 				String[] cl2contenthead =regex.htmlregex(headcontent[i],reghead,false);
@@ -73,6 +77,10 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 			//
 			String reg = "<tbody>(.*?)<\\/table>";
 			String[] clcontent = regex.htmlregex(htmltext,reg,true);
+			//防止页面访问错误
+			if(clcontent==null || clcontent.length==0){
+				continue;
+			}
 			//具体内容部分的拆分
 //					for(int i =0;i<clcontent.length;i++){
 				reg = "<tr itemscope(.*?)<\\/tr>";
@@ -323,6 +331,7 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 		//匹配需要的那部分网页
 		String regbig = "<ul class=catfiltersub>(.*?)<\\/ul>";
 		String[] bigcontent = regex.htmlregex(htmltext,regbig,true);
+		int counturl=0;
 		if(bigcontent!=null && bigcontent.length>0){
 			for(int i=0;i<bigcontent.length;i++){
 				regbig = "<a href=\"\\/(.*?)\"";
@@ -330,11 +339,11 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 				log.debug(smallContent.length);
 				for(String smallurl:smallContent){
 					log.debug("smallurl--->"+BASEURLSITE+smallurl+"/page/1");
+					counturl+=1;
 					analysisContent(BASEURLSITE+smallurl+"/page/1");
 				}
 			}
+			log.debug("counturl-->"+counturl);
 		}
-		
-		
 	}
 }

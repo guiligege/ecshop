@@ -26,6 +26,48 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 	private static Logger log=Logger.getLogger(AvnetSpiderServiceImpl.class);
 	private static final String BASEURL=ResourceProperty.AVNET;
 	private static String PRICESPLIT="$$";
+//	private static final String  avneturls=
+//										//放大器
+//										"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Amplifiers-Misc/_/N-100002?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Analog-Divider-and-Multiplier/_/N-100003?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Audio-Amplifier/_/N-100004?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Comparator/_/N-100005?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/OP-Amp/_/N-100006?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/SP-Amplifier/_/N-100007?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Sample-and-Hold/_/N-100383?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Video-Amplifier/_/N-100008?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Analog-Switch-Multiplexer/_/N-100009?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Batteries/_/N-100684?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Boxes-Enclosures-and-Racks/_/N-100685?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										//电容
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Aluminum/_/N-100011?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Array/_/N-100012?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Ceramic-Multilayer/_/N-100013?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Ceramic-Singlelayer/_/N-100014?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Electric-Double-Layer/_/N-100015?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Film/_/N-100016?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Misc/_/N-100017?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Niobium/_/N-100018?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-RC-Network/_/N-100019?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Paper/_/N-100385?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Tantalum-Solid-Axial/_/N-100787?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Tantalum-Solid-Radial/_/N-100788?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Tantalum-Solid-SMT/_/N-100020?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Tantalum-Wet/_/N-100021?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Trimmer/_/N-100022?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										//电路保护
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Circuit-Breaker-Accessories/_/N-100386?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&categoryLink=true&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Circuit-Breaker/_/N-100024?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Fuses/_/N-100026?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Fuse-Accessories/_/N-100025?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Circuit-Protection-Misc/_/N-100619?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/PTC-Resettable-Fuse/_/N-100657?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Surge-Arrestor/_/N-100617?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/TVS/_/N-100027?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Varistor/_/N-100029?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
+//										
+//										
+//										   ;
 	
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
@@ -50,6 +92,10 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 					String[] headcontent = regex.htmlregex(htmltext,reghead,true);
 					//头部
 					List<String> headlist=new ArrayList<String>();
+					//防止分页没有
+					if(headcontent==null || headcontent.length==0){
+						continue;
+					}
 					for(int i =0;i<headcontent.length;i++){
 						reghead = "<td.*?>(.*?)<\\/td>";
 						String[] cl2contenthead =regex.htmlregex(headcontent[i],reghead,false);
@@ -71,57 +117,61 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 					String[] clcontent = regex.htmlregex(htmltext,reg,true);
 					//具体内容部分的拆分
 //							for(int i =0;i<clcontent.length;i++){
-						reg = "<tr style=\"background-color:#.*?>(.*?)<\\/tr>";
-						String[] cl2content =regex.htmlregex(clcontent[0],reg,true);
-						if(cl2content!=null&& cl2content.length>0){
-							Semiconductor semiconductor=new Semiconductor();
-							for(int j = 0;j<cl2content.length;j++){
-								try {
-									
-									reg = "<td.*?>(.*?)<\\/td>";
-									String[] class2 = regex.htmlregex(cl2content[j],reg,false);
-//									//特殊处理数据start
-									reg="<td.*?>(.*?)<\\/td>";
-									String[] class3 = regex.htmlregex(cl2content[j],reg,true);
-									//规格
-									String guige=this.analysisGuige(class3[4],regex);
-//									//图片
-//									//获取商品的多价格
-									String prices="";
-									prices=analysisPricesToString(class3[6],regex);
-									//获取最小的购买数
-									String minicount="";
-									minicount=analysisMiniCount(class3[8],regex);
-									//现有数量
-									String nowcount=this.getcount(class3[7], regex);
-									//end
-									if(class2!=null&& class2.length>0){
-										for(int i=0;i<class2.length;i++){
-											class2[i]=class2[i].replaceAll("\t", "");
-										}
-										//转换为对象
-										semiconductor.setGuige(guige);
-										semiconductor.setImagepath("");
-										semiconductor.setImagename("");
-										semiconductor.setProducterkey(class2[1]);
-										semiconductor.setCode(class2[2]);
-										semiconductor.setProducter(class2[3]);
-										semiconductor.setDesc(class2[5]);
-										semiconductor.setDiscount(nowcount);
-										semiconductor.setPrice(prices);
-										semiconductor.setLowestcount(minicount);
-										if(headlist.size()>9){
-											semiconductor.setFunction(buildDiscription(headlist,class2));
-										}
-										semiconductor.setBasesiteclass(baseclass);
-										semiconductor.setSourcesite(ResourceProperty.AVNET);
-										classlist.add(semiconductor);
-										semiconductor=new Semiconductor();
+					//防止页面访问错误
+					if(clcontent==null || clcontent.length==0){
+						continue;
+					}
+					reg = "<tr style=\"background-color:#.*?>(.*?)<\\/tr>";
+					String[] cl2content =regex.htmlregex(clcontent[0],reg,true);
+					if(cl2content!=null&& cl2content.length>0){
+						Semiconductor semiconductor=new Semiconductor();
+						for(int j = 0;j<cl2content.length;j++){
+							try {
+								
+								reg = "<td.*?>(.*?)<\\/td>";
+								String[] class2 = regex.htmlregex(cl2content[j],reg,false);
+//								//特殊处理数据start
+								reg="<td.*?>(.*?)<\\/td>";
+								String[] class3 = regex.htmlregex(cl2content[j],reg,true);
+								//规格
+								String guige=this.analysisGuige(class3[4],regex);
+//								//图片
+//								//获取商品的多价格
+								String prices="";
+								prices=analysisPricesToString(class3[6],regex);
+								//获取最小的购买数
+								String minicount="";
+								minicount=analysisMiniCount(class3[8],regex);
+								//现有数量
+								String nowcount=this.getcount(class3[7], regex);
+								//end
+								if(class2!=null&& class2.length>0){
+									for(int i=0;i<class2.length;i++){
+										class2[i]=class2[i].replaceAll("\t", "");
 									}
-								} catch (Exception e) {
-									e.printStackTrace();
+									//转换为对象
+									semiconductor.setGuige(guige);
+									semiconductor.setImagepath("");
+									semiconductor.setImagename("");
+									semiconductor.setProducterkey(class2[1]);
+									semiconductor.setCode(class2[2]);
+									semiconductor.setProducter(class2[3]);
+									semiconductor.setDesc(class2[5]);
+									semiconductor.setDiscount(nowcount);
+									semiconductor.setPrice(prices);
+									semiconductor.setLowestcount(minicount);
+									if(headlist.size()>9){
+										semiconductor.setFunction(buildDiscription(headlist,class2));
+									}
+									semiconductor.setBasesiteclass(baseclass);
+									semiconductor.setSourcesite(ResourceProperty.AVNET);
+									classlist.add(semiconductor);
+									semiconductor=new Semiconductor();
 								}
+							} catch (Exception e) {
+								e.printStackTrace();
 							}
+						}
 					}
 				}
 				return classlist;
@@ -253,7 +303,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 
 	@Override
 	public int getPageCount(String basehtml, SpiderRegex regex) {
-		String regpag="/ <strong>(.*?)</strong>";
+		String regpag="/ <strong>(.*?)<\\/strong>";
 		String[] pagecounts = regex.htmlregex(basehtml,regpag,false);
 		int pagecount=1;
 		if(pagecounts!=null && pagecounts.length>0){
@@ -280,14 +330,57 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 	public static void main(String[] args) throws Exception {
 		Date start=new Date();
 		AvnetSpiderServiceImpl scs = new AvnetSpiderServiceImpl();
-		List<Semiconductor> semiconductorList=scs.analysisContent("https://avnetexpress.avnet.com/store/em/EMController/Batteries/_/N-100684?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
-		scs.createSemiconductorExcel(semiconductorList, "");
+//		List<Semiconductor> semiconductorList=scs.analysisContent("https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Amplifiers-Misc/_/N-100002?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+//		scs.createSemiconductorExcel(semiconductorList, "");
+		scs.analysisService("");
 		log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
 	}
 
+	/**
+	 * 分享网站地址抓取数据
+	 */
 	@Override
 	public void analysisService(String url) {
-		// TODO Auto-generated method stub
-		
+		//通过网址获取网页内容
+		SpiderRegex regex = new SpiderRegex();
+		List<String> urls=new ArrayList<String>();
+		String htmltext = regex.gethtmlContent("https://avnetexpress.avnet.com/store/em/EMController/Communication/_/N-100030?action=products&cat=1&catalogId=500201&langId=-7&regionalStock=&storeId=500201","UTF-8");
+		//匹配需要的那部分网页
+		String regbig = "<table style=\"width:90%;\".*?>(.*?)<\\/table>";
+		String[] bigcontent = regex.htmlregex(htmltext,regbig,true);
+		int counturl=0;
+		if(bigcontent!=null && bigcontent.length>0){
+			for(int i=0;i<bigcontent.length;i++){
+				regbig = "href=\"(.*?)\"";
+				String[] smallContent=regex.htmlregex(bigcontent[i],regbig,true);
+				log.debug(smallContent.length);
+				if(smallContent!=null){
+					if(smallContent.length>1){
+						String smallurl=BASEURL+smallContent[1].substring(1);
+						String innerhtmltext = regex.gethtmlContent(smallurl,"UTF-8");
+						regbig = "<td style=\"padding:8px;\">(.*?)<\\/td>";
+						String[] innersmallContent=regex.htmlregex(innerhtmltext,regbig,true);
+						regbig = "href=\"(.*?)\"";
+						//解析内部链接
+						for(String innerurl:innersmallContent){
+							String[] innerurls=regex.htmlregex(innerurl,regbig,false);
+							if(innerurls!=null){
+								counturl+=1;
+								log.debug("listurl:--->"+BASEURL+innerurls[0].substring(0, innerurls[0].indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+								analysisContent(BASEURL+innerurls[0].substring(0, innerurls[0].indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+							}
+						}
+					}else{
+						//解析顶部链接
+						for(String smallurl:smallContent){
+							log.debug("smallurl--->"+BASEURL+smallurl.substring(0, smallurl.indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+							counturl+=1;
+							analysisContent(BASEURL+smallurl.substring(0, smallurl.indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+						}
+					}
+				}
+			}
+			log.debug("counturl-->"+counturl);
+		}
 	}
 }
