@@ -9,12 +9,32 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-3.0.xsd">
            
-
+<!-- dao -->
 	<bean id="ITestTableDaoImpl" class="org.guili.ecshop.impl.ITestTableDaoImpl">
 			<property name="session" ref="sqlSession"></property>
 	</bean>
+	<bean id="semiconductorDaoImpl" class="org.guili.ecshop.impl.SemiconductorDaoImpl">
+			<property name="session" ref="sqlSession"></property>
+	</bean>
+<!-- service -->	
 	<bean id="testBusiness" class="org.guili.ecshop.business.TestBussiness">
 			<property name="testDao" ref="ITestTableDaoImpl"></property>
+			<property name="semiconductorDao" ref="semiconductorDaoImpl"></property>
 	</bean>
+	<bean id="semiconductorService" class="org.guili.ecshop.business.impl.SemiconductorService">
+			<property name="semiconductorDao" ref="semiconductorDaoImpl"></property>
+	</bean>
+	<!-- 3个服务类 -->
+	<bean id="digikeySpiderServiceImpl" class="org.guili.ecshop.business.impl.DigikeySpiderServiceImpl">
+			<property name="semiconductorService" ref="semiconductorService"></property>
+	</bean>
+	<!-- 
+	<bean id="mouserSpiderServiceImpl" class="org.guili.ecshop.business.impl.MouserSpiderServiceImpl">
+			<property name="semiconductorService" ref="semiconductorService"></property>
+	</bean>
+	<bean id="avnetSpiderServiceImpl" class="org.guili.ecshop.business.impl.AvnetSpiderServiceImpl">
+			<property name="semiconductorService" ref="semiconductorService"></property>
+	</bean>
+	 -->
 
 </beans>

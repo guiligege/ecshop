@@ -25,8 +25,18 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 	private static String PRICESPLIT=ResourceUtil.getValue(ResourceUtil.FILEPATH,"PRICESPLIT");
 	private static Logger log=Logger.getLogger(DigikeySpiderServiceImpl.class);
 	private static String BASEURL=ResourceProperty.MOUSECOM;
+	private SemiconductorService semiconductorService=null;
+	
+	public SemiconductorService getSemiconductorService() {
+		return semiconductorService;
+	}
+
+	public void setSemiconductorService(SemiconductorService semiconductorService) {
+		this.semiconductorService = semiconductorService;
+	}
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
+		log.info("mouser run!");
 		//网站地址
 //		String baseurl="http://www.mouser.cn";
 		SpiderRegex regex = new SpiderRegex();
@@ -124,6 +134,8 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 							semiconductor.setDiscount(class2[6]);
 //							semiconductor.setPrice(class2[8]);
 							semiconductor.setPrice(prices);
+							//新加创建时间
+							semiconductor.setCreateTime(new Date());
 							semiconductor.setLowestcount(class2.length>=9?"1":"受限供货情况");
 							if(headlist.size()>9 && class2.length>=9){
 								semiconductor.setFunction(buildDiscription(headlist,class2));
@@ -196,6 +208,8 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 							semiconductor.setDiscount(class2[6]);
 //							semiconductor.setPrice(class2[8]);
 							semiconductor.setPrice(prices);
+							//新加创建时间
+							semiconductor.setCreateTime(new Date());
 							semiconductor.setLowestcount(class2.length>=9?"1":"受限供货情况");
 							if(headlist.size()>9 && class2.length>=9){
 								semiconductor.setFunction(buildDiscription(headlist,class2));
@@ -442,7 +456,11 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 					for(String smallurl:smallContent){
 						log.debug("smallurl--->"+BASEURL+smallurl+"?No=0");
 						counturl+=1;
-						analysisContent(BASEURL+smallurl+"?No=0");
+						List<Semiconductor> semiconductorList=analysisContent(BASEURL+smallurl+"?No=0");
+						//保存或更新到数据库
+						if(semiconductorList!=null && semiconductorList.size()>0){
+							semiconductorService.pageservice(semiconductorList);
+						}
 					}
 				}
 				log.debug("counturl-->"+counturl);

@@ -26,51 +26,18 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 	private static Logger log=Logger.getLogger(AvnetSpiderServiceImpl.class);
 	private static final String BASEURL=ResourceProperty.AVNET;
 	private static String PRICESPLIT="$$";
-//	private static final String  avneturls=
-//										//放大器
-//										"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Amplifiers-Misc/_/N-100002?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Analog-Divider-and-Multiplier/_/N-100003?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Audio-Amplifier/_/N-100004?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Comparator/_/N-100005?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/OP-Amp/_/N-100006?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/SP-Amplifier/_/N-100007?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Sample-and-Hold/_/N-100383?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										   +"https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Video-Amplifier/_/N-100008?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Analog-Switch-Multiplexer/_/N-100009?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Batteries/_/N-100684?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Boxes-Enclosures-and-Racks/_/N-100685?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										//电容
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Aluminum/_/N-100011?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Array/_/N-100012?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Ceramic-Multilayer/_/N-100013?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Ceramic-Singlelayer/_/N-100014?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Electric-Double-Layer/_/N-100015?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Film/_/N-100016?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Misc/_/N-100017?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Niobium/_/N-100018?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-RC-Network/_/N-100019?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Paper/_/N-100385?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Tantalum-Solid-Axial/_/N-100787?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Tantalum-Solid-Radial/_/N-100788?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Tantalum-Solid-SMT/_/N-100020?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Tantalum-Wet/_/N-100021?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Capacitor/Capacitor-Trimmer/_/N-100022?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										//电路保护
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Circuit-Breaker-Accessories/_/N-100386?action=products&cat=1&catalogId=500201&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&categoryLink=true&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Circuit-Breaker/_/N-100024?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Fuses/_/N-100026?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Fuse-Accessories/_/N-100025?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Circuit-Protection-Misc/_/N-100619?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/PTC-Resettable-Fuse/_/N-100657?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Surge-Arrestor/_/N-100617?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/TVS/_/N-100027?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										+"https://avnetexpress.avnet.com/store/em/EMController/Circuit-Protection/Varistor/_/N-100029?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0,"
-//										
-//										
-//										   ;
+	private SemiconductorService semiconductorService=null;
 	
+	public SemiconductorService getSemiconductorService() {
+		return semiconductorService;
+	}
+
+	public void setSemiconductorService(SemiconductorService semiconductorService) {
+		this.semiconductorService = semiconductorService;
+	}
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
+		log.info("avnet run!");
 		//网站地址
 				String baseurl=BASEURL;
 				SpiderRegex regex = new SpiderRegex();
@@ -367,7 +334,11 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 							if(innerurls!=null){
 								counturl+=1;
 								log.debug("listurl:--->"+BASEURL+innerurls[0].substring(0, innerurls[0].indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
-								analysisContent(BASEURL+innerurls[0].substring(0, innerurls[0].indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+								List<Semiconductor> semiconductorList=analysisContent(BASEURL+innerurls[0].substring(0, innerurls[0].indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+								//保存或更新到数据库
+								if(semiconductorList!=null && semiconductorList.size()>0){
+									semiconductorService.pageservice(semiconductorList);
+								}
 							}
 						}
 					}else{
@@ -375,7 +346,11 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 						for(String smallurl:smallContent){
 							log.debug("smallurl--->"+BASEURL+smallurl.substring(0, smallurl.indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
 							counturl+=1;
-							analysisContent(BASEURL+smallurl.substring(0, smallurl.indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+							List<Semiconductor> semiconductorList=analysisContent(BASEURL+smallurl.substring(0, smallurl.indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
+							//保存或更新到数据库
+							if(semiconductorList!=null && semiconductorList.size()>0){
+								semiconductorService.pageservice(semiconductorList);
+							}
 						}
 					}
 				}

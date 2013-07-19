@@ -29,12 +29,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
         </property>  
         <property name="password" value="${jdbc.password}">
         </property>
-        <!-- 连接池限制参数 -->
         <property name="minPoolSize" value="${jdbc.minPoolSize}" />
 		<property name="maxPoolSize" value="${jdbc.maxPoolSize}" />
 		<property name="initialPoolSize" value="${jdbc.initialPoolSize}" />
 		<property name="maxIdleTime" value="${jdbc.maxIdleTime}" />
-		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default: 3 -->
+		
 		<property name="acquireIncrement" value="${jdbc.acquireIncrement}" />
 		<property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}" />
 		<property name="preferredTestQuery">
@@ -97,7 +96,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             </list>  
         </property>  
     </bean>
-    
+    <!-- 加载定时任务和beans -->
     <import resource="ImplAndBusinessBeans.xml"/>
     <import resource="spring-quartz.xml"/>
 </beans>

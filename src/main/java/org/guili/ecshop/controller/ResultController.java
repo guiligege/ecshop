@@ -6,10 +6,12 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.guili.ecshop.bean.Semiconductor;
 import org.guili.ecshop.bean.Shop;
 import org.guili.ecshop.business.MutiThreadTest;
 import org.guili.ecshop.business.TestBussiness;
 import org.guili.ecshop.business.TestMuti;
+import org.guili.ecshop.business.impl.DigikeySpiderServiceImpl;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,6 +31,13 @@ public class ResultController {
 	private MutiThreadTest mutiThreadTest=null;
 	@Resource(name="executor")
 	private ThreadPoolTaskExecutor executor=null;
+	@Resource(name="digikeySpiderServiceImpl")
+	private DigikeySpiderServiceImpl digikeySpiderServiceImpl=null;
+
+	public void setDigikeySpiderServiceImpl(
+			DigikeySpiderServiceImpl digikeySpiderServiceImpl) {
+		this.digikeySpiderServiceImpl = digikeySpiderServiceImpl;
+	}
 
 	public void setTestBusiness(TestBussiness testBusiness) {
 		this.testBusiness = testBusiness;
@@ -47,7 +56,23 @@ public class ResultController {
 	@RequestMapping(value="/result.htm")
 	public String viewUser(HttpServletRequest request,ModelMap modelMap) throws Exception{
 		Shop shop=testBusiness.getone();
+		digikeySpiderServiceImpl.analysisService("");
 		log.info("logger--->"+shop.getName());
+		return "result1";
+	}
+	@RequestMapping(value="/add1.htm")
+	public String addUser1(HttpServletRequest request,ModelMap modelMap) throws Exception{
+		testBusiness.saveSemiconductor();
+		return "result";
+	}
+	//下面两种方式都ok
+	@RequestMapping(value="/result1.htm")
+	public String viewUser1(HttpServletRequest request,ModelMap modelMap) throws Exception{
+//		Semiconductor semiconductor=testBusiness.findone();
+//		log.info("logger--->"+semiconductor.getCreateTime());
+		Semiconductor semiconductor1=testBusiness.findonebycodeAndurl();
+		log.info("logger--->"+semiconductor1.getCode());
+		testBusiness.updateSemiconductor();
 		return "result1";
 	}
 	@RequestMapping("/resultview.htm")

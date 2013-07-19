@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.guili.ecshop.dao.SemiconductorDao">
+ <!-- 要对应到所有属性 才能使用-->
+ <resultMap id="semiconductormap" type="semiconductor">
+ 	<result property="id" column="id"/>
+ 	<result property="guige" column="guige"/>
+ 	<result property="imagepath" column="imagepath"/>
+ 	<result property="producterkey" column="producterkey"/>
+ 	<result property="code" column="code"/>
+ 	<result property="producter" column="producter"/>
+ 	<result property="desc" column="description"/>
+ 	<result property="discount" column="discount"/>
+ 	<result property="price" column="price"/>
+ 	<result property="lowestcount" column="lowestcount"/>
+ 	<result property="function" column="function"/>
+ 	<result property="basesiteclass" column="basesiteclass"/>
+ 	<result property="sourcesite" column="sourcesite"/>
+ 	<result property="imagename" column="imagename"/>
+ 	<result property="createTime" column="createTime"/>
+ 	<result property="categoryname" column="categoryname"/>
+ 	<result property="categoryid" column="categoryid"/>
+ </resultMap>
+ <!-- 这里namespace必须是UserMapper接口的路径，不然要运行的时候要报错 "is not known to the MapperRegistry" -->
+ <insert id="insertSemiconductor" parameterType="semiconductor">
+  <![CDATA[ 
+  insert into T_Semiconductor(guige,imagepath,producterkey,code,producter,description,discount,price,lowestcount
+  						,function,basesiteclass,sourcesite,imagename,createTime,categoryname,categoryid) 
+  		values (#{guige},#{imagepath},#{producterkey},#{code},#{producter},#{desc},#{discount}
+  						,#{price},#{lowestcount},#{function},#{basesiteclass},#{sourcesite},#{imagename}
+  						,#{createTime},#{categoryname},#{categoryid})
+  ]]>
+ </insert>
+ 
+ <select id="selectone" resultType="semiconductor">
+	  <![CDATA[ 
+	  select * from T_Semiconductor where id=2;
+	  ]]>
+ </select>
+ <select id="selectonebyCodeAndUrl" parameterType="Map" resultType="semiconductor">
+	  <![CDATA[ 
+	  select * from T_Semiconductor where code=#{code} and sourcesite=#{sourcesite} limit 1;
+	  ]]>
+ </select>
+ <update id="updateSemiconductor" parameterType="semiconductor">
+ 		<![CDATA[ 
+        update T_Semiconductor set discount=#{discount},price=#{price} 
+        	where code=#{code} and sourcesite=#{sourcesite}
+          ]]> 
+</update>
+ 
+</mapper>  

@@ -1,8 +1,12 @@
 org\guili\ecshop\business\ThreadUseExtends.class
+org\guili\ecshop\dao\SemiconductorDao.class
+org\guili\ecshop\util\ResourceProperty.class
 org\guili\ecshop\business\impl\DigikeySpiderServiceImpl.class
 org\guili\ecshop\impl\ITestTableDaoImpl.class
+org\guili\ecshop\business\impl\SemiconductorService.class
 org\guili\ecshop\business\ISpiderService.class
 org\guili\ecshop\business\MutiThreadTest.class
+org\guili\ecshop\business\ISemiconductorService.class
 org\guili\ecshop\business\impl\AvnetSpiderServiceImpl.class
 org\guili\ecshop\business\impl\MouserSpiderServiceImpl.class
 org\guili\ecshop\util\StoreClassSpider.class
@@ -10,6 +14,7 @@ org\guili\ecshop\util\ExcelWriter.class
 org\guili\ecshop\business\TestMuti$1.class
 org\guili\ecshop\util\BasicSqlSupport.class
 org\guili\ecshop\controller\ResultController.class
+org\guili\ecshop\impl\SemiconductorDaoImpl.class
 org\guili\ecshop\business\ExpireJobTask.class
 org\guili\ecshop\business\TestMuti.class
 org\guili\ecshop\util\SpiderRegex.class

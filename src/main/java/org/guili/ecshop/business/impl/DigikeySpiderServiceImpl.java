@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.guili.ecshop.bean.Semiconductor;
+import org.guili.ecshop.business.ISemiconductorService;
 import org.guili.ecshop.business.ISpiderService;
 import org.guili.ecshop.util.ExcelWriter;
 import org.guili.ecshop.util.ImageUtils;
@@ -28,12 +29,18 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 	private static final String BASEURL=ResourceProperty.DIGIKEY;
 	private static final String BASEURLSITE=ResourceProperty.DIGIKEYSITE;
 	private static String PRICESPLIT="$$";
+	private ISemiconductorService semiconductorService=null;
 	
+	public void setSemiconductorService(ISemiconductorService semiconductorService) {
+		this.semiconductorService = semiconductorService;
+	}
+
 	/**
 	 * 分析网页内容
 	 */
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
+		log.info("digikey run!");
 		//网站地址
 		String baseurl=BASEURL;
 		SpiderRegex regex = new SpiderRegex();
@@ -125,6 +132,8 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 	//									semiconductor.setPrice(class2[7]);
 								semiconductor.setPrice(prices);
 								semiconductor.setLowestcount(class2[8]);
+								//新加创建时间
+								semiconductor.setCreateTime(new Date());
 								if(headlist.size()>9){
 									semiconductor.setFunction(buildDiscription(headlist,class2));
 								}
@@ -340,10 +349,15 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 				for(String smallurl:smallContent){
 					log.debug("smallurl--->"+BASEURLSITE+smallurl+"/page/1");
 					counturl+=1;
-					analysisContent(BASEURLSITE+smallurl+"/page/1");
+					List<Semiconductor> semiconductorList=analysisContent(BASEURLSITE+smallurl+"/page/1");
+					//保存或更新到数据库
+					if(semiconductorList!=null && semiconductorList.size()>0){
+						semiconductorService.pageservice(semiconductorList);
+					}
 				}
 			}
 			log.debug("counturl-->"+counturl);
 		}
 	}
+	
 }

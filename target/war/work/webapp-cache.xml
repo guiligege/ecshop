@@ -16,6 +16,8 @@
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/AvnetSpiderServiceImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/DigikeySpiderServiceImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/MouserSpiderServiceImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/SemiconductorService.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/ISemiconductorService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/ISpiderService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/MutiThreadTest.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/TestBussiness.class</string>
@@ -29,16 +31,19 @@
           <string>WEB-INF/classes/org/guili/ecshop/config/spring-quartz.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/ResultController.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/dao/ITestTableDao.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/dao/SemiconductorDao.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/impl/ITestTableDaoImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/impl/SemiconductorDaoImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/semiconductorMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/shopMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/SqlMapConfig.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/BasicSqlSupport.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ExcelWriter.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ImageUtils.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/util/ResourceProperty.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ResourceUtil.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/SpiderRegex.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/StoreClassSpider.class</string>
-          <string>WEB-INF/classes/platform.properties</string>
           <string>WEB-INF/lib/spring-web-3.0.5.RELEASE.jar</string>
           <string>WEB-INF/lib/aopalliance-1.0.jar</string>
           <string>WEB-INF/lib/spring-beans-3.0.5.RELEASE.jar</string>
