@@ -11,7 +11,9 @@ import org.guili.ecshop.bean.Shop;
 import org.guili.ecshop.business.MutiThreadTest;
 import org.guili.ecshop.business.TestBussiness;
 import org.guili.ecshop.business.TestMuti;
+import org.guili.ecshop.business.impl.AvnetSpiderServiceImpl;
 import org.guili.ecshop.business.impl.DigikeySpiderServiceImpl;
+import org.guili.ecshop.business.impl.MouserSpiderServiceImpl;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -33,6 +35,19 @@ public class ResultController {
 	private ThreadPoolTaskExecutor executor=null;
 	@Resource(name="digikeySpiderServiceImpl")
 	private DigikeySpiderServiceImpl digikeySpiderServiceImpl=null;
+	@Resource(name="mouserSpiderServiceImpl")
+	private MouserSpiderServiceImpl mouserSpiderServiceImpl=null;
+	@Resource(name="avnetSpiderServiceImpl")
+	private AvnetSpiderServiceImpl avnetSpiderServiceImpl=null;
+	
+	public void setAvnetSpiderServiceImpl(
+			AvnetSpiderServiceImpl avnetSpiderServiceImpl) {
+		this.avnetSpiderServiceImpl = avnetSpiderServiceImpl;
+	}
+	public void setMouserSpiderServiceImpl(
+			MouserSpiderServiceImpl mouserSpiderServiceImpl) {
+		this.mouserSpiderServiceImpl = mouserSpiderServiceImpl;
+	}
 
 	public void setDigikeySpiderServiceImpl(
 			DigikeySpiderServiceImpl digikeySpiderServiceImpl) {
@@ -55,14 +70,16 @@ public class ResultController {
 	//下面两种方式都ok
 	@RequestMapping(value="/result.htm")
 	public String viewUser(HttpServletRequest request,ModelMap modelMap) throws Exception{
-		Shop shop=testBusiness.getone();
-		digikeySpiderServiceImpl.analysisService("");
-		log.info("logger--->"+shop.getName());
+//		Shop shop=testBusiness.getone();
+		digikeySpiderServiceImpl.analysisService();
+		mouserSpiderServiceImpl.analysisService();
+		avnetSpiderServiceImpl.analysisService();
+//		log.info("logger--->"+shop.getName());
 		return "result1";
 	}
-	@RequestMapping(value="/add1.htm")
+	@RequestMapping(value="/testdatabase.htm")
 	public String addUser1(HttpServletRequest request,ModelMap modelMap) throws Exception{
-		testBusiness.saveSemiconductor();
+		testBusiness.findone();
 		return "result";
 	}
 	//下面两种方式都ok

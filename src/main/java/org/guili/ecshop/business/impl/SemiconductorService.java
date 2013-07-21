@@ -3,6 +3,7 @@ package org.guili.ecshop.business.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
 import org.guili.ecshop.bean.Semiconductor;
 import org.guili.ecshop.business.ISemiconductorService;
 import org.guili.ecshop.dao.SemiconductorDao;
@@ -15,6 +16,7 @@ public class SemiconductorService implements ISemiconductorService {
 
 	private static final int PAGECOUNT=1000;
 	private SemiconductorDao semiconductorDao=null;
+	private static Logger log=Logger.getLogger(SemiconductorService.class);
 	
 	@Override
 	public void saveSemiconductor(Semiconductor semiconductor) {
@@ -42,7 +44,12 @@ public class SemiconductorService implements ISemiconductorService {
 			return ;
 		}
 		for(Semiconductor semiconductor:semiconductorList){
-			semiconductorDao.insertSemiconductor(semiconductor);
+			try {
+				semiconductorDao.insertSemiconductor(semiconductor);
+			} catch (Exception e) {
+//				e.printStackTrace();
+				log.info("某个字段太长!数据库无法容纳");
+			}
 		}
 	}
 	/**

@@ -15,7 +15,7 @@
  	<result property="discount" column="discount"/>
  	<result property="price" column="price"/>
  	<result property="lowestcount" column="lowestcount"/>
- 	<result property="function" column="function"/>
+ 	<result property="function" column="functions"/>
  	<result property="basesiteclass" column="basesiteclass"/>
  	<result property="sourcesite" column="sourcesite"/>
  	<result property="imagename" column="imagename"/>
@@ -27,7 +27,7 @@
  <insert id="insertSemiconductor" parameterType="semiconductor">
   <![CDATA[ 
   insert into T_Semiconductor(guige,imagepath,producterkey,code,producter,description,discount,price,lowestcount
-  						,function,basesiteclass,sourcesite,imagename,createTime,categoryname,categoryid) 
+  						,functions,basesiteclass,sourcesite,imagename,createTime,categoryname,categoryid) 
   		values (#{guige},#{imagepath},#{producterkey},#{code},#{producter},#{desc},#{discount}
   						,#{price},#{lowestcount},#{function},#{basesiteclass},#{sourcesite},#{imagename}
   						,#{createTime},#{categoryname},#{categoryid})
@@ -36,12 +36,12 @@
  
  <select id="selectone" resultType="semiconductor">
 	  <![CDATA[ 
-	  select * from T_Semiconductor where id=2;
+	  select top 1 * from T_Semiconductor;
 	  ]]>
  </select>
  <select id="selectonebyCodeAndUrl" parameterType="Map" resultType="semiconductor">
 	  <![CDATA[ 
-	  select * from T_Semiconductor where code=#{code} and sourcesite=#{sourcesite} limit 1;
+	  select top 1 * from T_Semiconductor where code=#{code} and sourcesite=#{sourcesite};
 	  ]]>
  </select>
  <update id="updateSemiconductor" parameterType="semiconductor">

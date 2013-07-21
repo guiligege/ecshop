@@ -40,7 +40,6 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 	 */
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
-		log.info("digikey run!");
 		//网站地址
 		String baseurl=BASEURL;
 		SpiderRegex regex = new SpiderRegex();
@@ -50,11 +49,13 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 		//分析当前页数
 		int pagecount=getPageCount(htmltext,regex);
 		log.debug("pagecount-->"+pagecount);
+		log.info("digikey pagecount:"+pagecount);
 		//循环分页
 		for(int page=1;page<=pagecount;page++){
 			String localurl=url.substring(0, url.length()-1);
 			localurl=localurl+page;
 			log.debug("localurl--->"+localurl);
+			log.info("digikey run page:"+page);
 			htmltext=regex.gethtmlContent(localurl,"UTF-8");
 			//匹配需要的那部分网页
 			String reghead = "<thead>(.*?)<\\/tr>";
@@ -325,14 +326,14 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 		Date start=new Date();
 		DigikeySpiderServiceImpl scs = new DigikeySpiderServiceImpl();
 //		List<Semiconductor> semiconductorList=scs.analysisContent("http://www.digikey.cn/product-search/zh/optoelectronics/leds-lamp-replacements/524939/page/1");
-		scs.analysisService("");
+		scs.analysisService();
 //		scs.createSemiconductorExcel(semiconductorList, "");
 		log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
 	}
 
 	//解析digikey的数据
 	@Override
-	public void analysisService(String url) {
+	public void analysisService() {
 		//通过网址获取网页内容
 		SpiderRegex regex = new SpiderRegex();
 		List<String> urls=new ArrayList<String>();
@@ -347,6 +348,7 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 				String[] smallContent=regex.htmlregex(bigcontent[i],regbig,true);
 				log.debug(smallContent.length);
 				for(String smallurl:smallContent){
+					log.info("digikey run!");
 					log.debug("smallurl--->"+BASEURLSITE+smallurl+"/page/1");
 					counturl+=1;
 					List<Semiconductor> semiconductorList=analysisContent(BASEURLSITE+smallurl+"/page/1");

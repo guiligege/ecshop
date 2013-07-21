@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.guili.ecshop.bean.Semiconductor;
+import org.guili.ecshop.business.ISemiconductorService;
 import org.guili.ecshop.business.ISpiderService;
 import org.guili.ecshop.util.ExcelWriter;
 import org.guili.ecshop.util.ImageUtils;
@@ -26,18 +27,14 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 	private static Logger log=Logger.getLogger(AvnetSpiderServiceImpl.class);
 	private static final String BASEURL=ResourceProperty.AVNET;
 	private static String PRICESPLIT="$$";
-	private SemiconductorService semiconductorService=null;
+	private ISemiconductorService semiconductorService=null;
 	
-	public SemiconductorService getSemiconductorService() {
-		return semiconductorService;
-	}
-
-	public void setSemiconductorService(SemiconductorService semiconductorService) {
+	public void setSemiconductorService(ISemiconductorService semiconductorService) {
 		this.semiconductorService = semiconductorService;
 	}
+
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
-		log.info("avnet run!");
 		//网站地址
 				String baseurl=BASEURL;
 				SpiderRegex regex = new SpiderRegex();
@@ -47,12 +44,14 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 				//分析当前页数
 				int pagecount=getPageCount(htmltext,regex);
 				log.debug("pagecount-->"+pagecount);
+				log.info("avent pagecount:"+pagecount);
 				//循环分页
 				for(int page=1;page<=pagecount;page++){
 					int aventpage=(page-1)*25;
 					String localurl=url.substring(0, url.length()-1);
 					localurl=localurl+aventpage;
 					log.debug("localurl--->"+localurl);
+					log.info("avent run page:"+page);
 					htmltext=regex.gethtmlContent(localurl,"UTF-8");
 					//匹配需要的那部分网页
 					String reghead = "<tr style=\"background:#FFFFFF;\">(.*?)<\\/tr>";
@@ -299,7 +298,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 		AvnetSpiderServiceImpl scs = new AvnetSpiderServiceImpl();
 //		List<Semiconductor> semiconductorList=scs.analysisContent("https://avnetexpress.avnet.com/store/em/EMController/Amplifiers/Amplifiers-Misc/_/N-100002?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
 //		scs.createSemiconductorExcel(semiconductorList, "");
-		scs.analysisService("");
+		scs.analysisService();
 		log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
 	}
 
@@ -307,7 +306,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 	 * 分享网站地址抓取数据
 	 */
 	@Override
-	public void analysisService(String url) {
+	public void analysisService() {
 		//通过网址获取网页内容
 		SpiderRegex regex = new SpiderRegex();
 		List<String> urls=new ArrayList<String>();
@@ -333,6 +332,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 							String[] innerurls=regex.htmlregex(innerurl,regbig,false);
 							if(innerurls!=null){
 								counturl+=1;
+								log.info("avnet run!");
 								log.debug("listurl:--->"+BASEURL+innerurls[0].substring(0, innerurls[0].indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
 								List<Semiconductor> semiconductorList=analysisContent(BASEURL+innerurls[0].substring(0, innerurls[0].indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
 								//保存或更新到数据库
@@ -344,6 +344,7 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 					}else{
 						//解析顶部链接
 						for(String smallurl:smallContent){
+							log.info("avnet run!");
 							log.debug("smallurl--->"+BASEURL+smallurl.substring(0, smallurl.indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");
 							counturl+=1;
 							List<Semiconductor> semiconductorList=analysisContent(BASEURL+smallurl.substring(0, smallurl.indexOf("?")).substring(1)+"?action=products&cat=1&catalogId=500201&categoryLink=true&cutTape=&inStock=&langId=-7&myCatalog=&npi=&proto=&regionalStock=&rohs=&storeId=500201&term=&topSellers=&No=0");

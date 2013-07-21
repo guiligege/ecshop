@@ -10,6 +10,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.guili.ecshop.bean.Semiconductor;
+import org.guili.ecshop.business.ISemiconductorService;
 import org.guili.ecshop.business.ISpiderService;
 import org.guili.ecshop.util.ExcelWriter;
 import org.guili.ecshop.util.ResourceProperty;
@@ -25,15 +26,12 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 	private static String PRICESPLIT=ResourceUtil.getValue(ResourceUtil.FILEPATH,"PRICESPLIT");
 	private static Logger log=Logger.getLogger(DigikeySpiderServiceImpl.class);
 	private static String BASEURL=ResourceProperty.MOUSECOM;
-	private SemiconductorService semiconductorService=null;
+	private ISemiconductorService semiconductorService=null;
 	
-	public SemiconductorService getSemiconductorService() {
-		return semiconductorService;
-	}
-
-	public void setSemiconductorService(SemiconductorService semiconductorService) {
+	public void setSemiconductorService(ISemiconductorService semiconductorService) {
 		this.semiconductorService = semiconductorService;
 	}
+
 	@Override
 	public List<Semiconductor> analysisContent(String url) {
 		log.info("mouser run!");
@@ -46,13 +44,14 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 		//分析当前页数
 		int pagecount=getPageCount(htmltext,regex);
 		log.debug("pagecount-->"+pagecount);
-		
+		log.info("mouser pagecount:"+pagecount);
 		//循环分页
 		for(int page=1;page<=pagecount;page++){
 			int mouserpage=(page-1)*25;
 			String localurl=url.substring(0, url.indexOf("No=")+"No=".length());
 			localurl=localurl+mouserpage;
 			log.debug("localurl--->"+localurl);
+			log.info("mouser run page:"+page);
 			htmltext=regex.gethtmlContent(localurl,"UTF-8");
 			//匹配需要的那部分网页
 			String reg = "<tr class=\"SearchResultColumnHeading\" valign=\"top\" style=\"font-weight:bold;height:100%;\">(.*?)<\\/tr>";
@@ -434,12 +433,12 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 //			scs.createSemiconductorExcel(semiconductorList, "");
 //			String temp=scs.analysisPricesToString("http://www.mouser.cn/ProductDetail/Skyworks-Solutions-Inc/SKY12207-306LF/?qs=sGAEpiMZZMvplms98TlKYxZLCcC6DAiBNMTlNJl6JDk%3d");
 //			System.out.println("analysisPricesToString-->"+temp);
-			scs.analysisService("");
+			scs.analysisService();
 			log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
 		}
 
 		@Override
-		public void analysisService(String url) {
+		public void analysisService() {
 			//通过网址获取网页内容
 			SpiderRegex regex = new SpiderRegex();
 			List<String> urls=new ArrayList<String>();
@@ -454,6 +453,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 					String[] smallContent=regex.htmlregex(bigcontent[i],regbig,true);
 					log.debug(smallContent.length);
 					for(String smallurl:smallContent){
+						log.info("mouser run!");
 						log.debug("smallurl--->"+BASEURL+smallurl+"?No=0");
 						counturl+=1;
 						List<Semiconductor> semiconductorList=analysisContent(BASEURL+smallurl+"?No=0");

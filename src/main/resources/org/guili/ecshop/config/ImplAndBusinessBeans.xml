@@ -28,13 +28,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<bean id="digikeySpiderServiceImpl" class="org.guili.ecshop.business.impl.DigikeySpiderServiceImpl">
 			<property name="semiconductorService" ref="semiconductorService"></property>
 	</bean>
-	<!-- 
+	 
 	<bean id="mouserSpiderServiceImpl" class="org.guili.ecshop.business.impl.MouserSpiderServiceImpl">
 			<property name="semiconductorService" ref="semiconductorService"></property>
 	</bean>
 	<bean id="avnetSpiderServiceImpl" class="org.guili.ecshop.business.impl.AvnetSpiderServiceImpl">
 			<property name="semiconductorService" ref="semiconductorService"></property>
 	</bean>
-	 -->
+	
 
 </beans>

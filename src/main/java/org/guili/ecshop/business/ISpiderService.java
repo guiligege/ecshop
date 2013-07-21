@@ -77,6 +77,6 @@ public interface ISpiderService {
 	 * 分析网站链接
 	 * @param url
 	 */
-	public void analysisService(String url);
+	public void analysisService();
 
 }
