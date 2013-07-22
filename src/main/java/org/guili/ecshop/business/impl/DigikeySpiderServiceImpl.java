@@ -144,6 +144,7 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 								semiconductor=new Semiconductor();
 							}
 						} catch (Exception e) {
+							e.printStackTrace();
 						}
 					}
 			}
@@ -176,7 +177,7 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 			reg = "<tr>(.*?)<\\/tr>";
 			String[] cl2content =regex.htmlregex(clcontent[i],reg,true);
 			if(cl2content!=null&& cl2content.length>0){
-				for(int j = 0;j<cl2content.length;j++){
+				for(int j = 1;j<cl2content.length;j++){
 					reg = "<td.*?>(.*?)<\\/td>";
 					String[] class2 = regex.htmlregex(cl2content[j],reg,false);
 					if(class2!=null&& class2.length>0){
@@ -188,7 +189,7 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 				}
 			}
 		}
-		if(price!=null && !price.equals("")){
+		if(price!=null && !price.equals("") && price.length()>0){
 			price.substring(0, price.length()-2);
 		}
 		return price.toString();
@@ -315,8 +316,12 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 		String regpag="页面 1/(.*?) ";
 		String[] pagecounts = regex.htmlregex(basehtml,regpag,false);
 		int pagecount=1;
-		if(pagecounts!=null && pagecounts.length>0){
-			pagecount=Integer.parseInt(pagecounts[0]);
+		try {
+			if(pagecounts!=null && pagecounts.length>0){
+				pagecount=Integer.parseInt(pagecounts[0]);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		return pagecount;
 	}
@@ -353,9 +358,10 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 					counturl+=1;
 					List<Semiconductor> semiconductorList=analysisContent(BASEURLSITE+smallurl+"/page/1");
 					//保存或更新到数据库
-					if(semiconductorList!=null && semiconductorList.size()>0){
-						semiconductorService.pageservice(semiconductorList);
-					}
+					log.debug("semiconductorList-->"+semiconductorList.size());
+//					if(semiconductorList!=null && semiconductorList.size()>0){
+//						semiconductorService.pageservice(semiconductorList);
+//					}
 				}
 			}
 			log.debug("counturl-->"+counturl);
