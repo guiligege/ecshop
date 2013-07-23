@@ -27,12 +27,12 @@
 	</category>
 	<!--包org.guili内的log捕捉  -->
 	<category name="org.guili">
-		<priority value="debug" />
+		<priority value="info" />
 	</category>
 
 	<!-- 设置接收所有输出的通道 -->
 	<root>
-		<level value="debug" />
+		<level value="info" />
 		<appender-ref ref="CONSOLE" />
 	</root>
 

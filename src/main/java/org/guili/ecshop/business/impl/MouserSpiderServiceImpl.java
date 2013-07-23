@@ -59,6 +59,9 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 			//头部
 			List<String> headlist=new ArrayList<String>();
 			reg="<th.*?>(.*?)<\\/th>";
+			if(header==null || header.length==0){
+				continue;
+			}
 			String[] headcontent=regex.htmlregex(header[0],reg,false);
 			//防止分页没有
 			if(headcontent==null || headcontent.length==0){
@@ -157,7 +160,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 			imageurl="";guige="";prices="";
 			if(oushuclcontent!=null && oushuclcontent.length>0){
 				for(int j=0;j<oushuclcontent.length;j++){
-//					try {
+					try {
 						
 						Semiconductor semiconductor=new Semiconductor();
 						reg = "<td>(.*?)<\\/td>";
@@ -220,9 +223,9 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 							classlist.add(semiconductor);
 							semiconductor=new Semiconductor();
 						}
-//					} catch (Exception e) {
-//						e.printStackTrace();
-//					}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			}
 			log.debug("one page success");
@@ -262,7 +265,7 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 				csb = new StringBuffer();
 			}
 		}
-		if(price!=null && !price.equals("")){
+		if(price!=null && !price.equals("") && price.length()>0){
 			price.substring(0, price.length()-2);
 		}
 		log.debug(" price---->"+price.toString());
@@ -416,6 +419,9 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 		String[] pagecounts=regex.htmlregex(pagenums[0],regpag,false);
 		int pagecount=1;
 		if(pagecounts!=null && pagecounts.length>0){
+			if(pagecounts[pagecounts.length-1].indexOf(",")>=0){
+				pagecounts[pagecounts.length-1]=pagecounts[pagecounts.length-1].replaceAll(",", "");
+			}
 			pagecount=Integer.parseInt(pagecounts[pagecounts.length-1]);
 		}
 //		if(pagecounts!=null && pagecounts.length>0){
@@ -434,6 +440,8 @@ public class MouserSpiderServiceImpl implements ISpiderService {
 //			String temp=scs.analysisPricesToString("http://www.mouser.cn/ProductDetail/Skyworks-Solutions-Inc/SKY12207-306LF/?qs=sGAEpiMZZMvplms98TlKYxZLCcC6DAiBNMTlNJl6JDk%3d");
 //			System.out.println("analysisPricesToString-->"+temp);
 			scs.analysisService();
+//			StringBuffer sb=new StringBuffer("");
+//			System.out.println("flag:"+sb.toString().equals("")+"--"+sb.length());
 			log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
 		}
 

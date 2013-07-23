@@ -72,6 +72,9 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 							}
 						}
 					}
+					if(headlist==null || headlist.size()==0){
+						continue;
+					}
 					//分类
 					String baseclass="";
 					reghead = "<div class=\"breadcrumbs\">(.*?)<\\/div>";
@@ -272,8 +275,14 @@ public class AvnetSpiderServiceImpl implements ISpiderService {
 		String regpag="/ <strong>(.*?)<\\/strong>";
 		String[] pagecounts = regex.htmlregex(basehtml,regpag,false);
 		int pagecount=1;
-		if(pagecounts!=null && pagecounts.length>0){
-			pagecount=Integer.parseInt(pagecounts[0]);
+		try {
+			if(pagecounts!=null && pagecounts.length>0){
+				if(pagecounts[0].indexOf(",")>=0){
+					pagecounts[0]=pagecounts[0].replaceAll(",", "");
+				}
+				pagecount=Integer.parseInt(pagecounts[0]);
+			}
+		} catch (Exception e) {
 		}
 		return pagecount;
 	}

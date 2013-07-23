@@ -318,6 +318,9 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 		int pagecount=1;
 		try {
 			if(pagecounts!=null && pagecounts.length>0){
+				if(pagecounts[0].indexOf(",")>=0){
+					pagecounts[0]=pagecounts[0].replaceAll(",", "");
+				}
 				pagecount=Integer.parseInt(pagecounts[0]);
 			}
 		} catch (Exception e) {
@@ -332,6 +335,11 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 		DigikeySpiderServiceImpl scs = new DigikeySpiderServiceImpl();
 //		List<Semiconductor> semiconductorList=scs.analysisContent("http://www.digikey.cn/product-search/zh/optoelectronics/leds-lamp-replacements/524939/page/1");
 		scs.analysisService();
+		String str="1,200";
+		if(str.indexOf(",")>=0){
+			str=str.replaceAll(",", "");
+		}
+		log.debug(str);
 //		scs.createSemiconductorExcel(semiconductorList, "");
 		log.debug("总耗时:"+(new Date().getTime()-start.getTime())/1000);
 	}
@@ -359,9 +367,9 @@ public class DigikeySpiderServiceImpl implements ISpiderService {
 					List<Semiconductor> semiconductorList=analysisContent(BASEURLSITE+smallurl+"/page/1");
 					//保存或更新到数据库
 					log.debug("semiconductorList-->"+semiconductorList.size());
-//					if(semiconductorList!=null && semiconductorList.size()>0){
-//						semiconductorService.pageservice(semiconductorList);
-//					}
+					if(semiconductorList!=null && semiconductorList.size()>0){
+						semiconductorService.pageservice(semiconductorList);
+					}
 				}
 			}
 			log.debug("counturl-->"+counturl);

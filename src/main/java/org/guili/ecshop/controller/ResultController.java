@@ -71,9 +71,9 @@ public class ResultController {
 	@RequestMapping(value="/result.htm")
 	public String viewUser(HttpServletRequest request,ModelMap modelMap) throws Exception{
 //		Shop shop=testBusiness.getone();
-		digikeySpiderServiceImpl.analysisService();
-		mouserSpiderServiceImpl.analysisService();
 		avnetSpiderServiceImpl.analysisService();
+		mouserSpiderServiceImpl.analysisService();
+		digikeySpiderServiceImpl.analysisService();
 //		log.info("logger--->"+shop.getName());
 		return "result1";
 	}
