@@ -36,19 +36,19 @@
  
  <select id="selectone" resultType="semiconductor">
 	  <![CDATA[ 
-	  select top 1 * from T_Semiconductor;
+	  select * from T_Semiconductor limit 1;
 	  ]]>
  </select>
  <select id="selectonebyCodeAndUrl" parameterType="Map" resultType="semiconductor">
 	  <![CDATA[ 
-	  select top 1 * from T_Semiconductor where code=#{code} and sourcesite=#{sourcesite};
+	  select * from T_Semiconductor where code=#{code} and sourcesite=#{sourcesite} limit 1;
 	  ]]>
  </select>
  <update id="updateSemiconductor" parameterType="semiconductor">
  		<![CDATA[ 
         update T_Semiconductor set discount=#{discount},price=#{price} 
         	where code=#{code} and sourcesite=#{sourcesite}
-          ]]> 
+          ]]>
 </update>
  
 </mapper>  
