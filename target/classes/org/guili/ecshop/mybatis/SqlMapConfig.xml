@@ -3,8 +3,8 @@
 <configuration>
 	<!-- 对象别名 ，用在mapper里面代替整个对象的访问-->
     <typeAliases>
-       <typeAlias alias="shop" type="org.guili.ecshop.bean.Shop"/>
-       <typeAlias alias="semiconductor" type="org.guili.ecshop.bean.Semiconductor"/>
+       <typeAlias alias="shop" type="org.guili.ecshop.bean.spider.Shop"/>
+       <typeAlias alias="semiconductor" type="org.guili.ecshop.bean.spider.Semiconductor"/>
     </typeAliases> 
      
 	<mappers>

@@ -6,10 +6,9 @@ import java.util.ResourceBundle;
 import org.apache.log4j.Logger;
 
 
-
-
 public class ResourceUtil {
 	public static String FILEPATH="config/platform";
+	public static String ALIPAYFILEPATH="config/alipay_config";
 //	private static ResourceBundle rb = ResourceBundle.getBundle(FILEPATH, Locale.getDefault());
 	private final static Logger	log	= Logger.getLogger(ResourceUtil.class);
 	

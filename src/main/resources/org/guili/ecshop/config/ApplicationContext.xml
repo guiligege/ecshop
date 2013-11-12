@@ -105,7 +105,9 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
             </list>  
         </property>  
     </bean>
+    <!-- spring ioc配置 -->
+    <import resource="spring-dao.xml"/>
+    <import resource="spring-service.xml"/>
     <!-- 加载定时任务和beans -->
-    <import resource="ImplAndBusinessBeans.xml"/>
-    <import resource="spring-quartz.xml"/>
+    <!-- <import resource="spring-quartz.xml"/> -->
 </beans>

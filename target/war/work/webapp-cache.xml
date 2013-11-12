@@ -8,42 +8,51 @@
           <string>WEB-INF/views/result.jsp</string>
           <string>WEB-INF/views/result1.jsp</string>
           <string>WEB-INF/web.xml</string>
+          <string>WEB-INF/classes/config/alipay_config.properties</string>
           <string>WEB-INF/classes/config/platform.properties</string>
           <string>WEB-INF/classes/log4j.xml</string>
-          <string>WEB-INF/classes/org/guili/ecshop/bean/Semiconductor.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/bean/Shop.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/payment/SalesOrder.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Semiconductor.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Shop.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/ExpireJobTask.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/impl/AvnetSpiderServiceImpl.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/impl/DigikeySpiderServiceImpl.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/impl/MouserSpiderServiceImpl.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/impl/SemiconductorService.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/ISemiconductorService.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/ISpiderService.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/MutiThreadTest.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/AvnetSpiderServiceImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/DigikeySpiderServiceImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/MouserSpiderServiceImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/SemiconductorService.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/spider/ISemiconductorService.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/spider/ISpiderService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/TestBussiness.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/TestMuti$1.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/TestMuti.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/ThreadUseExtends.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/ApplicationContext.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/dispatcher-servlet.xml</string>
-          <string>WEB-INF/classes/org/guili/ecshop/config/ImplAndBusinessBeans.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/jdbc.properties</string>
+          <string>WEB-INF/classes/org/guili/ecshop/config/spring-dao.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/spring-quartz.xml</string>
+          <string>WEB-INF/classes/org/guili/ecshop/config/spring-service.xml</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/payment/AbstractPaymentAdaptor.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/payment/AliPayConfig.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/payment/PaymentAdaptor.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/payment/PaymentAdaptorFactory.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/payment/PaymentAlipayAdaptor.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/payment/PaymentAutoController.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/ResultController.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/dao/ITestTableDao.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/dao/SemiconductorDao.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/impl/ITestTableDaoImpl.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/impl/SemiconductorDaoImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/dao/spider/ITestTableDao.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/dao/spider/SemiconductorDao.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/impl/spider/ITestTableDaoImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/impl/spider/SemiconductorDaoImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/semiconductorMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/shopMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/SqlMapConfig.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/BasicSqlSupport.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/util/CommonTools.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/util/Constants.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ExcelWriter.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ImageUtils.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/util/Md5Encrypt.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ResourceProperty.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ResourceUtil.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/SpiderRegex.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/StoreClassSpider.class</string>
+          <string>WEB-INF/classes/platform.properties</string>
           <string>WEB-INF/lib/spring-web-3.0.5.RELEASE.jar</string>
           <string>WEB-INF/lib/aopalliance-1.0.jar</string>
           <string>WEB-INF/lib/spring-beans-3.0.5.RELEASE.jar</string>
@@ -84,6 +93,8 @@
           <string>WEB-INF/lib/quartz-1.8.5.jar</string>
           <string>WEB-INF/lib/jta-1.1.jar</string>
           <string>WEB-INF/lib/slf4j-api-1.6.0.jar</string>
+          <string>WEB-INF/lib/dom4j-1.6.jar</string>
+          <string>WEB-INF/lib/xml-apis-1.0.b2.jar</string>
         </pathsSet>
       </path-set>
     </entry>
@@ -530,6 +541,19 @@
         <modelEncoding>UTF-8</modelEncoding>
       </dependency>
       <targetFileName>quartz-1.8.5.jar</targetFileName>
+    </org.apache.maven.plugin.war.util.DependencyInfo>
+    <org.apache.maven.plugin.war.util.DependencyInfo>
+      <dependency>
+        <groupId>dom4j</groupId>
+        <artifactId>dom4j</artifactId>
+        <version>1.6</version>
+        <type>jar</type>
+        <scope>compile</scope>
+        <exclusions/>
+        <optional>false</optional>
+        <modelEncoding>UTF-8</modelEncoding>
+      </dependency>
+      <targetFileName>dom4j-1.6.jar</targetFileName>
     </org.apache.maven.plugin.war.util.DependencyInfo>
   </dependenciesInfo>
 </webapp-structure>

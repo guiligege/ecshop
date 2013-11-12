@@ -2,10 +2,10 @@ package org.guili.ecshop.business;
 
 import java.util.Date;
 
-import org.guili.ecshop.bean.Semiconductor;
-import org.guili.ecshop.bean.Shop;
-import org.guili.ecshop.dao.ITestTableDao;
-import org.guili.ecshop.dao.SemiconductorDao;
+import org.guili.ecshop.bean.spider.Semiconductor;
+import org.guili.ecshop.bean.spider.Shop;
+import org.guili.ecshop.dao.spider.ITestTableDao;
+import org.guili.ecshop.dao.spider.SemiconductorDao;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional

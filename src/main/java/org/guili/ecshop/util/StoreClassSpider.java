@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
-import org.guili.ecshop.bean.Semiconductor;
+import org.guili.ecshop.bean.spider.*;
 
 public class StoreClassSpider {
 	//抓取的列数

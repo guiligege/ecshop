@@ -2,24 +2,18 @@ package org.guili.ecshop.controller;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.guili.ecshop.bean.Semiconductor;
-import org.guili.ecshop.bean.Shop;
-import org.guili.ecshop.business.MutiThreadTest;
+import org.guili.ecshop.bean.spider.Semiconductor;
 import org.guili.ecshop.business.TestBussiness;
-import org.guili.ecshop.business.TestMuti;
-import org.guili.ecshop.business.impl.AvnetSpiderServiceImpl;
-import org.guili.ecshop.business.impl.DigikeySpiderServiceImpl;
-import org.guili.ecshop.business.impl.MouserSpiderServiceImpl;
-import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import org.guili.ecshop.business.impl.spider.AvnetSpiderServiceImpl;
+import org.guili.ecshop.business.impl.spider.DigikeySpiderServiceImpl;
+import org.guili.ecshop.business.impl.spider.MouserSpiderServiceImpl;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 //用于对应controller。区别不同的类
@@ -28,11 +22,6 @@ public class ResultController {
 	private Logger log=Logger.getLogger(ResultController.class);
 	@Resource(name="testBusiness")
 	private TestBussiness testBusiness=null;
-	//多线程测试
-	@Resource(name="mutiThreadTest")
-	private MutiThreadTest mutiThreadTest=null;
-	@Resource(name="executor")
-	private ThreadPoolTaskExecutor executor=null;
 	@Resource(name="digikeySpiderServiceImpl")
 	private DigikeySpiderServiceImpl digikeySpiderServiceImpl=null;
 	@Resource(name="mouserSpiderServiceImpl")
@@ -58,10 +47,6 @@ public class ResultController {
 		this.testBusiness = testBusiness;
 	}
 	
-	public void setMutiThreadTest(MutiThreadTest mutiThreadTest) {
-		this.mutiThreadTest = mutiThreadTest;
-	}
-
 	@RequestMapping(value="/add.htm")
 	public String addUser(HttpServletRequest request,ModelMap modelMap) throws Exception{
 		testBusiness.add();
@@ -79,7 +64,9 @@ public class ResultController {
 	}
 	@RequestMapping(value="/testdatabase.htm")
 	public String addUser1(HttpServletRequest request,ModelMap modelMap) throws Exception{
-		testBusiness.findone();
+		//testBusiness.findone();
+		testBusiness.getone();
+		log.info("logger--->");
 		return "result";
 	}
 	//下面两种方式都ok
@@ -91,17 +78,6 @@ public class ResultController {
 		log.info("logger--->"+semiconductor1.getCode());
 		testBusiness.updateSemiconductor();
 		return "result1";
-	}
-	@RequestMapping("/resultview.htm")
-	public ModelAndView viewUser1(HttpServletRequest request) throws Exception{
-		Shop shop=testBusiness.getone();
-		log.debug("logger1--->"+shop.getName());
-		//多线程测试
-		mutiThreadTest.setTestBusiness(testBusiness);
-		for(int i=0;i<100;i++){
-			executor.execute(mutiThreadTest);
-		}
-		return new ModelAndView("result");
 	}
 	//取json数据例子,直接返回调用页面
 	//类似于struts2的void返回方法的调用
