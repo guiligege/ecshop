@@ -39,7 +39,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	private static double TOTAL_BAD_PROPORTION_MIN=0.01d;	//最高分数线
 	
 	//以前描述的底线和顶线
-	private static double TOTAL_INFO_DESC_SCORE_MIN=4.3;
+	private static double TOTAL_INFO_DESC_SCORE_MIN=4.4;
 	private static double TOTAL_INFO_DESC_SCORE_MAX=4.8;
 	
 	/**
@@ -55,7 +55,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		//看卖家的以前整体信息
 		double prevDescScore=this.calculateTotalDescScore(taobaoTotalAllData);
 //		double 
-		
+		double weightScore=this.calculateWeightScore(taobaoTotalAllData);
 		return 0;
 	}
 	
@@ -78,6 +78,20 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 			prevDescScore=correspond;
 		}
 		return prevDescScore;
+	}
+	
+	/**
+	 * 根据中差评权重给商家打分
+	 * @param taobaoTotalAllData	淘宝商家总评
+	 * @return	中差评权重分数
+	 */
+	private double calculateWeightScore(TaobaoTotalAllData taobaoTotalAllData){
+		if(taobaoTotalAllData==null){
+			return 0;
+		}
+		String correspondCount=taobaoTotalAllData.getData().getCorrespondCount();
+		logger.debug("correspondCount--->"+correspondCount);
+		return 0;
 	}
 
 	@Override
