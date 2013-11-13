@@ -6,7 +6,7 @@ import org.guili.ecshop.util.ResourceUtil;
 
 public class AliPayConfig{
 
-	public static ResourceBundle	alipay_config					= ResourceBundle.getBundle(ResourceUtil.FILEPATH);
+	public static ResourceBundle	alipay_config					= ResourceBundle.getBundle(ResourceUtil.ALIPAYFILEPATH);
 
 	// ↓↓↓↓↓↓↓↓↓↓请在这里配置基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 	// 合作身份者ID，以2088开头由16位纯数字组成的字符串 2088101568355903
