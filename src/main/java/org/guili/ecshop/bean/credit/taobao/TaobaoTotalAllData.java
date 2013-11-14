@@ -2,6 +2,7 @@ package org.guili.ecshop.bean.credit.taobao;
 
 public class TaobaoTotalAllData {
 	private String watershed;
+	private TaobaoGift gift;
 	private String isBeta;
 	private String isShowDefaultSort;
 	private TaobaoTotalEvaluate data;
@@ -43,6 +44,11 @@ public class TaobaoTotalAllData {
 	public void setBanner(TbaobaoEvaluateBanner banner) {
 		this.banner = banner;
 	}
-	
+	public TaobaoGift getGift() {
+		return gift;
+	}
+	public void setGift(TaobaoGift gift) {
+		this.gift = gift;
+	}
 	
 }
