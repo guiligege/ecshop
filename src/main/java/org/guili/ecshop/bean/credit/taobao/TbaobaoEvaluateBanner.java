@@ -3,7 +3,7 @@ package org.guili.ecshop.bean.credit.taobao;
 public class TbaobaoEvaluateBanner {
 	private String bgColor;
 	private String img;
-	private boolean isShow;
+	private String isShow;
 	private String link;
 	private String text;
 	private String textColor;
@@ -19,10 +19,10 @@ public class TbaobaoEvaluateBanner {
 	public void setImg(String img) {
 		this.img = img;
 	}
-	public boolean isShow() {
+	public String getIsShow() {
 		return isShow;
 	}
-	public void setShow(boolean isShow) {
+	public void setIsShow(String isShow) {
 		this.isShow = isShow;
 	}
 	public String getLink() {

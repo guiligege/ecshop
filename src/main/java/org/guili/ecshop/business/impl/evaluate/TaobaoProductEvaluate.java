@@ -7,6 +7,7 @@ import java.util.Map;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.guili.ecshop.bean.credit.taobao.TaobaoSingleData;
 import org.guili.ecshop.bean.credit.taobao.TaobaoTotalAllData;
 import org.guili.ecshop.business.credit.IProductEvaluate;
 import org.guili.ecshop.util.CommonTools;
@@ -130,10 +131,21 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		if(total<=TaobaoProductEvaluate.SINGEL_TOTAL_LIMIT){
 			return 0;
 		}
+		//计算单个商品中差评权重
 		double singleWeightScore=evaluateSingleWeight(taobaoTotalAllData);
+		//单个商品中重复评论的比重
+		
 		return 0;
 	}
 
+	/**
+	 * 计算单个商品的重复购买率
+	 * @param taobaoSingleData
+	 * @return
+	 */
+	public double evaluateSingleRepeat(TaobaoSingleData taobaoSingleData){
+		return 0;
+	}
 	/**
 	 * 计算单个商品中差评比重
 	 * @param taobaoTotalAllData	商品总评信息
@@ -178,35 +190,56 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		return singleWeightScore;
 	}
 	
+	/**
+	 * 计算该商品总分
+	 */
 	@Override
 	public  double evaluateCalculate(String url){
 		
 		//分析url对应的商家用户id和商品id
 		Map<String, String> parammap=this.analyzeUrl(url);
+		String userid=parammap.get("userid")==null?"":parammap.get("userid");
+		String productid=parammap.get("productid")==null?"":parammap.get("productid");
+		TaobaoSingleData taobaoSingleData=this.analyzeProductUrl(userid, productid, 1);
 		if(parammap==null || parammap.size()==0){
 			return 0;
 		}
-		String userid=parammap.get("userid")==null?"":parammap.get("userid");
-		String productid=parammap.get("productid")==null?"":parammap.get("productid");
 		//获取淘宝总体评论对象。
 		TaobaoTotalAllData taobaoTotalAllData=this.analyzeTaobaoTotalAllData(userid, productid);
+		//获得当前商品的评论
 		
 		double prevScore=this.sellerTotalEvaluate(taobaoTotalAllData);
 		double productScore=this.singleProductEvaluate(taobaoTotalAllData);
-		
-		/*//解析url请求
-		SpiderRegex regex = new SpiderRegex();
-		parammap.get("");
-		String htmltext = regex.gethtmlContent(EvaluateConfig.taobao_evaluate_total_url+"?userNumId=1819877675&auctionNumId=27584368469","gbk");
-		
-		//List<TaobaoTotalAllData> taobaoTotalAllDataList=json2TaobaoTotalAllDataList(htmltext);
-		TaobaoTotalAllData taobaoTotalAllData=json2TaobaoTotalAllData(htmltext);
-		
-		taobaoTotalAllData.getData().getCorrespond();
-		logger.debug(htmltext);*/
+		//获得总的分数评价
 		return CommonTools.doubleFormat(prevScore+productScore);
 	}
 	
+	public TaobaoSingleData analyzeProductUrl(String userNumid,String auctionNumId,int page){
+		if(userNumid.equals("") || auctionNumId.equals("")){
+			return null;
+		}
+		TaobaoSingleData taobaoSingleData=new TaobaoSingleData();
+		//以前的请求方式
+		SpiderRegex regex = new SpiderRegex();
+		String htmltext = regex.gethtmlContent(EvaluateConfig.taobao_evaluate_url+"?userNumId="+userNumid+"&auctionNumId="+auctionNumId+"&showContent=1&currentPage="+page,"gbk");
+		try {
+			taobaoSingleData=json2TaobaoSingleData(htmltext);
+		} catch (Exception e) {
+			logger.error("分析淘宝商品评论对象出错！error is "+e.getMessage());
+		}
+		return taobaoSingleData;
+	}
+	
+	public TaobaoSingleData json2TaobaoSingleData(String jsonStr) {
+		//ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
+		 JSONObject jsonObject = null;  
+		 //setDataFormat2JAVA();   
+        // jsonObject = JSONObject.fromObject(jsonStr.substring(1).substring(0, jsonStr.length()-2));
+         jsonObject = JSONObject.fromObject(jsonStr.substring("TB.detailRate =".length()));
+		//TaobaoTotalAllData taobaoTotalAllData = gson.fromJson(jsonStr, TaobaoTotalAllData.class);
+         TaobaoSingleData taobaoSingleData = (TaobaoSingleData)JSONObject.toBean(jsonObject, TaobaoSingleData.class);
+		return taobaoSingleData;
+	}
 	/**
 	 * 分析活动淘宝商品总评对象
 	 * @param userNumid		淘宝卖家id
