@@ -35,19 +35,22 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	private static double SINGEL_INFO_EVALUATE_Repeat_PROPORTION_SCORE=40;
 	//中差评比重
 	//500以上区间
-	private static double SINGEL_BAD_PROPORTION_MAX_500=8.0d;		//有分最低值
+	private static double SINGEL_BAD_PROPORTION_MAX_500=11.0d;		//有分最低值
+	private static double SINGEL_BAD_PROPORTION_MIDDEl=5.0d;		//单个商品及格线
 	private static double SINGEL_BAD_PROPORTION_MIN=1.0d;   	//最高分线
 	//100-500
-	private static double SINGEL_BAD_PROPORTION_MAX_100=9.0d;		//有分最低值
+	private static double SINGEL_BAD_PROPORTION_MIDDEl_100=5.0d;		//单个商品及格线
+	private static double SINGEL_BAD_PROPORTION_MAX_100=10.0d;		//有分最低值
 	//-100
-	private static double SINGEL_BAD_PROPORTION_MAX_20=10.0d;		//有分最低值
+	private static double SINGEL_BAD_PROPORTION_MIDDEl_20=5.0d;		//单个商品及格线
+	private static double SINGEL_BAD_PROPORTION_MAX_20=9.0d;		//有分最低值
 	
 	private static double TOTAL_BAD_PROPORTION_MAX=8d;			//总评及格线
 	private static double TOTAL_BAD_PROPORTION_MIDDEl=5.0d;		//总评及格线
 	private static double TOTAL_BAD_PROPORTION_MIN=3d;			//最高分数线
 	
 	//以前描述的底线和顶线
-	private static double TOTAL_INFO_DESC_SCORE_MIN=4.4;
+	private static double TOTAL_INFO_DESC_SCORE_MIN=4.3;
 	private static double TOTAL_INFO_DESC_SCORE_MAX=4.8;
 	//限制多少才进行统计
 	private static int SINGEL_TOTAL_LIMIT=20;
@@ -334,7 +337,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	public static void main(String[] args) {
 		TaobaoProductEvaluate taobaoProductEvaluate=new TaobaoProductEvaluate();
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
-		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
+		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.25.wfdMnI&id=35047474226");
 //		Map<String, String> parammap=taobaoProductEvaluate.analyzeUrl("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 //		taobaoProductEvaluate.sellerTotalEvaluate(parammap);
 	}
