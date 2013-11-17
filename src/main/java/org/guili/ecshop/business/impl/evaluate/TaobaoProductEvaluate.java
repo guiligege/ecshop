@@ -1,12 +1,17 @@
 package org.guili.ecshop.business.impl.evaluate;
 
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
+import org.guili.ecshop.bean.credit.taobao.EvaluateTime;
+import org.guili.ecshop.bean.credit.taobao.TaobaoEvaluate;
+import org.guili.ecshop.bean.credit.taobao.TaobaoImpress;
 import org.guili.ecshop.bean.credit.taobao.TaobaoSingleData;
 import org.guili.ecshop.bean.credit.taobao.TaobaoTotalAllData;
 import org.guili.ecshop.business.credit.IProductEvaluate;
@@ -34,11 +39,11 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	private static double SINGEL_INFO_BAD_PROPORTION_SCORE=35;
 	private static double SINGEL_INFO_EVALUATE_Repeat_PROPORTION_SCORE=40;
 	//中差评比重
-	//500以上区间
+	//800以上区间
 	private static double SINGEL_BAD_PROPORTION_MAX_500=11.0d;		//有分最低值
 	private static double SINGEL_BAD_PROPORTION_MIDDEl=5.0d;		//单个商品及格线
 	private static double SINGEL_BAD_PROPORTION_MIN=1.0d;   	//最高分线
-	//100-500
+	//100-800
 	private static double SINGEL_BAD_PROPORTION_MIDDEl_100=5.0d;		//单个商品及格线
 	private static double SINGEL_BAD_PROPORTION_MAX_100=10.0d;		//有分最低值
 	//-100
@@ -54,7 +59,84 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	private static double TOTAL_INFO_DESC_SCORE_MAX=4.8;
 	//限制多少才进行统计
 	private static int SINGEL_TOTAL_LIMIT=20;
+	private static int PAGE_SIZE=8;
+	private static int Available_Page=100;
+	//一个商品在同一时间段内，被同一个人评论的2次，3次的人数。可能性值(未来统计)
+	//评论总数20-100个
+	private static double Twice_People_min_One_stage=0;
+	private static double Twice_People_max_One_stage=0.05;
+	//Twice_People，Three_People或关系
+	private static double Three_People_min_One_stage=0;
+	private static double Three_People_max_One_stage=0.025;
+	private static int FourMore_People_One_stage=0;
+	//评论总数100-800个
+	private static double Twice_People_min_Two_stage=0;
+	private static double Twice_People_max_Two_stage=0.05;
+	private static double Three_People_min_Two_stage=0;
+	private static double Three_People_max_Two_stage=0.025;
+	private static int FourMore_People_Two_stage=1;
+	//评论总数800+个
+	private static double Twice_People_min_Three_stage=0;
+	private static double Twice_People_max_Three_stage=0.05;
+	private static double Three_People_min_Three_stage=0;
+	private static double Three_People_max_Three_stage=0.25;
+	private static int FourMore_People_Three_stage=1;
+	private static int Per_Addition=3;
 	
+	
+	private static int One_stage=20;
+	private static int Two_stage=100;
+	private static int Three_stage=800;
+	//20
+	private static double per_two_score_One_stage=3;
+	private static double per_three_score_One_stage=4.5;
+	private static double per_four_score_One_stage=6;
+	//100
+	private static double per_two_score_Two_stage=2;
+	private static double per_three_score_Two_stage=3.5;
+	private static double per_four_score_Two_stage=5;
+	//评论总数800+个
+	private static double per_two_score_Three_stage=1;
+	private static double per_three_score_Three_stage=2.5;
+	private static double per_four_score_Three_stage=3;
+	
+	
+	/**
+	 * 计算该商品总分
+	 */
+	@Override
+	public  double evaluateCalculate(String url){
+		
+		//分析url对应的商家用户id和商品id
+		Map<String, String> parammap=this.analyzeUrl(url);
+		String userid=parammap.get("userid")==null?"":parammap.get("userid");
+		String productid=parammap.get("productid")==null?"":parammap.get("productid");
+		if(parammap==null || parammap.size()==0){
+			return 0;
+		}
+		//获取淘宝总体评论对象。
+		TaobaoTotalAllData taobaoTotalAllData=this.analyzeTaobaoTotalAllData(userid, productid);
+		
+		TaobaoSingleData taobaoSingleData=null;
+		if(taobaoTotalAllData.getData().getCount().getTotal()>SINGEL_TOTAL_LIMIT){
+			taobaoSingleData=this.analyzeProductUrl(userid, productid, 1);
+		}
+		//获得当前商品的评论
+		double prevScore=this.sellerTotalEvaluate(taobaoTotalAllData);
+		double productScore=this.singleProductEvaluate(taobaoTotalAllData);
+		//获得淘宝单个商品的评价信息
+		//一期做前100页，即800条评论的重复率,记录下有用评论
+		Map<String, Map<String, Object>> productEvaluate=analyzeProductUrlAll(userid, productid,taobaoTotalAllData.getData().getCount().getTotal());
+		//计算评论的重复的评分
+		double repeatScore=evaluateSingleRepeat(productEvaluate,taobaoTotalAllData);
+		//获得总的分数评价
+		logger.info("卖家总评评分："+prevScore);
+		logger.info("产品总评评分："+productScore);
+		logger.info("评论重复率评分："+repeatScore);
+		double result=CommonTools.doubleFormat(prevScore+productScore+repeatScore);
+		logger.info("总分："+result);
+		return result;
+	}
 	/**
 	 * 卖家总体印象
 	 */
@@ -136,19 +218,10 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		}
 		//计算单个商品中差评权重
 		double singleWeightScore=evaluateSingleWeight(taobaoTotalAllData);
-		//单个商品中重复评论的比重
 		
-		return 0;
+		return singleWeightScore;
 	}
 
-	/**
-	 * 计算单个商品的重复购买率
-	 * @param taobaoSingleData
-	 * @return
-	 */
-	public double evaluateSingleRepeat(TaobaoSingleData taobaoSingleData){
-		return 0;
-	}
 	/**
 	 * 计算单个商品中差评比重
 	 * @param taobaoTotalAllData	商品总评信息
@@ -159,14 +232,15 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		int total=taobaoTotalAllData.getData().getCount().getTotal();
 		int badAndNormal=taobaoTotalAllData.getData().getCount().getBad()
 				+taobaoTotalAllData.getData().getCount().getNormal();
-		double singleWeight=(badAndNormal/total)*100;
+		int reEval=taobaoTotalAllData.getData().getCount().getAdditional();
+		double singleWeight=((new Double(badAndNormal)+reEval/TaobaoProductEvaluate.Per_Addition)/total)*100;
 		//不同评价总量，不同的计算
-		if(total>=500){
+		if(total>TaobaoProductEvaluate.Three_stage){
 			singleWeightScore=this.getSingleStageScore(SINGEL_BAD_PROPORTION_MIN, SINGEL_BAD_PROPORTION_MAX_500, singleWeight);
 			
-		}else if(total>=100 && total<500){
+		}else if(total>TaobaoProductEvaluate.Two_stage && total<=TaobaoProductEvaluate.Three_stage){
 			singleWeightScore=this.getSingleStageScore(SINGEL_BAD_PROPORTION_MIN, SINGEL_BAD_PROPORTION_MAX_100, singleWeight);
-		}else if(total<100 && total >SINGEL_TOTAL_LIMIT){
+		}else if(total<=TaobaoProductEvaluate.Two_stage && total >TaobaoProductEvaluate.One_stage){
 			singleWeightScore=this.getSingleStageScore(SINGEL_BAD_PROPORTION_MIN, SINGEL_BAD_PROPORTION_MAX_20, singleWeight);
 		}
 		return singleWeightScore;
@@ -194,37 +268,87 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	}
 	
 	/**
-	 * 计算该商品总分
+	 * 计算单个商品的重复购买率得分
+	 * @param taobaoSingleData
+	 * @return
 	 */
-	@Override
-	public  double evaluateCalculate(String url){
-		
-		//分析url对应的商家用户id和商品id
-		Map<String, String> parammap=this.analyzeUrl(url);
-		String userid=parammap.get("userid")==null?"":parammap.get("userid");
-		String productid=parammap.get("productid")==null?"":parammap.get("productid");
-		TaobaoSingleData taobaoSingleData=this.analyzeProductUrl(userid, productid, 1);
-		if(parammap==null || parammap.size()==0){
+	public double evaluateSingleRepeat(Map<String, Map<String, Object>> productEvaluate,TaobaoTotalAllData taobaoTotalAllData){
+		Map<String, Object> usermap=productEvaluate.get("usermap");
+		if(taobaoTotalAllData==null || productEvaluate==null){
 			return 0;
 		}
-		//获取淘宝总体评论对象。
-		TaobaoTotalAllData taobaoTotalAllData=this.analyzeTaobaoTotalAllData(userid, productid);
-		//获得当前商品的评论
-		
-		double prevScore=this.sellerTotalEvaluate(taobaoTotalAllData);
-		double productScore=this.singleProductEvaluate(taobaoTotalAllData);
-		//获得总的分数评价
-		return CommonTools.doubleFormat(prevScore+productScore);
+		int count=taobaoTotalAllData.getData().getCount().getTotal();
+		//800的特殊处理
+		if(count>800){
+			count=800;
+		}
+		int min=0;
+		int twoMax=0;
+		int threeMax=0;
+		double score=0;
+		//第一阶段
+		if(count>TaobaoProductEvaluate.One_stage && count<=TaobaoProductEvaluate.Two_stage){
+			twoMax=new Double(count*TaobaoProductEvaluate.Twice_People_max_One_stage).intValue();
+			threeMax=new Double(count*TaobaoProductEvaluate.Three_People_max_One_stage).intValue();
+			score=getUserScore(usermap
+					,TaobaoProductEvaluate.per_two_score_One_stage
+					,TaobaoProductEvaluate.per_three_score_One_stage
+					,TaobaoProductEvaluate.per_four_score_One_stage
+					,min,twoMax,threeMax,TaobaoProductEvaluate.FourMore_People_One_stage);
+		}else if(count>TaobaoProductEvaluate.Two_stage && count<=TaobaoProductEvaluate.Three_stage){
+			//第二阶段
+			twoMax=new Double(count*TaobaoProductEvaluate.Twice_People_max_Two_stage).intValue();
+			threeMax=new Double(count*TaobaoProductEvaluate.Three_People_max_Two_stage).intValue();
+			score=getUserScore(usermap
+					,TaobaoProductEvaluate.per_two_score_Two_stage
+					,TaobaoProductEvaluate.per_three_score_Two_stage
+					,TaobaoProductEvaluate.per_four_score_Two_stage
+					,min,twoMax,threeMax,TaobaoProductEvaluate.FourMore_People_Two_stage);
+		}else if(count>TaobaoProductEvaluate.Three_stage){
+			//第 三阶段
+			twoMax=new Double(count*TaobaoProductEvaluate.Twice_People_max_Three_stage).intValue();
+			threeMax=new Double(count*TaobaoProductEvaluate.Three_People_max_Three_stage).intValue();
+			score=getUserScore(usermap
+					,TaobaoProductEvaluate.per_two_score_Three_stage
+					,TaobaoProductEvaluate.per_three_score_Three_stage
+					,TaobaoProductEvaluate.per_four_score_Three_stage
+					,min,twoMax,threeMax,TaobaoProductEvaluate.FourMore_People_Three_stage);
+		}
+		return score;
 	}
 	
-	public TaobaoSingleData analyzeProductUrl(String userNumid,String auctionNumId,int page){
+	//获得用户评论分数
+	private double getUserScore(Map<String, Object> usermap
+				,double per_two_score
+				,double per_three_score
+				,double per_four_score
+				,int min,int twoMax,int threeMax,int four){
+		double score=TaobaoProductEvaluate.SINGEL_INFO_EVALUATE_Repeat_PROPORTION_SCORE;
+		EvaluateTime evaluateTime=getEvaluatePeople(usermap);
+		if(evaluateTime.getTwicePeople()>twoMax){
+			score=score-(evaluateTime.getTwicePeople()-twoMax)*per_two_score;
+		}
+		if(evaluateTime.getThreestimesPeople()>threeMax){
+			score=score-(evaluateTime.getThreestimesPeople()-threeMax)*per_three_score;
+		}
+		if(evaluateTime.getMoreThreestimesPeople()>four){
+			score=score-(evaluateTime.getMoreThreestimesPeople()-four)*per_four_score;
+		}
+		if(score<=0){
+			score=0;
+		}
+		return score;
+	}
+	
+	private  TaobaoSingleData analyzeProductUrl(String userNumid,String auctionNumId,int page){
 		if(userNumid.equals("") || auctionNumId.equals("")){
 			return null;
 		}
 		TaobaoSingleData taobaoSingleData=new TaobaoSingleData();
 		//以前的请求方式
 		SpiderRegex regex = new SpiderRegex();
-		String htmltext = regex.gethtmlContent(EvaluateConfig.taobao_evaluate_url+"?userNumId="+userNumid+"&auctionNumId="+auctionNumId+"&showContent=1&currentPage="+page,"gbk");
+		//String htmltext = regex.gethtmlContent(EvaluateConfig.taobao_evaluate_url+"?userNumId="+userNumid+"&auctionNumId="+auctionNumId+"&showContent=1&currentPage="+page,"gbk");
+		String htmltext=CommonTools.requestUrl(EvaluateConfig.taobao_evaluate_url, "gbk", "userNumId="+userNumid+"&auctionNumId="+auctionNumId+"&showContent=1&currentPage="+page);
 		try {
 			taobaoSingleData=json2TaobaoSingleData(htmltext);
 		} catch (Exception e) {
@@ -233,14 +357,105 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		return taobaoSingleData;
 	}
 	
+	/**
+	 * 根据用户id和商品解析评论，计算重复率，记录有用信息
+	 * @param userNumid		卖家id
+	 * @param auctionNumId	商品id
+	 * @param totalcount	评论总数
+	 * @return
+	 */
+	private Map<String, Map<String, Object>> analyzeProductUrlAll(String userNumid,String auctionNumId,int totalcount){
+		if(0==totalcount || totalcount<=SINGEL_TOTAL_LIMIT){
+			return null;
+		}
+		Date start=new Date(); 
+		//需要返回的map
+		Map<String, Map<String, Object>> result=new HashMap<String, Map<String,Object>>();
+		//评论用户map
+		Map<String, Object> userMap=new HashMap<String, Object>();
+		Map<String, Object> useFulMap=new HashMap<String, Object>();
+		int totalpage=0;
+		//是否是整页数据，如果不是就加一页
+		if(totalcount%PAGE_SIZE==0){
+			totalpage=totalcount/PAGE_SIZE;
+		}else{
+			totalpage=totalcount/PAGE_SIZE+1;
+		}
+		if(totalcount>Available_Page){
+			totalpage=Available_Page;
+		}
+		for(int page=1;page<=totalpage;page++){
+			logger.info("当前page："+page);
+			TaobaoSingleData taobaoSingleData=this.analyzeProductUrl(userNumid, auctionNumId, page);
+			userMap=createUserMap(taobaoSingleData, userMap, useFulMap);
+		}
+		logger.info("use time:"+(new Date().getTime()-start.getTime())+"ms");
+		//获得用户评论大于2次的信息。
+		
+		result.put("usermap", userMap);
+		return result;
+	}
+	
+	/**
+	 * 统计不同次数评论的人
+	 * @param userMap
+	 * @return
+	 */
+	private EvaluateTime getEvaluatePeople(Map<String, Object> userMap){
+		if(userMap==null){
+			return null;
+		}
+		EvaluateTime evaluateTime=new EvaluateTime();
+		Iterator<String> it=userMap.keySet().iterator();
+		while(it.hasNext()){
+			Integer temp=(Integer)userMap.get(it.next());
+			if(temp==2){
+				evaluateTime.setTwicePeople(evaluateTime.getTwicePeople()+1);
+			}else if(temp==3){
+				evaluateTime.setThreestimesPeople(evaluateTime.getThreestimesPeople()+1);
+			}else if(temp>3){
+				evaluateTime.setMoreThreestimesPeople(evaluateTime.getMoreThreestimesPeople()+1);
+			}
+		}
+		return evaluateTime;
+	}
+	
+	/**
+	 * 根据用户信息构建用户map
+	 * @param taobaoSingleData
+	 * @param userMap
+	 * @return
+	 */
+	private Map<String, Object> createUserMap(TaobaoSingleData taobaoSingleData,Map<String, Object> userMap,Map<String, Object> useFulMap){
+		if(taobaoSingleData==null || taobaoSingleData.getRateListInfo()==null || taobaoSingleData.getRateListInfo().getRateList()==null){
+			return userMap;
+		}
+		//构造usermap,即用户评论的用户信息
+		for(TaobaoEvaluate  taobaoEvaluate:taobaoSingleData.getRateListInfo().getRateList()){
+			//判断是否已经存在该用户,如果存在则+1
+			if(userMap.containsKey(taobaoEvaluate.getDisplayUserNick())){
+				userMap.put(taobaoEvaluate.getDisplayUserNick(), (Integer)userMap.get(taobaoEvaluate.getDisplayUserNick())+1);
+			}else{
+				userMap.put(taobaoEvaluate.getDisplayUserNick(), new Integer(1));
+			}
+			//有用评论暂存
+		}
+		return userMap;
+	}
+	
 	public TaobaoSingleData json2TaobaoSingleData(String jsonStr) {
 		//ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 		 JSONObject jsonObject = null;  
 		 //setDataFormat2JAVA();   
         // jsonObject = JSONObject.fromObject(jsonStr.substring(1).substring(0, jsonStr.length()-2));
-         jsonObject = JSONObject.fromObject(jsonStr.substring("TB.detailRate =".length()));
+        // jsonObject = JSONObject.fromObject(jsonStr.substring("TB.detailRate =".length()));
+		 //logger.info("-----------"+jsonStr+"---");
+		 jsonObject = JSONObject.fromObject(jsonStr.substring("TB.detailRate =".length()+4));
 		//TaobaoTotalAllData taobaoTotalAllData = gson.fromJson(jsonStr, TaobaoTotalAllData.class);
-         TaobaoSingleData taobaoSingleData = (TaobaoSingleData)JSONObject.toBean(jsonObject, TaobaoSingleData.class);
+         Map<String, Class> alllist = new HashMap<String, Class>();
+         alllist.put("rateList", TaobaoEvaluate.class);
+         alllist.put("rateList", TaobaoEvaluate.class);
+         TaobaoSingleData taobaoSingleData = (TaobaoSingleData)JSONObject.toBean(jsonObject, TaobaoSingleData.class,alllist);
 		return taobaoSingleData;
 	}
 	/**
@@ -255,10 +470,10 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		}
 		TaobaoTotalAllData taobaoTotalAllData=new TaobaoTotalAllData();
 		//以前的请求方式
-		SpiderRegex regex = new SpiderRegex();
-		String htmltext = regex.gethtmlContent(EvaluateConfig.taobao_evaluate_total_url+"?userNumId="+userNumid+"&auctionNumId="+auctionNumId,"gbk");
+//		SpiderRegex regex = new SpiderRegex();
+//		String htmltext = regex.gethtmlContent(EvaluateConfig.taobao_evaluate_total_url+"?userNumId="+userNumid+"&auctionNumId="+auctionNumId,"gbk");
 		//现在的请求方式
-		//String htmltext=CommonTools.requestUrl(EvaluateConfig.taobao_evaluate_total_url, "gbk", "userNumId=1819877675&auctionNumId=27584368469");
+		String htmltext=CommonTools.requestUrl(EvaluateConfig.taobao_evaluate_total_url, "gbk", "userNumId="+userNumid+"&auctionNumId="+auctionNumId);
 		//List<TaobaoTotalAllData> taobaoTotalAllDataList=json2TaobaoTotalAllDataList(htmltext);
 		try {
 			taobaoTotalAllData=json2TaobaoTotalAllData(htmltext);
@@ -327,18 +542,28 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		//ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
 		 JSONObject jsonObject = null;  
 		 //setDataFormat2JAVA();   
-        // jsonObject = JSONObject.fromObject(jsonStr.substring(1).substring(0, jsonStr.length()-2));
-         jsonObject = JSONObject.fromObject(jsonStr.substring(1).substring(0, jsonStr.length()-2));
+        //jsonObject = JSONObject.fromObject(jsonStr.substring(1).substring(0, jsonStr.length()-2));
+		//jsonObject = JSONObject.fromObject(jsonStr.substring(2).substring(0, jsonStr.length()-2));
+		//新版请求淘宝
+		//System.out.println("---------------"+jsonStr.substring(5).substring(0, jsonStr.length()-6)+"---------");
+		 jsonObject = JSONObject.fromObject(jsonStr.substring(5).substring(0, jsonStr.length()-6));
+         Map<String, Class> mycollection = new HashMap<String, Class>();
+         mycollection.put("correspondList", String.class);
+         mycollection.put("impress", TaobaoImpress.class);
+         mycollection.put("spuRatting", String.class);
 		//TaobaoTotalAllData taobaoTotalAllData = gson.fromJson(jsonStr, TaobaoTotalAllData.class);
-         TaobaoTotalAllData taobaoTotalAllData = (TaobaoTotalAllData)JSONObject.toBean(jsonObject, TaobaoTotalAllData.class);
+         TaobaoTotalAllData taobaoTotalAllData = (TaobaoTotalAllData)JSONObject.toBean(jsonObject, TaobaoTotalAllData.class,mycollection);
 		return taobaoTotalAllData;
 	}
 	//test
 	public static void main(String[] args) {
 		TaobaoProductEvaluate taobaoProductEvaluate=new TaobaoProductEvaluate();
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
-		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.25.wfdMnI&id=35047474226");
+		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.25.llmAw7&id=35047474226");
+		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-1374277071.31.yiyibf&id=7994294308");
+		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-2464746513.27.96rX4Z&id=19180033921");
 //		Map<String, String> parammap=taobaoProductEvaluate.analyzeUrl("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 //		taobaoProductEvaluate.sellerTotalEvaluate(parammap);
+		//System.out.println(new Long(Math.round(new Double(1.8))).intValue());
 	}
 }

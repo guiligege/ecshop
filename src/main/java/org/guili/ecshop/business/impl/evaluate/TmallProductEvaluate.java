@@ -27,6 +27,7 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		return 0;
 	}
 
+
 	@Override
 	public double singleProductEvaluate(Object obj) {
 		// TODO Auto-generated method stub

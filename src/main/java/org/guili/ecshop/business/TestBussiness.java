@@ -23,14 +23,19 @@ public class TestBussiness {
 	}
 	
 	public void add()throws Exception{
-		Shop shop=new Shop();
-		shop.setId(5L);
-		shop.setName("test");
-		try {
-			testDao.add(shop);
-		} catch (Exception e) {
-			throw e;
-		}
+		Date now=new Date();
+		System.out.println("start time:"+now.getTime()+"ms");
+		//for(long i=1;i<1000000;i++){
+			Shop shop=new Shop();
+			shop.setId(5L);
+			shop.setName("test");
+			try {
+				testDao.add(shop);
+			} catch (Exception e) {
+				throw e;
+			}
+		//}
+		System.out.println("end time:"+(new Date().getTime()-now.getTime())+"ms");
 	}
 	
 	public Shop getone()throws Exception{

@@ -9,12 +9,30 @@
           <string>WEB-INF/views/result1.jsp</string>
           <string>WEB-INF/web.xml</string>
           <string>WEB-INF/classes/config/alipay_config.properties</string>
+          <string>WEB-INF/classes/config/evaluate_config.properties</string>
           <string>WEB-INF/classes/config/platform.properties</string>
           <string>WEB-INF/classes/log4j.xml</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/EvaluateTime.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoEvaluate.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoEvaluateCount.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoGift.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoImpress.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoPageInfo.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoSingleCreditInfo.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoSingleData.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoSingleEvaluate.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoSingleScoreInfo.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoTotalAllData.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoTotalEvaluate.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TbaobaoEvaluateBanner.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/payment/SalesOrder.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Semiconductor.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Shop.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/credit/IProductEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/ExpireJobTask.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/EvaluateConfig.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TaobaoProductEvaluate.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TmallProductEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/AvnetSpiderServiceImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/DigikeySpiderServiceImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/MouserSpiderServiceImpl.class</string>
@@ -95,6 +113,7 @@
           <string>WEB-INF/lib/slf4j-api-1.6.0.jar</string>
           <string>WEB-INF/lib/dom4j-1.6.jar</string>
           <string>WEB-INF/lib/xml-apis-1.0.b2.jar</string>
+          <string>WEB-INF/lib/commons-httpclient-3.1.jar</string>
         </pathsSet>
       </path-set>
     </entry>
@@ -554,6 +573,19 @@
         <modelEncoding>UTF-8</modelEncoding>
       </dependency>
       <targetFileName>dom4j-1.6.jar</targetFileName>
+    </org.apache.maven.plugin.war.util.DependencyInfo>
+    <org.apache.maven.plugin.war.util.DependencyInfo>
+      <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+        <type>jar</type>
+        <scope>compile</scope>
+        <exclusions/>
+        <optional>false</optional>
+        <modelEncoding>UTF-8</modelEncoding>
+      </dependency>
+      <targetFileName>commons-httpclient-3.1.jar</targetFileName>
     </org.apache.maven.plugin.war.util.DependencyInfo>
   </dependenciesInfo>
 </webapp-structure>
