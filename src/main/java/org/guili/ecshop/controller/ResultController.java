@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 //用于对应controller。区别不同的类
-@RequestMapping("/result")
+@RequestMapping("/")
 public class ResultController {
 	private Logger log=Logger.getLogger(ResultController.class);
 	@Resource(name="testBusiness")
@@ -47,13 +47,13 @@ public class ResultController {
 		this.testBusiness = testBusiness;
 	}
 	
-	@RequestMapping(value="/add.htm")
+	@RequestMapping(value="result/add.htm")
 	public String addUser(HttpServletRequest request,ModelMap modelMap) throws Exception{
 		testBusiness.add();
 		return "result";
 	}
 	//下面两种方式都ok
-	@RequestMapping(value="/result.htm")
+	@RequestMapping(value="result/result.htm")
 	public String viewUser(HttpServletRequest request,ModelMap modelMap) throws Exception{
 //		Shop shop=testBusiness.getone();
 		avnetSpiderServiceImpl.analysisService();
@@ -62,7 +62,7 @@ public class ResultController {
 //		log.info("logger--->"+shop.getName());
 		return "result1";
 	}
-	@RequestMapping(value="/testdatabase.htm")
+	@RequestMapping(value="result/testdatabase.htm")
 	public String addUser1(HttpServletRequest request,ModelMap modelMap) throws Exception{
 		//testBusiness.findone();
 		testBusiness.getone();
@@ -70,7 +70,7 @@ public class ResultController {
 		return "result";
 	}
 	//下面两种方式都ok
-	@RequestMapping(value="/result1.htm")
+	@RequestMapping(value="result/result1.htm")
 	public String viewUser1(HttpServletRequest request,ModelMap modelMap) throws Exception{
 //		Semiconductor semiconductor=testBusiness.findone();
 //		log.info("logger--->"+semiconductor.getCreateTime());
@@ -81,11 +81,17 @@ public class ResultController {
 	}
 	//取json数据例子,直接返回调用页面
 	//类似于struts2的void返回方法的调用
-	@RequestMapping(value="/test.htm")  
+	@RequestMapping(value="result/test.htm")  
     @ResponseBody  
     public Object test(HttpSession session){
         session.setAttribute("permit", "中文");
         System.out.println("test....................");
         return session.getAttribute("permit");
-    }  
+    }
+	@RequestMapping(value="index.htm")
+	public String index(HttpServletRequest request,ModelMap modelMap) throws Exception{
+//		Semiconductor semiconductor=testBusiness.findone();
+//		log.info("logger--->"+semiconductor.getCreateTime());
+		return "index";
+	}
 }
