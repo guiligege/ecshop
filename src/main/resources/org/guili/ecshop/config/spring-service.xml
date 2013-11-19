@@ -28,5 +28,16 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<bean id="avnetSpiderServiceImpl" class="org.guili.ecshop.business.impl.spider.AvnetSpiderServiceImpl">
 			<property name="semiconductorService" ref="semiconductorService"></property>
 	</bean>
-
+	
+	
+	<!-- 评价系统 -->
+	<bean id="taobaoProductEvaluate" class="org.guili.ecshop.business.impl.evaluate.TaobaoProductEvaluate">
+	</bean>
+	<bean id="tmallProductEvaluate" class="org.guili.ecshop.business.impl.evaluate.TmallProductEvaluate">
+	</bean>
+	<bean id="prodcutEvaluateFactory" class="org.guili.ecshop.business.impl.evaluate.ProdcutEvaluateFactory">
+		<property name="taobaoProductEvaluate" ref="taobaoProductEvaluate"></property>
+		<property name="tmallProductEvaluate" ref="tmallProductEvaluate"></property>
+	</bean>
+	
 </beans>

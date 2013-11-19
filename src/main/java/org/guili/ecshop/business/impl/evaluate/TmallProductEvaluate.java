@@ -3,6 +3,7 @@ package org.guili.ecshop.business.impl.evaluate;
 import java.util.Map;
 
 import org.guili.ecshop.business.credit.IProductEvaluate;
+import org.springframework.ui.ModelMap;
 
 /**
  * 天猫产品评价
@@ -35,12 +36,10 @@ public class TmallProductEvaluate implements IProductEvaluate {
 	}
 
 	@Override
-	public double evaluateCalculate(String url) {
+	public double evaluateCalculate(String url, ModelMap modelMap) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-
-	
 
 }

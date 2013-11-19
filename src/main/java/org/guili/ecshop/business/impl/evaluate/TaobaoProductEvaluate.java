@@ -17,6 +17,7 @@ import org.guili.ecshop.bean.credit.taobao.TaobaoTotalAllData;
 import org.guili.ecshop.business.credit.IProductEvaluate;
 import org.guili.ecshop.util.CommonTools;
 import org.guili.ecshop.util.SpiderRegex;
+import org.springframework.ui.ModelMap;
 
 /**
  * 淘宝产品评价
@@ -105,7 +106,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	 * 计算该商品总分
 	 */
 	@Override
-	public  double evaluateCalculate(String url){
+	public  double evaluateCalculate(String url,ModelMap modelMap){
 		
 		//分析url对应的商家用户id和商品id
 		Map<String, String> parammap=this.analyzeUrl(url);
@@ -117,10 +118,10 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		//获取淘宝总体评论对象。
 		TaobaoTotalAllData taobaoTotalAllData=this.analyzeTaobaoTotalAllData(userid, productid);
 		
-		TaobaoSingleData taobaoSingleData=null;
+		/*TaobaoSingleData taobaoSingleData=null;
 		if(taobaoTotalAllData.getData().getCount().getTotal()>SINGEL_TOTAL_LIMIT){
 			taobaoSingleData=this.analyzeProductUrl(userid, productid, 1);
-		}
+		}*/
 		//获得当前商品的评论
 		double prevScore=this.sellerTotalEvaluate(taobaoTotalAllData);
 		double productScore=this.singleProductEvaluate(taobaoTotalAllData);
@@ -130,10 +131,17 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		//计算评论的重复的评分
 		double repeatScore=evaluateSingleRepeat(productEvaluate,taobaoTotalAllData);
 		//获得总的分数评价
+		if(taobaoTotalAllData.getData().getCount().getTotal()<=SINGEL_TOTAL_LIMIT){
+			modelMap.put("isless", true);
+		}
+		modelMap.put("prevScore", prevScore);
+		modelMap.put("productScore", productScore);
+		modelMap.put("repeatScore", repeatScore);
 		logger.info("卖家总评评分："+prevScore);
 		logger.info("产品总评评分："+productScore);
 		logger.info("评论重复率评分："+repeatScore);
 		double result=CommonTools.doubleFormat(prevScore+productScore+repeatScore);
+		modelMap.put("result", result);
 		logger.info("总分："+result);
 		return result;
 	}
@@ -561,7 +569,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.25.llmAw7&id=35047474226");
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-1374277071.31.yiyibf&id=7994294308");
-		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-2464746513.27.96rX4Z&id=19180033921");
+		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-2464746513.27.96rX4Z&id=19180033921",new ModelMap() );
 //		Map<String, String> parammap=taobaoProductEvaluate.analyzeUrl("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 //		taobaoProductEvaluate.sellerTotalEvaluate(parammap);
 		//System.out.println(new Long(Math.round(new Double(1.8))).intValue());

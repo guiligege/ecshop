@@ -1,11 +1,12 @@
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Bootstrap, from Twitter</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=gbk" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta name="description" content="">
     <meta name="author" content="">
  
+	<%@include file="commons/config.jsp" %>
     <!-- Le styles -->
     <link href="css/bootstrap.css" rel="stylesheet">
     <style type="text/css">
@@ -48,6 +49,7 @@
       }
     </style>
     <link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <script src="js/jquery.js"></script>
  
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements 
     style="margin-left:302px;margin-right:318px;margin-top:10px;border:3px outset #F8F8F8;border-style: outset;display:none;"
@@ -64,42 +66,6 @@
     <link rel="apple-touch-icon-precomposed" href="ico/apple-touch-icon-57-precomposed.png">
     <link rel="shortcut icon" href="ico/favicon.png">
     
-     <script type="text/javascript">
-		function autoScroll(obj, ul_bz){
-			$(obj).find(ul_bz).animate({
-				marginTop : "-25px"
-			},500,function(){
-				//$(this).css({marginTop : "0px"}).find("li:first").hide();
-				$(this).css({marginTop : "0px"}).find("li:first").appendTo(this);
-				//$(this).css({marginTop : "0px"}).find("li:first").show();
-				$(".webname").html($(this).css({marginTop : "0px"}).find("li:first").html());
-			});
-		}
-		var i=1;
-		function scrollText(){
-			var allalert="看看什么情况呢";
-			if(i>allalert.length){
-				i=1;
-			}
-			var temp=allalert.substring(0,i);
-			i=i+1;
-			$(".myinput").attr("placeholder",temp);
-		}
-		var intervalId1=setInterval('scrollText()',1000);
-		var intervalId2=setInterval('autoScroll("#oDiv", "#oUl")',3000);
-		function clearInputInterval(){
-			 clearInterval(intervalId1);
-		}
-		//文档加载
-		/**
-		$(function(){
-			alert(1);
-			$(".myinput").focus(function(){
-				alert(1);
-				 clearInterval(intervalId1);
-			})
-		});*/
-	</script>
   </head>
  
   <body>
@@ -151,20 +117,19 @@
       </div> -->
       <div class="hero-unit" style="background-color:#FFFFFF">
 		      <div >
-		       	   <h2 style="text-align:center;">查查<span class="webname">查查</span>查查</h2>
+		       	   <h2 style="text-align:center;">查查<span class="webname">百度</span>查查</h2>
 		      </div>
 			  <div class="input-group" style="width:550px;margin:0 auto;position:relative;">
 				  <input name="q" type="text" placeholder="" class="myinput" style="height:29px;"/>
 				  <span >
-				    <button class="btn btn-primary" type="submit" style="height:29px;width:95px;">查看一下</button>
+				    <button class="btn btn-primary" type="submit" onclick="submitSearch();return false;" style="height:29px;width:95px;">查看一下</button>
 				  </span>
-				  <div class="outerdiv" style="position:absolute;margin:0;left:0;top:50px; background-color:#FFFFFF;">
-					  <div class="innerdiv">查看：aaaaa</div>
-					  <div class="innerdiv">查看：aaaaa</div>
-					  <div class="innerdiv">查看：aaaaa</div>
-					  <div class="innerdiv">查看：aaaaa</div>
-					  <div class="innerdiv">查看：aaaaa</div>
-					  <div class="innerdiv">查看：aaaaa</div>
+				  <div class="outerdiv" style="margin:0;left:0;top:50px; background-color:#FFFFFF;display:none">
+					  <div class="innerdiv" >卖家总评评分：<span id="prevscore"></span></div>
+					  <div class="innerdiv" >产品总评评分：<span  id="productScore"></div>
+					  <div class="innerdiv" >评论重复率评分：<span id="repeatScore"></div>
+					  <div class="innerdiv" >总分：<span id="result"></div>
+					  <div class="innerdiv">总数：<span  id="isless"></div>
 				  </div>
 			  </div>
 			  
@@ -172,7 +137,7 @@
       
       <div id="oDiv" class="hide">
 	    <ul id="oUl">
-	        <li class="hide">百度</li>
+	        <li class="hide">天猫</li>
 	        <li class="hide">淘宝</li>
 	       <!--  <li class="hide">京东</li>
 	        <li class="hide">易迅</li> -->
@@ -213,7 +178,6 @@
     <!-- Le javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="js/jquery.js"></script>
     <script src="js/bootstrap-transition.js"></script>
     <script src="js/bootstrap-alert.js"></script>
     <script src="js/bootstrap-modal.js"></script>
@@ -226,6 +190,59 @@
     <script src="js/bootstrap-collapse.js"></script>
     <script src="js/bootstrap-carousel.js"></script>
     <script src="js/bootstrap-typeahead.js"></script>
+    
+    <script type="text/javascript">
+		function autoScroll(obj, ul_bz){
+			$(obj).find(ul_bz).animate({
+				marginTop : "-25px"
+			},500,function(){
+				//$(this).css({marginTop : "0px"}).find("li:first").hide();
+				$(this).css({marginTop : "0px"}).find("li:first").appendTo(this);
+				//$(this).css({marginTop : "0px"}).find("li:first").show();
+				$(".webname").html($(this).css({marginTop : "0px"}).find("li:first").html());
+			});
+		}
+		//循环显示提示文字
+		var i=1;
+		function scrollText(){
+			var allalert="看看什么情况呢";
+			if(i>allalert.length){
+				i=1;
+			}
+			var temp=allalert.substring(0,i);
+			i=i+1;
+			//$(".myinput").attr("placeholder",temp);
+		}
+		var intervalId1=setInterval('scrollText()',1000);
+		var intervalId2=setInterval('autoScroll("#oDiv", "#oUl")',3000);
+		function clearInputInterval(){
+			 clearInterval(intervalId1);
+		}
+		//文档加载
+		//提交请求
+		function submitSearch(){
+			var url=$(".myinput").val();
+			$.ajax({
+  				url:_contextPath+"/evaluate/evaluateProduct.htm",
+  				type:"get",
+  				data:{url:url},
+  				dataType:"json",
+  				async:false,
+  				success:function(data){
+  					//prevScore,productScore,repeatScore,result,isless
+  					$("#prevscore").html(data.prevScore);
+  					$("#productScore").html(data.productScore);
+  					$("#repeatScore").html(data.repeatScore);
+  					$("#result").html(data.result);
+  					$("#isless").html(data.isless);
+  					$(".outerdiv").show();
+  				},
+  				error:function(data){
+  				
+  				}
+  			});
+		}
+	</script>
  
   </body>
 </html>

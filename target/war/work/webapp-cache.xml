@@ -248,6 +248,7 @@
           <string>WEB-INF/js/bootstrap-transition.js</string>
           <string>WEB-INF/js/bootstrap-typeahead.js</string>
           <string>WEB-INF/js/jquery-1.10.2.min.js</string>
+          <string>WEB-INF/views/commons/config.jsp</string>
           <string>WEB-INF/views/index.jsp</string>
           <string>WEB-INF/views/result.jsp</string>
           <string>WEB-INF/views/result1.jsp</string>
@@ -275,6 +276,8 @@
           <string>WEB-INF/classes/org/guili/ecshop/business/credit/IProductEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/ExpireJobTask.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/EvaluateConfig.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/EvaluateConstConfig.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/ProdcutEvaluateFactory.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TaobaoProductEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TmallProductEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/AvnetSpiderServiceImpl.class</string>
@@ -290,6 +293,9 @@
           <string>WEB-INF/classes/org/guili/ecshop/config/spring-dao.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/spring-quartz.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/spring-service.xml</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/common/MainController.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/evaluate/EvaluateConstConfig.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/evaluate/EvaluateController.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/payment/AbstractPaymentAdaptor.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/payment/AliPayConfig.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/payment/PaymentAdaptor.class</string>

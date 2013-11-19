@@ -2,6 +2,8 @@ package org.guili.ecshop.business.credit;
 
 import java.util.Map;
 
+import org.springframework.ui.ModelMap;
+
 /**
  * 
  * @ClassName:   IProductEvaluate 
@@ -39,5 +41,5 @@ public interface IProductEvaluate {
 	 * @param url
 	 * @return
 	 */
-	public  double evaluateCalculate(String url);
+	public  double evaluateCalculate(String url,ModelMap modelMap);
 }

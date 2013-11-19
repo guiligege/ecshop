@@ -88,10 +88,5 @@ public class ResultController {
         System.out.println("test....................");
         return session.getAttribute("permit");
     }
-	@RequestMapping(value="index.htm")
-	public String index(HttpServletRequest request,ModelMap modelMap) throws Exception{
-//		Semiconductor semiconductor=testBusiness.findone();
-//		log.info("logger--->"+semiconductor.getCreateTime());
-		return "index";
-	}
+
 }
