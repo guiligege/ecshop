@@ -1,8 +1,8 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <title>Bootstrap, from Twitter</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Type" content="text/html; charset=gbk" />
     <meta name="description" content="">
     <meta name="author" content="">
  
@@ -16,22 +16,24 @@
       .myinput{
       	padding-top: 10px;
       	width:418px;
-      	margin-left:300px;
+      	/**margin-left:300px;**/
       	margin-top:10px;
       }
       .ecshopdiv{
      	text-align:center;
       }
       .innerdiv{
-     		margin-left:5px;
-     		margin-left:5px;
-      }
+		 border-bottom:1px dashed #cccccc;
+		 padding-left: 5px;
+		}
+	   .innerdiv:last-child{
+		 border:none;
+	   }	
       .outerdiv{
-      		margin-left:302px;
-      		margin-right:318px;
+      		margin-left:266px;
       		margin-top:10px;
-      		border:3px outset #F8F8F8;
-      		border-style: outset;
+      		border:1px outset #F8F8F8;
+      		width:432px;
       }
       .hide{
       	display:none;
@@ -89,13 +91,14 @@
 			 clearInterval(intervalId1);
 		}
 		//文档加载
+		/**
 		$(function(){
 			alert(1);
 			$(".myinput").focus(function(){
 				alert(1);
 				 clearInterval(intervalId1);
 			})
-		});
+		});*/
 	</script>
   </head>
  
@@ -146,32 +149,33 @@
         <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
         <p><a href="#" class="btn btn-primary btn-large">Learn more &raquo;</a></p>
       </div> -->
-      <div class="hero-unit">
+      <div class="hero-unit" style="background-color:#FFFFFF">
 		      <div >
 		       	   <h2 style="text-align:center;">查查<span class="webname">查查</span>查查</h2>
 		      </div>
-			  <div class="input-group">
-				  <input name="q" type="text" placeholder="" class="myinput" style="height:29px"/>
+			  <div class="input-group" style="width:550px;margin:0 auto;position:relative;">
+				  <input name="q" type="text" placeholder="" class="myinput" style="height:29px;"/>
 				  <span >
 				    <button class="btn btn-primary" type="submit" style="height:29px;width:95px;">查看一下</button>
 				  </span>
+				  <div class="outerdiv" style="position:absolute;margin:0;left:0;top:50px; background-color:#FFFFFF;">
+					  <div class="innerdiv">查看：aaaaa</div>
+					  <div class="innerdiv">查看：aaaaa</div>
+					  <div class="innerdiv">查看：aaaaa</div>
+					  <div class="innerdiv">查看：aaaaa</div>
+					  <div class="innerdiv">查看：aaaaa</div>
+					  <div class="innerdiv">查看：aaaaa</div>
+				  </div>
 			  </div>
-			  <div class="outerdiv">
-				  <div class="innerdiv">初评：aaaaa</div>
-				  <div class="innerdiv">初评：aaaaa</div>
-				  <div class="innerdiv">初评：aaaaa</div>
-				  <div class="innerdiv">初评：aaaaa</div>
-				  <div class="innerdiv">初评：aaaaa</div>
-				  <div class="innerdiv">初评：aaaaa</div>
-			  </div>
+			  
       </div>
       
       <div id="oDiv" class="hide">
 	    <ul id="oUl">
+	        <li class="hide">百度</li>
 	        <li class="hide">淘宝</li>
-	        <li class="hide">天猫</li>
-	        <li class="hide">京东</li>
-	        <li class="hide">易迅</li>
+	       <!--  <li class="hide">京东</li>
+	        <li class="hide">易迅</li> -->
 	        <!-- <li class="hide">第5个li元素</li>
 	        <li class="hide">第6个li元素</li>
 	        <li class="hide">第7个li元素</li>
@@ -225,4 +229,3 @@
  
   </body>
 </html>
-
