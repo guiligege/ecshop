@@ -281,10 +281,10 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	 * @return
 	 */
 	public double evaluateSingleRepeat(Map<String, Map<String, Object>> productEvaluate,TaobaoTotalAllData taobaoTotalAllData){
-		Map<String, Object> usermap=productEvaluate.get("usermap");
 		if(taobaoTotalAllData==null || productEvaluate==null){
 			return 0;
 		}
+		Map<String, Object> usermap=productEvaluate.get("usermap");
 		int count=taobaoTotalAllData.getData().getCount().getTotal();
 		//800的特殊处理
 		if(count>800){
@@ -569,7 +569,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.25.llmAw7&id=35047474226");
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-1374277071.31.yiyibf&id=7994294308");
-		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-2464746513.27.96rX4Z&id=19180033921",new ModelMap() );
+		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.4.XuVzpt&id=36125840220",new ModelMap() );
 //		Map<String, String> parammap=taobaoProductEvaluate.analyzeUrl("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 //		taobaoProductEvaluate.sellerTotalEvaluate(parammap);
 		//System.out.println(new Long(Math.round(new Double(1.8))).intValue());
