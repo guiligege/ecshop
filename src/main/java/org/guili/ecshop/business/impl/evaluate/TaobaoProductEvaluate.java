@@ -133,6 +133,8 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		//获得总的分数评价
 		if(taobaoTotalAllData.getData().getCount().getTotal()<=SINGEL_TOTAL_LIMIT){
 			modelMap.put("isless", true);
+		}else{
+			modelMap.put("isless", false);
 		}
 		modelMap.put("prevScore", prevScore);
 		modelMap.put("productScore", productScore);
@@ -508,7 +510,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	 */
 	private Map<String, String>  taobaoAnalyze(String url){
 		Map<String, String> parammap=new HashMap<String, String>();
-		if(url==null || !(url.startsWith("http://item.taobao.com/item.htm") || url.startsWith("item.taobao.com/item.htm"))){
+		if(url==null || !(url.startsWith(EvaluateConstConfig.TAOBAOHEAD) || url.startsWith(EvaluateConstConfig.TAOBAOHEAD.replaceAll("http://", "")))){
 			return null;
 		}
 		//取得商品id//http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757

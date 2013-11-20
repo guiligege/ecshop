@@ -125,11 +125,11 @@
 				    <button class="btn btn-primary" type="submit" onclick="submitSearch();return false;" style="height:29px;width:95px;">查看一下</button>
 				  </span>
 				  <div class="outerdiv" style="margin:0;left:0;top:50px; background-color:#FFFFFF;display:none">
-					  <div class="innerdiv" >卖家总评评分：<span id="prevscore"></span></div>
-					  <div class="innerdiv" >产品总评评分：<span  id="productScore"></div>
-					  <div class="innerdiv" >评论重复率评分：<span id="repeatScore"></div>
-					  <div class="innerdiv" >总分：<span id="result"></div>
-					  <div class="innerdiv">总数：<span  id="isless"></div>
+					  <div class="innerdiv" >测试1：<span id="prevscore"></span></div>
+					  <div class="innerdiv" >测试1：<span  id="productScore"></div>
+					  <div class="innerdiv" >测试1：<span id="repeatScore"></div>
+					  <div class="innerdiv" >测试1：<span id="result"></div>
+					  <div class="innerdiv">测试1：<span  id="isless"></div>
 				  </div>
 			  </div>
 			  
@@ -137,8 +137,9 @@
       
       <div id="oDiv" class="hide">
 	    <ul id="oUl">
-	        <li class="hide">天猫</li>
+	        <li class="hide">百度</li>
 	        <li class="hide">淘宝</li>
+	        <li class="hide">腾讯</li>
 	       <!--  <li class="hide">京东</li>
 	        <li class="hide">易迅</li> -->
 	        <!-- <li class="hide">第5个li元素</li>

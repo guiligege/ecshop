@@ -10,7 +10,7 @@ package org.guili.ecshop.business.impl.evaluate;
 public class EvaluateConstConfig {
 	//淘宝，天猫，京东，易迅，苏宁，国美,QQ网购,一号店
 	public static final String TAOBAOHEAD="http://item.taobao.com/";
-	public static final String TMALLHEAD="http://item.taobao.com/";
+	public static final String TMALLHEAD="http://detail.tmall.com/";
 	public static final String JDHEAD="http://item.jd.com/";
 	public static final String YXHEAD="http://item.yixun.com/";
 	public static final String YHDHEAD="http://item.yhd.com/item/";
