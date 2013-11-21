@@ -270,6 +270,8 @@
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoTotalAllData.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoTotalEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TbaobaoEvaluateBanner.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/tmall/TmallEvaluate.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/tmall/TmallSingleEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/payment/SalesOrder.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Semiconductor.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Shop.class</string>

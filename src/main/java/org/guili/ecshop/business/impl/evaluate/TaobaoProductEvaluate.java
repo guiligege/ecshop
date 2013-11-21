@@ -60,8 +60,8 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 	private static double TOTAL_INFO_DESC_SCORE_MAX=4.8;
 	//限制多少才进行统计
 	private static int SINGEL_TOTAL_LIMIT=20;
-	private static int PAGE_SIZE=8;
-	private static int Available_Page=100;
+	private static int PAGE_SIZE=20;
+	private static int Available_Page=40;
 	//一个商品在同一时间段内，被同一个人评论的2次，3次的人数。可能性值(未来统计)
 	//评论总数20-100个
 	private static double Twice_People_min_One_stage=0;
@@ -129,7 +129,10 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		//一期做前100页，即800条评论的重复率,记录下有用评论
 		Map<String, Map<String, Object>> productEvaluate=analyzeProductUrlAll(userid, productid,taobaoTotalAllData.getData().getCount().getTotal());
 		//计算评论的重复的评分
-		double repeatScore=evaluateSingleRepeat(productEvaluate,taobaoTotalAllData);
+		double repeatScore=0;
+		if(productEvaluate!=null){
+			repeatScore=evaluateSingleRepeat(productEvaluate,taobaoTotalAllData);
+		}
 		//获得总的分数评价
 		if(taobaoTotalAllData.getData().getCount().getTotal()<=SINGEL_TOTAL_LIMIT){
 			modelMap.put("isless", true);
@@ -391,7 +394,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		}else{
 			totalpage=totalcount/PAGE_SIZE+1;
 		}
-		if(totalcount>Available_Page){
+		if(totalpage>Available_Page){
 			totalpage=Available_Page;
 		}
 		for(int page=1;page<=totalpage;page++){
@@ -522,25 +525,25 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		SpiderRegex regex = new SpiderRegex();
 		//String htmltext = regex.gethtmlContent(url,"gbk");
 		String htmltext=CommonTools.requestUrl(url, "gbk");
-		String userRegex = "userid=(.*?);siteCategory";
-		String shopRegex = "shopId=(.*?); userid=";
-		String siteCategoryRegex = "siteCategory=(.*?);siteInstanceId=";
+		String userRegex = "; userid=(.*?);";
+		String shopRegex = "; shopId=(.*?);";
+//		String siteCategoryRegex = "siteCategory=(.*?);siteInstanceId=";
 		//shopId=106471556; userid=1819877675;siteCategory=2
 		String[] userid = regex.htmlregex(htmltext,userRegex,true);
 		String[] shopid = regex.htmlregex(htmltext,shopRegex,true);
-		String[] siteCategoryid = regex.htmlregex(htmltext,siteCategoryRegex,true);
+//		String[] siteCategoryid = regex.htmlregex(htmltext,siteCategoryRegex,true);
 		if(userid!=null && userid.length>0){
 			parammap.put("userid", userid[0]);
 		}
 		if(shopid!=null && shopid.length>0){
 			parammap.put("shopid", shopid[0]);
 		}
-		if(siteCategoryid!=null && siteCategoryid.length>0){
-			parammap.put("siteCategoryid", siteCategoryid[0]);
-		}
+//		if(siteCategoryid!=null && siteCategoryid.length>0){
+//			parammap.put("siteCategoryid", siteCategoryid[0]);
+//		}
 		logger.info("userid is :---"+userid[0]+"--");
 		logger.info("shopid is :---"+shopid[0]+"--");
-		logger.info("siteCategoryid is :---"+siteCategoryid[0]+"--");
+//		logger.info("siteCategoryid is :---"+siteCategoryid[0]+"--");
 		return parammap;
 	}
 	
@@ -571,8 +574,8 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		TaobaoProductEvaluate taobaoProductEvaluate=new TaobaoProductEvaluate();
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.25.llmAw7&id=35047474226");
-		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-1374277071.31.yiyibf&id=7994294308");
-		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.4.XuVzpt&id=36125840220",new ModelMap() );
+		taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a1z10.3.w4002-1374277071.31.yiyibf&id=7994294308",new ModelMap() );
+		//taobaoProductEvaluate.evaluateCalculate("http://item.taobao.com/item.htm?spm=a230r.1.14.4.XuVzpt&id=36125840220",new ModelMap() );
 //		Map<String, String> parammap=taobaoProductEvaluate.analyzeUrl("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 //		taobaoProductEvaluate.sellerTotalEvaluate(parammap);
 		//System.out.println(new Long(Math.round(new Double(1.8))).intValue());

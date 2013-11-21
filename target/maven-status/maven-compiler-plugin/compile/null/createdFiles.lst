@@ -1,4 +1,5 @@
 org\guili\ecshop\bean\credit\taobao\TaobaoSingleScoreInfo.class
+org\guili\ecshop\bean\credit\tmall\TmallEvaluate.class
 org\guili\ecshop\bean\credit\taobao\TaobaoTotalEvaluate.class
 org\guili\ecshop\controller\payment\PaymentAlipayAdaptor.class
 org\guili\ecshop\controller\common\MainController.class
@@ -35,6 +36,7 @@ org\guili\ecshop\business\impl\evaluate\ProdcutEvaluateFactory.class
 org\guili\ecshop\bean\credit\taobao\EvaluateTime.class
 org\guili\ecshop\util\ExcelWriter.class
 org\guili\ecshop\controller\evaluate\EvaluateConstConfig.class
+org\guili\ecshop\bean\credit\tmall\TmallSingleEvaluate.class
 org\guili\ecshop\bean\spider\Shop.class
 org\guili\ecshop\bean\credit\taobao\TaobaoGift.class
 org\guili\ecshop\controller\evaluate\EvaluateController.class

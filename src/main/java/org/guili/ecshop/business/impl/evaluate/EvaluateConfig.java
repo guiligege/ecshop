@@ -24,5 +24,10 @@ public class EvaluateConfig {
 	 */
 	public static String taobao_evaluate_url=ResourceUtil.getValue(ResourceUtil.EVALUATEFILEPATH,"taobao_evaluate_url");
 	
+	/**
+	 * 天猫单个商品评论请求
+	 */
+	public static String tmall_evaluate_url=ResourceUtil.getValue(ResourceUtil.EVALUATEFILEPATH,"tmall_evaluate_url");
+	
 	
 }
