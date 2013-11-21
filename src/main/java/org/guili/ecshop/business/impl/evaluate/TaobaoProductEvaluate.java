@@ -356,7 +356,7 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		}
 		TaobaoSingleData taobaoSingleData=new TaobaoSingleData();
 		//以前的请求方式
-		SpiderRegex regex = new SpiderRegex();
+		//SpiderRegex regex = new SpiderRegex();
 		//String htmltext = regex.gethtmlContent(EvaluateConfig.taobao_evaluate_url+"?userNumId="+userNumid+"&auctionNumId="+auctionNumId+"&showContent=1&currentPage="+page,"gbk");
 		String htmltext=CommonTools.requestUrl(EvaluateConfig.taobao_evaluate_url, "gbk", "userNumId="+userNumid+"&auctionNumId="+auctionNumId+"&showContent=1&currentPage="+page);
 		try {
@@ -520,7 +520,8 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 		}
 		//解析url内容
 		SpiderRegex regex = new SpiderRegex();
-		String htmltext = regex.gethtmlContent(url,"gbk");
+		//String htmltext = regex.gethtmlContent(url,"gbk");
+		String htmltext=CommonTools.requestUrl(url, "gbk");
 		String userRegex = "userid=(.*?);siteCategory";
 		String shopRegex = "shopId=(.*?); userid=";
 		String siteCategoryRegex = "siteCategory=(.*?);siteInstanceId=";

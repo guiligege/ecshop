@@ -64,6 +64,32 @@ public class CommonTools {
 	}
 	
 	/**
+	 * 请求url，获取json
+	 * @param url		url
+	 * @param encode	url 编码
+	 * @param param		参数
+	 * @return
+	 */
+	public static String requestUrl(String url,String encode){
+		HttpClient client = new HttpClient();
+		GetMethod getMethod = new GetMethod(url);
+		//String encodeType = URLEncoder.encode(type.trim(), encode);
+		String jsonString="";
+		try {
+			int statusCode = client.executeMethod(getMethod);
+			if (statusCode != HttpStatus.SC_OK) {
+				return null;
+			}
+			jsonString = getMethod.getResponseBodyAsString();
+		} catch (Exception e) {
+			logger.error("CommonTools-->加载url请求失败 ：", e);
+			return null;
+		} finally {
+			getMethod.releaseConnection();
+		}
+		return jsonString;
+	}
+	/**
 	 * double类型格式化
 	 * @param result	需要格式化的数据
 	 * @return

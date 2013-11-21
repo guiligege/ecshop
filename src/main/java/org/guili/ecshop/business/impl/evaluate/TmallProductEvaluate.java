@@ -35,25 +35,34 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		private static double TOTAL_INFO_BAD_PROPORTION_SCORE=20;
 		private static double SINGEL_INFO_BAD_PROPORTION_SCORE=35;
 		private static double SINGEL_INFO_EVALUATE_Repeat_PROPORTION_SCORE=40;
+		
+		private static int One_stage=20;
+		private static int Two_stage=100;
+		private static int Three_stage=800;
+		private static int Per_Addition=3;
 		//中差评比重
 		//800以上区间
-		private static double SINGEL_BAD_PROPORTION_MAX_500=11.0d;		//有分最低值
+		private static double SINGEL_BAD_PROPORTION_MAX_500=6.0d;		//有分最低值
 		private static double SINGEL_BAD_PROPORTION_MIDDEl=5.0d;		//单个商品及格线
 		private static double SINGEL_BAD_PROPORTION_MIN=1.0d;   		//最高分线
 		//100-800
 		private static double SINGEL_BAD_PROPORTION_MIDDEl_100=5.0d;	//单个商品及格线
-		private static double SINGEL_BAD_PROPORTION_MAX_100=10.0d;		//有分最低值
+		private static double SINGEL_BAD_PROPORTION_MAX_100=5.0d;		//有分最低值
 		//-100
 		private static double SINGEL_BAD_PROPORTION_MIDDEl_20=5.0d;		//单个商品及格线
-		private static double SINGEL_BAD_PROPORTION_MAX_20=9.0d;		//有分最低值
+		private static double SINGEL_BAD_PROPORTION_MAX_20=4.0d;		//有分最低值
 		
-		private static double TOTAL_BAD_PROPORTION_MAX=7d;			//总评及格线
+		private static double TOTAL_BAD_PROPORTION_MAX=6.5d;			//总评及格线
 		private static double TOTAL_BAD_PROPORTION_MIDDEl=4.0d;			//总评及格线
-		private static double TOTAL_BAD_PROPORTION_MIN=3d;			//最高分数线
+		private static double TOTAL_BAD_PROPORTION_MIN=2.5d;			//最高分数线
 		
 		//以前描述的底线和顶线
 		private static double TOTAL_INFO_DESC_SCORE_MIN=4.5;
 		private static double TOTAL_INFO_DESC_SCORE_MAX=4.8;
+		
+		/**
+		 * 计算tmall商品评价分数
+		 */
 	@Override
 	public double evaluateCalculate(String url, ModelMap modelMap) {
 		//分析url对应的商家用户id和商品id
@@ -133,7 +142,8 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		}
 		//解析url内容
 		SpiderRegex regex = new SpiderRegex();
-		String htmltext = regex.gethtmlContent(url,"gbk");
+		//String htmltext = regex.gethtmlContent(url,"gbk");
+		String htmltext=CommonTools.requestUrl(url, "gbk");
 		//正则解析商家id和商家shopid
 		String userRegex = "; userid=(.*?);";
 		String shopRegex = "; shopId=(.*?);";
@@ -214,11 +224,67 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		return prevDescScore;
 	}
 	
-	
+	/**
+	 * 计算单个商品的评价权重分数
+	 */
 	@Override
 	public double singleProductEvaluate(Object obj) {
-		// TODO Auto-generated method stub
-		return 0;
+		if(obj==null){
+			return 0;
+		}
+		TaobaoTotalAllData taobaoTotalAllData=(TaobaoTotalAllData)obj;
+		int total=taobaoTotalAllData.getData().getCount().getTotal();
+		if(total<=TmallProductEvaluate.SINGEL_TOTAL_LIMIT){
+			return 0;
+		}
+		//计算单个商品中差评权重
+		double singleWeightScore=evaluateSingleWeight(taobaoTotalAllData);
+		
+		return singleWeightScore;
+	}
+	
+	/**
+	 * 计算单个商品中差评比重
+	 * @param taobaoTotalAllData	商品总评信息
+	 * @return
+	 */
+	public double evaluateSingleWeight(TaobaoTotalAllData taobaoTotalAllData){
+		double singleWeightScore=0;
+		int total=taobaoTotalAllData.getData().getCount().getTotal();
+		int badAndNormal=taobaoTotalAllData.getData().getCount().getBad()
+				+taobaoTotalAllData.getData().getCount().getNormal();
+		int reEval=taobaoTotalAllData.getData().getCount().getAdditional();
+		double singleWeight=((new Double(badAndNormal)+reEval/TmallProductEvaluate.Per_Addition)/total)*100;
+		//不同评价总量，不同的计算
+		if(total>TmallProductEvaluate.Three_stage){
+			singleWeightScore=this.getSingleStageScore(SINGEL_BAD_PROPORTION_MIN, SINGEL_BAD_PROPORTION_MAX_500, singleWeight);
+			
+		}else if(total>TmallProductEvaluate.Two_stage && total<=TmallProductEvaluate.Three_stage){
+			singleWeightScore=this.getSingleStageScore(SINGEL_BAD_PROPORTION_MIN, SINGEL_BAD_PROPORTION_MAX_100, singleWeight);
+		}else if(total<=TmallProductEvaluate.Two_stage && total >TmallProductEvaluate.One_stage){
+			singleWeightScore=this.getSingleStageScore(SINGEL_BAD_PROPORTION_MIN, SINGEL_BAD_PROPORTION_MAX_20, singleWeight);
+		}
+		return singleWeightScore;
+	}
+	/**
+	 * 计算当前权重的分值
+	 * @param min	最小可用区间
+	 * @param max	最大可用区间
+	 * @param weight	当前值
+	 * @return
+	 */
+	public double getSingleStageScore(double min,double max,double weight){
+		double singleWeightScore=0;
+		if(weight<min){
+			singleWeightScore=SINGEL_INFO_BAD_PROPORTION_SCORE;
+		}else if(weight>max){
+			singleWeightScore=0;
+		}else{
+			singleWeightScore=((max-weight)
+							  /(max-min))
+							  * SINGEL_INFO_BAD_PROPORTION_SCORE;
+		}
+		return singleWeightScore;
 	}
 
 	private  TaobaoTotalAllData analyzeTaobaoTotalAllData(String userNumid,String auctionNumId){
@@ -255,7 +321,7 @@ public class TmallProductEvaluate implements IProductEvaluate {
 
 	public static void main(String[] args) {
 		TmallProductEvaluate tmallProductEvaluate=new TmallProductEvaluate();
-		tmallProductEvaluate.evaluateCalculate("http://detail.tmall.com/item.htm?spm=a1z10.5.w4011-3239604436.99.m5vkUY&id=35283331630&rn=3a22ecacc7699a79462d5ef044839ccc",new ModelMap() );
+		tmallProductEvaluate.evaluateCalculate("http://detail.tmall.com/item.htm?spm=a1z10.5.w4011-3239604436.97.Rj7LeU&id=35548354788&rn=9dcf0e09296958e482fc00d761151d36",new ModelMap() );
 	}
 
 }
