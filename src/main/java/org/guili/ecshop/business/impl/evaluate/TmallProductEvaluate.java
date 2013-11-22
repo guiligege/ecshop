@@ -68,22 +68,22 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		//一个商品在同一时间段内，被同一个人评论的2次，3次的人数。可能性值(未来统计)
 		//评论总数20-100个
 		private static double Twice_People_min_One_stage=0;
-		private static double Twice_People_max_One_stage=0.05;
+		private static double Twice_People_max_One_stage=0.07;
 		//Twice_People，Three_People或关系
 		private static double Three_People_min_One_stage=0;
-		private static double Three_People_max_One_stage=0.025;
+		private static double Three_People_max_One_stage=0.035;
 		private static int FourMore_People_One_stage=0;
 		//评论总数100-800个
 		private static double Twice_People_min_Two_stage=0;
-		private static double Twice_People_max_Two_stage=0.05;
+		private static double Twice_People_max_Two_stage=0.07;
 		private static double Three_People_min_Two_stage=0;
-		private static double Three_People_max_Two_stage=0.025;
+		private static double Three_People_max_Two_stage=0.035;
 		private static int FourMore_People_Two_stage=1;
-		//评论总数800+个
+		//评论总数800+个 
 		private static double Twice_People_min_Three_stage=0;
-		private static double Twice_People_max_Three_stage=0.05;
+		private static double Twice_People_max_Three_stage=0.07;
 		private static double Three_People_min_Three_stage=0;
-		private static double Three_People_max_Three_stage=0.25;
+		private static double Three_People_max_Three_stage=0.35;
 		private static int FourMore_People_Three_stage=1;
 		private static int Per_Addition=3;
 		
@@ -557,7 +557,7 @@ public class TmallProductEvaluate implements IProductEvaluate {
 
 	public static void main(String[] args) {
 		TmallProductEvaluate tmallProductEvaluate=new TmallProductEvaluate();
-		tmallProductEvaluate.evaluateCalculate("http://detail.tmall.com/item.htm?spm=a220m.1000858.1000725.6.IeTcet&id=35444044373&areaId=&user_id=1600687454&is_b=1&cat_id=2&q=&rn=6ab4025b4403827358684b675b9f03a8",new ModelMap() );
+		tmallProductEvaluate.evaluateCalculate("http://detail.tmall.com/item.htm?spm=a1z10.3.w17-36871585.13.XZLzs0&id=19571165288&",new ModelMap() );
 	}
 
 }

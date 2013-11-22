@@ -12,6 +12,7 @@ public class TmallSingleEvaluate {
 	private String date;
 	private String deal;
 	private String rateId;
+	private String reply;
 	private String text;
 	private String type;
 	
@@ -62,6 +63,12 @@ public class TmallSingleEvaluate {
 	}
 	public void setType(String type) {
 		this.type = type;
+	}
+	public String getReply() {
+		return reply;
+	}
+	public void setReply(String reply) {
+		this.reply = reply;
 	}
 
 }
