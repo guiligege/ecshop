@@ -14,6 +14,21 @@ import org.guili.ecshop.util.SpiderRegex;
  * @author:      guilige 
  * @date         2013-11-25 下午3:24:42 
  *
+ *public class Singleton {
+    private static Singleton uniqueInstance = null;
+ 
+    private Singleton() {
+       // Exists only to defeat instantiation.
+    }
+ 
+    public static Singleton getInstance() {
+       if (uniqueInstance == null) {
+           uniqueInstance = new Singleton();
+       }
+       return uniqueInstance;
+    }
+    // Other methods...
+}
  */
 public class AnalyzeTmallList {
 	
@@ -24,10 +39,21 @@ public class AnalyzeTmallList {
 	 * @param url	商品全部查询链接
 	 * @return
 	 */
-	public static List<String> getBrandItemsList(String url){
+	private static AnalyzeTmallList analyzeTmallList = null;
+	 private AnalyzeTmallList() {
+	       // Exists only to defeat instantiation.
+	    }
+	 public static AnalyzeTmallList getInstance() {
+	       if (analyzeTmallList == null) {
+	    	   analyzeTmallList = new AnalyzeTmallList();
+	       }
+	       return analyzeTmallList;
+	 }
+	
+	public List<String> getBrandItemsList(String url){
 		//正则解析器
 		SpiderRegex regex = new SpiderRegex();
-		String htmltext=CommonTools.requestUrl(AnalyzeTmallList.convertUrl(url), "gbk");
+		String htmltext=CommonTools.requestUrl(this.convertUrl(url), "gbk");
 		if(htmltext.equals("")){
 			return null;
 		}
@@ -42,14 +68,14 @@ public class AnalyzeTmallList {
 		if(pages==null || pages.length==0){
 			return null;
 		}
-		int totalpage=AnalyzeTmallList.getTotalPage(pages);
+		int totalpage=this.getTotalPage(pages);
 		//获得每页的数据
 		List<String> itemsList=new ArrayList<String>();
 		if(totalpage>0){
 			for(int page=1;page<=totalpage;page++){
-				String onePageUrl=AnalyzeTmallList.convertUrl(url).substring(0, AnalyzeTmallList.convertUrl(url).length()-1)+page;
+				String onePageUrl=this.convertUrl(url).substring(0, this.convertUrl(url).length()-1)+page;
 				logger.debug("onePageUrl--->"+onePageUrl);
-				AnalyzeTmallList.OnePageBrandItemsList(onePageUrl);
+				this.OnePageBrandItemsList(onePageUrl);
 				
 			}
 		}
@@ -61,11 +87,11 @@ public class AnalyzeTmallList {
 	 * @param url
 	 * @return
 	 */
-	public static List<String> OnePageBrandItemsList(String url){
+	public  List<String> OnePageBrandItemsList(String url){
 		
 		//正则解析器
 		SpiderRegex regex = new SpiderRegex();
-		String htmltext=CommonTools.requestUrl(AnalyzeTmallList.convertUrl(url), "gbk");
+		String htmltext=CommonTools.requestUrl(this.convertUrl(url), "gbk");
 		if(htmltext.equals("")){
 			return null;
 		}
@@ -99,7 +125,7 @@ public class AnalyzeTmallList {
 	 * @param url
 	 * @return
 	 */
-	public static String convertUrl(String url){
+	public  String convertUrl(String url){
 		String returnUrl="";
 		returnUrl=url.substring(0,url.substring("http://".length()).indexOf("/")+"http://".length())+"/search.htm?search=y&pageNo=1";
 		return returnUrl;
@@ -110,7 +136,7 @@ public class AnalyzeTmallList {
 	 * @param pages
 	 * @return
 	 */
-	public static int getTotalPage(String[] pages){
+	public  int getTotalPage(String[] pages){
 		int totalpage=0;
 		if(pages!=null && pages.length==1){
 			totalpage=Integer.parseInt(pages[0].split("/")[1]);
@@ -123,7 +149,7 @@ public class AnalyzeTmallList {
 	 * @param url 
 	 * @return  返回list like：http://uniqlo.tmall.com/
 	 */
-	public static List<String> AnalyzeTmallBrand(String url){
+	public  List<String> AnalyzeTmallBrand(String url){
 		List<String> tmallbrandList=new ArrayList<String>();
 		//正则解析器
 		SpiderRegex regex = new SpiderRegex();
@@ -136,7 +162,7 @@ public class AnalyzeTmallList {
 		String[] bigbrandItem = regex.htmlregex(htmltext,brandItemRegex,true);
 		if(bigbrandItem!=null && bigbrandItem.length>0){
 			for(String brandItem:bigbrandItem){
-				brandItem=AnalyzeTmallList.convertBrandItem(brandItem);
+				brandItem=this.convertBrandItem(brandItem);
 				if(brandItem.equals("")){
 					continue;
 				}
@@ -151,7 +177,7 @@ public class AnalyzeTmallList {
 		String[] brandItems = regex.htmlregex(htmltext,brandItemRegex,true);
 		if(brandItems!=null && brandItems.length>0){
 			for(String brandItem:brandItems){
-				brandItem=AnalyzeTmallList.convertBrandItem(brandItem);
+				brandItem=this.convertBrandItem(brandItem);
 				if(brandItem.equals("")){
 					continue;
 				}
@@ -170,7 +196,7 @@ public class AnalyzeTmallList {
 				if(brandItem.indexOf("href=\"")>0){
 					brandItem=brandItem.substring(brandItem.indexOf("href=\"")+"href=\"".length());
 				}
-				brandItem=AnalyzeTmallList.convertBrandItem(brandItem);
+				brandItem=this.convertBrandItem(brandItem);
 				if(brandItem.equals("")){
 					continue;
 				}
@@ -186,7 +212,7 @@ public class AnalyzeTmallList {
 	/**
 	 * 转换brandItem
 	 */
-	public static String convertBrandItem(String brandItem){
+	public  String convertBrandItem(String brandItem){
 		if(brandItem.contains("list.tmall.com")){
 			return "";
 		}
@@ -196,11 +222,12 @@ public class AnalyzeTmallList {
 		brandItem=brandItem.substring(0,brandItem.indexOf("com/")+"com/".length());
 		return brandItem;
 	}
+	
 	//test
 	public static void main(String[] args) {
-		logger.debug(AnalyzeTmallList.convertUrl("http://hanlidu.tmall.com/shop/view_shop.htm?spm=a220m.1000862.1000730.2.fhTbDq&user_number_id=728412204&rn=f2b6ed1084b76c27501189515f9279f2"));
+		logger.debug(AnalyzeTmallList.getInstance().convertUrl("http://hanlidu.tmall.com/shop/view_shop.htm?spm=a220m.1000862.1000730.2.fhTbDq&user_number_id=728412204&rn=f2b6ed1084b76c27501189515f9279f2"));
 		//AnalyzeTmallList.getBrandItemsList("http://timberland.tmall.com/?spm=a3200.2787281.a2223nt.7.F0V2tu");
-		AnalyzeTmallList.AnalyzeTmallBrand("http://brand.tmall.com/brandMap.htm?spm=a3200.2192433.0.0.RIdKpk");
+		AnalyzeTmallList.getInstance().AnalyzeTmallBrand("http://brand.tmall.com/brandMap.htm?spm=a3200.2192433.0.0.RIdKpk");
 	}
 	
 }
