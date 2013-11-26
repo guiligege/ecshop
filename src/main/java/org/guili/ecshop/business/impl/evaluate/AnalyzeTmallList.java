@@ -148,7 +148,7 @@ public class AnalyzeTmallList {
 	 */
 	public  String convertUrl(String url){
 		String returnUrl="";
-		returnUrl=url.substring(0,url.substring("http://".length()).indexOf("/")+"http://".length())+"/search.htm?search=y&pageNo=1";
+		returnUrl=url.substring(0,url.substring("http://".length()).indexOf("/")+"http://".length())+"/search.htm?search=y&pageNum=1";
 		return returnUrl;
 	}
 	
