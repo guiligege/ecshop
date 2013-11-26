@@ -1,6 +1,9 @@
 package org.guili.ecshop.bean.credit.taobao;
 
-public class TaobaoImpress {
+import java.io.Serializable;
+
+public class TaobaoImpress implements Serializable{
+	private static final long serialVersionUID = 112342211113L;
 	private String attribute;
 	private String count;
 	private String title;

@@ -1,5 +1,6 @@
 package org.guili.ecshop.business.impl.evaluate;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,13 +11,13 @@ import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.guili.ecshop.bean.credit.taobao.EvaluateTime;
-import org.guili.ecshop.bean.credit.taobao.TaobaoEvaluate;
 import org.guili.ecshop.bean.credit.taobao.TaobaoImpress;
-import org.guili.ecshop.bean.credit.taobao.TaobaoSingleData;
 import org.guili.ecshop.bean.credit.taobao.TaobaoTotalAllData;
+import org.guili.ecshop.bean.credit.tmall.TmallAnalyzeBean;
 import org.guili.ecshop.bean.credit.tmall.TmallEvaluate;
 import org.guili.ecshop.bean.credit.tmall.TmallSingleEvaluate;
 import org.guili.ecshop.business.credit.IProductEvaluate;
+import org.guili.ecshop.dao.credit.TmallAnalyzeDao;
 import org.guili.ecshop.util.CommonTools;
 import org.guili.ecshop.util.SpiderRegex;
 import org.springframework.ui.ModelMap;
@@ -30,8 +31,13 @@ import org.springframework.ui.ModelMap;
  *
  */
 public class TmallProductEvaluate implements IProductEvaluate {
-
+	/**
+	 * 保存天猫分析数据用于分析
+	 */
+	private TmallAnalyzeDao tmallAnalyzeDao;
+	
 	private static Logger logger=Logger.getLogger(TmallProductEvaluate.class);
+	private static int OUTERPAGESIZE=50;
 	//限制多少才进行统计
 	private static int SINGEL_TOTAL_LIMIT=20;
 	private static int PAGE_SIZE=100;
@@ -107,7 +113,7 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		 * 计算tmall商品评价分数
 		 */
 	@Override
-	public double evaluateCalculate(String url, ModelMap modelMap) {
+	public double evaluateCalculate(String url, ModelMap modelMap,List<TmallAnalyzeBean> tmallAnalyzeBeanList) {
 		//分析url对应的商家用户id和商品id
 		Map<String, String> parammap=this.analyzeUrl(url);
 		String userid=parammap.get("userid")==null?"":parammap.get("userid");
@@ -115,6 +121,11 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		if(parammap==null || parammap.size()==0){
 			return 0;
 		}
+		logger.debug("---------------------------"+parammap.get("shopname")==null?"":parammap.get("shopname").trim());
+		//记录天猫商品评价对象
+		TmallAnalyzeBean tmallAnalyzeBean=new TmallAnalyzeBean();
+		tmallAnalyzeBean.setBrandname(parammap.get("shopname")==null?"":parammap.get("shopname").trim());
+		tmallAnalyzeBean.setProducturl(url);
 		//获取淘宝总体评论对象。
 		TaobaoTotalAllData taobaoTotalAllData=this.analyzeTaobaoTotalAllData(userid, productid);
 		//获得当前商品的评论
@@ -128,21 +139,17 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		if(productEvaluate!=null){
 			repeatScore=evaluateSingleRepeat(productEvaluate,taobaoTotalAllData);
 		}
+		//查询2,3,3次以上的次数
+		EvaluateTime evaluateTime=this.getEvaluatePeople(productEvaluate.get("usermap"));
+		tmallAnalyzeBean.setTwicePerson(evaluateTime.getTwicePeople());
+		tmallAnalyzeBean.setThreestimesPerson(evaluateTime.getThreestimesPeople());
+		tmallAnalyzeBean.setMoreThreestimesPerson(evaluateTime.getMoreThreestimesPeople());
 		//获得总的分数评价
 		if(taobaoTotalAllData.getData().getCount().getTotal()<=SINGEL_TOTAL_LIMIT){
 			modelMap.put("isless", true);
 		}else{
 			modelMap.put("isless", false);
 		}
-		
-//		modelMap.put("productScore", productScore);
-//		modelMap.put("repeatScore", repeatScore);
-//		
-//		logger.info("产品总评评分："+productScore);
-//		logger.info("评论重复率评分："+repeatScore);
-//		double result=CommonTools.doubleFormat(prevScore+productScore+repeatScore);
-//		modelMap.put("result", result);
-//		logger.info("总分："+result);
 		modelMap.put("prevScore", prevScore);
 		modelMap.put("productScore", productScore);
 		modelMap.put("repeatScore", repeatScore);
@@ -150,9 +157,47 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		logger.info("产品总评评分："+productScore);
 		logger.info("重复评论评分："+repeatScore);
 		double result=0;
+//		double result=CommonTools.doubleFormat(prevScore+productScore+repeatScore);
+//		modelMap.put("result", result);
+//		logger.info("总分："+result);
+		/*try {
+			tmallAnalyzeDao.addTmallAnalyzeBean(tmallAnalyzeBean);
+		} catch (Exception e) {
+			logger.error("tmallAnalyze 数据保存error！！"+e.getMessage());
+		}*/
+		//批量加入list，优化保存
+		tmallAnalyzeBeanList.add(tmallAnalyzeBean);
 		return result;
 	}
 	
+	/**
+	 * 构建TmallAnalyzeBean对象
+	 * @param tmallAnalyzeBean
+	 */
+	public void createTmallAnalyzeBean(TaobaoTotalAllData taobaoTotalAllData,TmallAnalyzeBean tmallAnalyzeBean){
+		if(taobaoTotalAllData==null){
+			return;
+		}
+		double correspond=Double.parseDouble(taobaoTotalAllData.getData().getCorrespond());
+		List<String> correspondList=taobaoTotalAllData.getData().getCorrespondList();
+		if(correspondList==null || correspondList.size()!=5){
+			return ;
+		}
+		logger.debug("correspondList--->"+correspondList.toString());
+		double badWeight=Double.parseDouble(correspondList.get(2))+Double.parseDouble(correspondList.get(3))+Double.parseDouble(correspondList.get(4));
+		logger.debug("中差评权重："+badWeight);
+		int total=taobaoTotalAllData.getData().getCount().getTotal();
+		int badAndNormalWeightSingle=taobaoTotalAllData.getData().getCount().getBad()
+				+taobaoTotalAllData.getData().getCount().getNormal();
+		int reEval=taobaoTotalAllData.getData().getCount().getAdditional();
+		int badWeightSingle=badAndNormalWeightSingle+reEval/reEval/TmallProductEvaluate.Per_Addition;
+		logger.debug("correspond-->"+correspond+"badWeight-->"+badWeight+"total-->"+total+"badAndNormalWeightSingle-->"+badAndNormalWeightSingle+"badWeightSingle-->"+badWeightSingle);
+		tmallAnalyzeBean.setTotal(total);
+		tmallAnalyzeBean.setCorrespond(correspond);
+		tmallAnalyzeBean.setBadWeightALL(badWeight);
+		tmallAnalyzeBean.setBadAndNormalWeightSingle(badAndNormalWeightSingle);
+		tmallAnalyzeBean.setBadWeightSingle(badWeightSingle);
+	}
 	/**
 	 * 计算单个商品的重复购买率得分
 	 * @param taobaoSingleData
@@ -383,13 +428,19 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		//正则解析商家id和商家shopid
 		String userRegex = "; userid=(.*?);";
 		String shopRegex = "; shopId=(.*?);";
+		String shopnameRegex = "slogo\">(.*?)</a>";
 		String[] userid = regex.htmlregex(htmltext,userRegex,true);
 		String[] shopid = regex.htmlregex(htmltext,shopRegex,true);
+		String[] shopnames = regex.htmlregex(htmltext,shopnameRegex,false);
+		
 		if(userid!=null && userid.length>0){
 			parammap.put("userid", userid[0]);
 		}
 		if(shopid!=null && shopid.length>0){
 			parammap.put("shopid", shopid[0]);
+		}
+		if(shopnames!=null && shopnames.length>0){
+			parammap.put("shopname", shopnames[0]);
 		}
 		logger.info("userid is :---"+userid[0]+"--");
 		logger.info("shopid is :---"+shopid[0]+"--");
@@ -555,9 +606,61 @@ public class TmallProductEvaluate implements IProductEvaluate {
 		return taobaoTotalAllData;
 	}
 
+	
 	public static void main(String[] args) {
 		TmallProductEvaluate tmallProductEvaluate=new TmallProductEvaluate();
-		tmallProductEvaluate.evaluateCalculate("http://detail.tmall.com/item.htm?spm=a1z10.3.w17-36871585.13.XZLzs0&id=19571165288&",new ModelMap() );
+		tmallProductEvaluate.evaluateCalculate("http://detail.tmall.com/item.htm?spm=a1z10.3.w17-36871585.13.XZLzs0&id=19571165288&",new ModelMap(),new ArrayList<TmallAnalyzeBean>() );
+	}
+
+	@Override
+	public double evaluateCalculate(String url, ModelMap modelMap) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	/**
+	 * 分析tmallbrand
+	 */
+	@Override
+	public void AnalyzeTmallBrand() {
+		for(String brandurl:AnalyzeTmallList.getInstance().getTmallBrandList()){
+			if(brandurl!=null && !brandurl.isEmpty()){
+				List<String> allbrandurls=AnalyzeTmallList.getInstance().getBrandItemsList(brandurl);
+				if(allbrandurls==null || allbrandurls.isEmpty()){
+					continue;
+				}
+				int outerpage=0;
+				if(allbrandurls.size()%TmallProductEvaluate.OUTERPAGESIZE==0){
+					outerpage=allbrandurls.size()/TmallProductEvaluate.OUTERPAGESIZE;
+				}else{
+					outerpage=allbrandurls.size()/TmallProductEvaluate.OUTERPAGESIZE+1;
+				}
+				for(int i=0;i<outerpage;i++){
+					List<TmallAnalyzeBean> tmallAnalyzeBeanList=new ArrayList<TmallAnalyzeBean>();
+					for(int j=0;j<50;j++){
+						if(i*50+j>=allbrandurls.size()){
+							break;
+						}
+						String myurl=allbrandurls.get(i*50+j);
+						this.evaluateCalculate(myurl,new ModelMap(), tmallAnalyzeBeanList);
+					}
+					try {
+						tmallAnalyzeDao.addTmallAnalyzeBeanList(tmallAnalyzeBeanList);
+					} catch (Exception e) {
+						logger.debug("AnalyzeTmallBrand error in page:"+i+"--url--"+tmallAnalyzeBeanList.get(0).getProducturl());
+					}
+				}
+			}
+		}
+				
+	}
+
+	public TmallAnalyzeDao getTmallAnalyzeDao() {
+		return tmallAnalyzeDao;
+	}
+
+	public void setTmallAnalyzeDao(TmallAnalyzeDao tmallAnalyzeDao) {
+		this.tmallAnalyzeDao = tmallAnalyzeDao;
 	}
 
 }

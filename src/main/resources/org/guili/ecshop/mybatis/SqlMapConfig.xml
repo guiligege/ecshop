@@ -5,6 +5,7 @@
     <typeAliases>
        <typeAlias alias="shop" type="org.guili.ecshop.bean.spider.Shop"/>
        <typeAlias alias="semiconductor" type="org.guili.ecshop.bean.spider.Semiconductor"/>
+        <typeAlias alias="tmallAnalyzeBean" type="org.guili.ecshop.bean.credit.tmall.TmallAnalyzeBean"/>
     </typeAliases> 
      
 	<mappers>

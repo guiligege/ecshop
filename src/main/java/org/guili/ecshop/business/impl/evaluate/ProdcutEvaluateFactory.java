@@ -58,6 +58,9 @@ public class ProdcutEvaluateFactory {
 		}else if(url.startsWith(EvaluateConstConfig.SUNINGHEAD)){
 			logger.debug("return suningProductEvaluate");
 			return suningProductEvaluate;
+		}else if(url.contains(EvaluateConstConfig.BRANDTMALL)){
+			logger.debug("return suningProductEvaluate");
+			return tmallProductEvaluate;
 		}else if(url.startsWith(EvaluateConstConfig.GUOMEIHEAD)){
 			logger.debug("return gomeProductEvaluate");
 			return gomeProductEvaluate;

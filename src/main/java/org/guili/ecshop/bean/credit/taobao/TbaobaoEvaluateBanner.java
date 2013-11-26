@@ -1,6 +1,9 @@
 package org.guili.ecshop.bean.credit.taobao;
 
-public class TbaobaoEvaluateBanner {
+import java.io.Serializable;
+
+public class TbaobaoEvaluateBanner implements Serializable{
+	private static final long serialVersionUID = 112342211119L;
 	private String bgColor;
 	private String img;
 	private String isShow;

@@ -1,6 +1,9 @@
 package org.guili.ecshop.bean.credit.taobao;
 
-public class TaobaoTotalAllData {
+import java.io.Serializable;
+
+public class TaobaoTotalAllData implements Serializable{
+	private static final long serialVersionUID = 112342211117L;
 	private String watershed;
 	private TaobaoGift gift;
 	private String isBeta;

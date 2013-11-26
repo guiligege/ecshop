@@ -1,11 +1,13 @@
 package org.guili.ecshop.bean.credit.tmall;
 
+import java.io.Serializable;
+
 /**
  * 天猫单个评论对象
  * @author guili
  */
-public class TmallSingleEvaluate {
-	
+public class TmallSingleEvaluate  implements Serializable{
+	private static final long serialVersionUID = 112342211122L;
 	private String annoy;
 	private String buyer;
 	private String credit;

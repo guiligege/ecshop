@@ -34,22 +34,28 @@ public class AnalyzeTmallList {
 	
 	private static Logger logger=Logger.getLogger(AnalyzeTmallList.class);
 	
+	private List<String> tmallBrandList=new ArrayList<String>();
+	private static String TMALLBRANDURL="http://brand.tmall.com/brandMap.htm?spm=a3200.2192433.0.0.RIdKpk";
+	
+	/**
+	 * 单例实现tmall分析
+	 */
+	private static AnalyzeTmallList analyzeTmallList = null;
+	private AnalyzeTmallList() {
+		 tmallBrandList=this.AnalyzeTmallBrand(AnalyzeTmallList.TMALLBRANDURL);
+	}
+	public static AnalyzeTmallList getInstance() {
+	      if (analyzeTmallList == null) {
+	         analyzeTmallList = new AnalyzeTmallList();
+	      }
+	      return analyzeTmallList;
+	}
+	
 	/**
 	 * 根据商品列表链接获得商品详细页链接列表
 	 * @param url	商品全部查询链接
 	 * @return
 	 */
-	private static AnalyzeTmallList analyzeTmallList = null;
-	 private AnalyzeTmallList() {
-	       // Exists only to defeat instantiation.
-	    }
-	 public static AnalyzeTmallList getInstance() {
-	       if (analyzeTmallList == null) {
-	    	   analyzeTmallList = new AnalyzeTmallList();
-	       }
-	       return analyzeTmallList;
-	 }
-	
 	public List<String> getBrandItemsList(String url){
 		//正则解析器
 		SpiderRegex regex = new SpiderRegex();
@@ -59,15 +65,7 @@ public class AnalyzeTmallList {
 		}
 		//获得总页数
 		String pageRegex = "<b class=\"ui-page-s-len\">(.*?)</b>";
-		String[] pages = regex.htmlregex(htmltext,pageRegex,true);
-		if(pages==null || pages.length==0){
-			//<span class="page-info">1/38</span>
-			 pageRegex = "<span class=\"page-info\">(.*?)</span>";
-			 pages = regex.htmlregex(htmltext,pageRegex,true);
-		}
-		if(pages==null || pages.length==0){
-			return null;
-		}
+		String[] pages = this.analyzeTotalPage(htmltext,pageRegex,regex);
 		int totalpage=this.getTotalPage(pages);
 		//获得每页的数据
 		List<String> itemsList=new ArrayList<String>();
@@ -75,11 +73,34 @@ public class AnalyzeTmallList {
 			for(int page=1;page<=totalpage;page++){
 				String onePageUrl=this.convertUrl(url).substring(0, this.convertUrl(url).length()-1)+page;
 				logger.debug("onePageUrl--->"+onePageUrl);
-				this.OnePageBrandItemsList(onePageUrl);
+				itemsList.addAll(this.OnePageBrandItemsList(onePageUrl));
 				
 			}
 		}
 		return itemsList;
+	}
+	
+	/**
+	 * 分析商家商品分析
+	 * @param html
+	 * @param pageRegex
+	 * @param regex
+	 * @return
+	 */
+	public String[] analyzeTotalPage(String html,String pageRegex,SpiderRegex regex){
+		//其他品牌处理
+		String[] pages = regex.htmlregex(html,pageRegex,true);
+		//优衣库特殊处理
+		if(pages==null || pages.length==0){
+			//<span class="page-info">1/38</span>
+			 pageRegex = "<span class=\"page-info\">(.*?)</span>";
+			 pages = regex.htmlregex(html,pageRegex,true);
+		}
+		if(pages==null || pages.length==0){
+			logger.info("该商家的商品为空！！！");
+			return null;
+		}
+		return pages;
 	}
 	
 	/**
@@ -157,6 +178,7 @@ public class AnalyzeTmallList {
 		if(htmltext.equals("")){
 			return null;
 		}
+		//分析3种不同形式的品牌1
 		//String brandItemRegex = "target=\"_blank\" href=\"(.*?)\" title=\"";
 		String brandItemRegex = "<a target=\"_blank\" class=\"bFlis-con-mask\" href=\"(.*?)\">";
 		String[] bigbrandItem = regex.htmlregex(htmltext,brandItemRegex,true);
@@ -172,7 +194,7 @@ public class AnalyzeTmallList {
 				tmallbrandList.add(brandItem);
 			}
 		}
-		//查看小的商标
+		//分析3种不同形式的品牌2
 		brandItemRegex = "<a class=\"bFlil-link\" target=\"_blank\" href=\"(.*?)\" title=";
 		String[] brandItems = regex.htmlregex(htmltext,brandItemRegex,true);
 		if(brandItems!=null && brandItems.length>0){
@@ -187,7 +209,7 @@ public class AnalyzeTmallList {
 				tmallbrandList.add(brandItem);
 			}
 		}
-		//查看特殊排列商标
+		//分析3种不同形式的品牌3
 		brandItemRegex = "<a class=\"bFlil-link\" target=\"_blank\" title=\"(.*?)\">";
 		String[] brandItem1 = regex.htmlregex(htmltext,brandItemRegex,true);
 		if(brandItem1!=null && brandItem1.length>0){
@@ -223,11 +245,17 @@ public class AnalyzeTmallList {
 		return brandItem;
 	}
 	
+	public List<String> getTmallBrandList() {
+		return tmallBrandList;
+	}
+	public void setTmallBrandList(List<String> tmallBrandList) {
+		this.tmallBrandList = tmallBrandList;
+	}
 	//test
 	public static void main(String[] args) {
 		logger.debug(AnalyzeTmallList.getInstance().convertUrl("http://hanlidu.tmall.com/shop/view_shop.htm?spm=a220m.1000862.1000730.2.fhTbDq&user_number_id=728412204&rn=f2b6ed1084b76c27501189515f9279f2"));
 		//AnalyzeTmallList.getBrandItemsList("http://timberland.tmall.com/?spm=a3200.2787281.a2223nt.7.F0V2tu");
-		AnalyzeTmallList.getInstance().AnalyzeTmallBrand("http://brand.tmall.com/brandMap.htm?spm=a3200.2192433.0.0.RIdKpk");
+		AnalyzeTmallList.getInstance();//.AnalyzeTmallBrand("http://brand.tmall.com/brandMap.htm?spm=a3200.2192433.0.0.RIdKpk");
 	}
 	
 }

@@ -17,5 +17,6 @@ public class EvaluateConstConfig {
 	public static final String QQHEAD="http://item.wanggou.com/";
 	public static final String SUNINGHEAD="http://product.suning.com/";
 	public static final String GUOMEIHEAD="http://www.gome.com.cn/product/";
+	public static final String BRANDTMALL="tmall.com/";
 	
 }

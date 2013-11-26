@@ -59,4 +59,31 @@ public class EvaluateController {
 		}
 		//return ;
 	}
+	
+	/**
+	 * 商品评论分析
+	 * @param request
+	 * @param modelMap
+	 * @param url
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value="evaluate/evaluateTmallProduct.htm",method={RequestMethod. GET})
+	public void  evaluateTmallProduct(HttpServletRequest request,HttpServletResponse response,ModelMap modelMap,@RequestParam(required=false) String url) throws Exception{
+		if(url==null || url.isEmpty()){
+			response.getWriter().write(new JSONObject().toString());
+		}
+		logger.debug(url);
+		//获取具体实现类
+		IProductEvaluate productEvaluate=prodcutEvaluateFactory.getProdcutEvaluate(url);
+		//productEvaluate.evaluateCalculate(url,modelMap);
+		productEvaluate.AnalyzeTmallBrand();
+		if(modelMap!=null && modelMap.size()>0){
+			JSONObject jsonobj=JSONObject.fromObject(modelMap);
+			response.getWriter().write(jsonobj.toString());
+		}else{
+			response.getWriter().write(new JSONObject().toString());
+		}
+		//return ;
+	}
 }

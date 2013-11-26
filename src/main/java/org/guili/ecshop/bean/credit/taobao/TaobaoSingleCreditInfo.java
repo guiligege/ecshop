@@ -1,8 +1,10 @@
 package org.guili.ecshop.bean.credit.taobao;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class TaobaoSingleCreditInfo {
+public class TaobaoSingleCreditInfo implements Serializable{
+	private static final long serialVersionUID = 112342211115L;
 	private TaobaoPageInfo paginator;
 	private String  watershed;
 	private List<TaobaoEvaluate> rateList;

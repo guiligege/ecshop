@@ -16,4 +16,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<bean id="semiconductorDaoImpl" class="org.guili.ecshop.impl.spider.SemiconductorDaoImpl">
 			<property name="session" ref="sqlSession"></property>
 	</bean>
+	<bean id="tmallAnalyzeDao" class="org.guili.ecshop.impl.credit.TmallAnalyzeDaoImpl">
+			<property name="session" ref="sqlSession"></property>
+	</bean>
 </beans>

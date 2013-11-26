@@ -1,6 +1,9 @@
 package org.guili.ecshop.bean.credit.taobao;
 
-public class TaobaoSingleScoreInfo {
+import java.io.Serializable;
+
+public class TaobaoSingleScoreInfo implements Serializable{
+	private static final long serialVersionUID = 112342211116L;
 	private String merchandisScore;
 	private String width;
 	private String isB2cSeller;

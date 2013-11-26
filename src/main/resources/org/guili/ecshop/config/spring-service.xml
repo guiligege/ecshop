@@ -34,6 +34,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<bean id="taobaoProductEvaluate" class="org.guili.ecshop.business.impl.evaluate.TaobaoProductEvaluate">
 	</bean>
 	<bean id="tmallProductEvaluate" class="org.guili.ecshop.business.impl.evaluate.TmallProductEvaluate">
+		<property name="tmallAnalyzeDao" ref="tmallAnalyzeDao"></property>
 	</bean>
 	<bean id="prodcutEvaluateFactory" class="org.guili.ecshop.business.impl.evaluate.ProdcutEvaluateFactory">
 		<property name="taobaoProductEvaluate" ref="taobaoProductEvaluate"></property>

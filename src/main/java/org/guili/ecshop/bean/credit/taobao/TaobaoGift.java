@@ -1,5 +1,7 @@
 package org.guili.ecshop.bean.credit.taobao;
 
+import java.io.Serializable;
+
 /**
  * 淘宝礼品对象
  * @ClassName:   TaobaoGift 
@@ -8,7 +10,8 @@ package org.guili.ecshop.bean.credit.taobao;
  * @date         2013-11-14 下午8:04:47 
  *
  */
-public class TaobaoGift {
+public class TaobaoGift implements Serializable{
+	private static final long serialVersionUID = 112342211112L;
 	private String award;
 	private String countDown;
 	private String dateEnd;

@@ -270,6 +270,7 @@
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoTotalAllData.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoTotalEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TbaobaoEvaluateBanner.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/credit/tmall/TmallAnalyzeBean.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/tmall/TmallEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/tmall/TmallSingleEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/payment/SalesOrder.class</string>
@@ -277,6 +278,7 @@
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Shop.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/credit/IProductEvaluate.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/ExpireJobTask.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/AnalyzeTmallList.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/EvaluateConfig.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/EvaluateConstConfig.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/ProdcutEvaluateFactory.class</string>
@@ -305,12 +307,15 @@
           <string>WEB-INF/classes/org/guili/ecshop/controller/payment/PaymentAlipayAdaptor.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/payment/PaymentAutoController.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/ResultController.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/dao/credit/TmallAnalyzeDao.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/dao/spider/ITestTableDao.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/dao/spider/SemiconductorDao.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/impl/credit/TmallAnalyzeDaoImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/impl/spider/ITestTableDaoImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/impl/spider/SemiconductorDaoImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/semiconductorMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/shopMapper.xml</string>
+          <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/TmallAnalyzeBeanMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/SqlMapConfig.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/BasicSqlSupport.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/CommonTools.class</string>

@@ -1,7 +1,9 @@
 package org.guili.ecshop.business.credit;
 
+import java.util.List;
 import java.util.Map;
 
+import org.guili.ecshop.bean.credit.tmall.TmallAnalyzeBean;
 import org.springframework.ui.ModelMap;
 
 /**
@@ -42,4 +44,15 @@ public interface IProductEvaluate {
 	 * @return
 	 */
 	public  double evaluateCalculate(String url,ModelMap modelMap);
+	
+	/**
+	 * 计算商品评价
+	 * @param url
+	 * @param modelMap
+	 * @param tmallAnalyzeBeanList
+	 * @return
+	 */
+	public double evaluateCalculate(String url, ModelMap modelMap,List<TmallAnalyzeBean> tmallAnalyzeBeanList);
+	
+	public void AnalyzeTmallBrand();
 }

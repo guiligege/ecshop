@@ -1,6 +1,9 @@
 package org.guili.ecshop.bean.credit.taobao;
 
-public class TaobaoPageInfo {
+import java.io.Serializable;
+
+public class TaobaoPageInfo implements Serializable{
+	private static final long serialVersionUID = 112342211114L;
 	private String lastPage;
 	private String page;
 	private String items;

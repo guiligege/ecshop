@@ -1,6 +1,9 @@
 package org.guili.ecshop.bean.credit.taobao;
 
-public class TaobaoEvaluateCount {
+import java.io.Serializable;
+
+public class TaobaoEvaluateCount implements Serializable{
+	private static final long serialVersionUID = 112342211111L;
 	private int additional;
 	private int  bad;
 	private int correspond;

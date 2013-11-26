@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>    
+<!DOCTYPE mapper    
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"    
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.guili.ecshop.dao.credit.TmallAnalyzeDao">
+ <!-- 要对应到所有属性 才能使用-->
+ <resultMap id="TmallAnalyzeBeanMap" type="tmallAnalyzeBean">
+ 	<result property="id" column="id"/>
+ 	<result property="correspond" column="correspond"/>
+ 	<result property="badWeightALL" column="badWeightALL"/>
+ 	<result property="total" column="total"/>
+ 	<result property="badAndNormalWeightSingle" column="badAndNormalWeightSingle"/>
+ 	<result property="badWeightSingle" column="badWeightSingle"/>
+ 	<result property="twicePerson" column="twicePerson"/>
+ 	<result property="threestimesPerson" column="threestimesPerson"/>
+ 	<result property="moreThreestimesPerson" column="moreThreestimesPerson"/>
+ 	<result property="brandname" column="brandname"/>
+ 	<result property="brandurl" column="brandurl"/>
+ 	<result property="producturl" column="producturl"/>
+ </resultMap>
+ <!-- 这里namespace必须是UserMapper接口的路径，不然要运行的时候要报错 "is not known to the MapperRegistry" -->
+ <insert id="addTmallAnalyzeBean" parameterType="tmallAnalyzeBean">
+  <![CDATA[ 
+  insert into t_tmall_analyze (id, correspond,badWeightALL,total,badAndNormalWeightSingle,badWeightSingle,
+  								twicePerson,threestimesPerson,moreThreestimesPerson,brandname,brandurl,producturl)
+  	 values (#{correspond},#{badWeightALL},#{total},#{badAndNormalWeightSingle},#{badWeightSingle},
+  	 		#{twicePerson},#{threestimesPerson},#{moreThreestimesPerson},#{brandname},#{brandurl},#{producturl})
+  ]]>
+ </insert>
+ <select id="selectTmallAnalyzeBean" resultType="tmallAnalyzeBean">
+  <![CDATA[ 
+  select * from t_tmall_analyze where id=1;
+  ]]>
+ </select>
+ 
+</mapper>  

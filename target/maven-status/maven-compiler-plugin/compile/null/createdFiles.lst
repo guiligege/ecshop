@@ -18,6 +18,7 @@ org\guili\ecshop\bean\credit\taobao\TaobaoTotalAllData.class
 org\guili\ecshop\dao\spider\ITestTableDao.class
 org\guili\ecshop\util\Md5Encrypt.class
 org\guili\ecshop\controller\payment\PaymentAutoController.class
+org\guili\ecshop\bean\credit\tmall\TmallAnalyzeBean.class
 org\guili\ecshop\business\ExpireJobTask.class
 org\guili\ecshop\bean\credit\taobao\TaobaoPageInfo.class
 org\guili\ecshop\bean\credit\taobao\TaobaoEvaluateCount.class
@@ -36,7 +37,9 @@ org\guili\ecshop\business\impl\evaluate\ProdcutEvaluateFactory.class
 org\guili\ecshop\bean\credit\taobao\EvaluateTime.class
 org\guili\ecshop\util\ExcelWriter.class
 org\guili\ecshop\controller\evaluate\EvaluateConstConfig.class
+org\guili\ecshop\business\impl\evaluate\AnalyzeTmallList.class
 org\guili\ecshop\bean\credit\tmall\TmallSingleEvaluate.class
+org\guili\ecshop\impl\credit\TmallAnalyzeDaoImpl.class
 org\guili\ecshop\bean\spider\Shop.class
 org\guili\ecshop\bean\credit\taobao\TaobaoGift.class
 org\guili\ecshop\controller\evaluate\EvaluateController.class
@@ -46,6 +49,7 @@ org\guili\ecshop\controller\ResultController.class
 org\guili\ecshop\bean\credit\taobao\TaobaoSingleCreditInfo.class
 org\guili\ecshop\util\Constants.class
 org\guili\ecshop\business\spider\ISemiconductorService.class
+org\guili\ecshop\dao\credit\TmallAnalyzeDao.class
 org\guili\ecshop\business\impl\spider\AvnetSpiderServiceImpl.class
 org\guili\ecshop\util\SpiderRegex.class
 org\guili\ecshop\controller\payment\PaymentAdaptorFactory.class

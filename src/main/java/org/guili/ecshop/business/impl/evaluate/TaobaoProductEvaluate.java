@@ -14,6 +14,7 @@ import org.guili.ecshop.bean.credit.taobao.TaobaoEvaluate;
 import org.guili.ecshop.bean.credit.taobao.TaobaoImpress;
 import org.guili.ecshop.bean.credit.taobao.TaobaoSingleData;
 import org.guili.ecshop.bean.credit.taobao.TaobaoTotalAllData;
+import org.guili.ecshop.bean.credit.tmall.TmallAnalyzeBean;
 import org.guili.ecshop.business.credit.IProductEvaluate;
 import org.guili.ecshop.util.CommonTools;
 import org.guili.ecshop.util.SpiderRegex;
@@ -579,5 +580,16 @@ public class TaobaoProductEvaluate implements IProductEvaluate {
 //		Map<String, String> parammap=taobaoProductEvaluate.analyzeUrl("http://item.taobao.com/item.htm?spm=a230r.1.14.71.akJQrl&id=20048694757");
 //		taobaoProductEvaluate.sellerTotalEvaluate(parammap);
 		//System.out.println(new Long(Math.round(new Double(1.8))).intValue());
+	}
+	@Override
+	public double evaluateCalculate(String url, ModelMap modelMap,
+			List<TmallAnalyzeBean> tmallAnalyzeBeanList) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	@Override
+	public void AnalyzeTmallBrand() {
+		// TODO Auto-generated method stub
+		
 	}
 }
