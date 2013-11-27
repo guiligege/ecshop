@@ -1,6 +1,6 @@
 package org.guili.ecshop.business.impl.evaluate;
 
-import org.guili.ecshop.business.credit.IProductEvaluate;
+import org.guili.ecshop.business.credit.IProductEvaluateService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,21 +16,22 @@ public class ProdcutEvaluateFactory {
 	
 	private static final Logger	logger	= LoggerFactory.getLogger(ProdcutEvaluateFactory.class);
 	//各各不同网站的产品评论分析器
-	private  IProductEvaluate taobaoProductEvaluate;
-	private  IProductEvaluate tmallProductEvaluate;
-	private  IProductEvaluate jdProductEvaluate;
-	private  IProductEvaluate yxProductEvaluate;
-	private  IProductEvaluate qqProductEvaluate;
-	private  IProductEvaluate yhdProductEvaluate;
-	private  IProductEvaluate suningProductEvaluate;
-	private  IProductEvaluate gomeProductEvaluate;
+	private  IProductEvaluateService taobaoProductEvaluate;
+	private  IProductEvaluateService tmallProductEvaluate;
+	private  IProductEvaluateService jdProductEvaluate;
+	private  IProductEvaluateService yxProductEvaluate;
+	private  IProductEvaluateService qqProductEvaluate;
+	private  IProductEvaluateService yhdProductEvaluate;
+	private  IProductEvaluateService suningProductEvaluate;
+	private  IProductEvaluateService gomeProductEvaluate;
+	private  IProductEvaluateService tmallProductEvaluateCraw;
 	
 	/**
 	 * 根据url生成商品评价器 
 	 * @param url
 	 * @return
 	 */
-	public  IProductEvaluate getProdcutEvaluate(String url){
+	public  IProductEvaluateService getProdcutEvaluate(String url){
 		if(url==null || url.equals("")){
 			return null;
 		}
@@ -60,7 +61,7 @@ public class ProdcutEvaluateFactory {
 			return suningProductEvaluate;
 		}else if(url.contains(EvaluateConstConfig.BRANDTMALL)){
 			logger.debug("return suningProductEvaluate");
-			return tmallProductEvaluate;
+			return tmallProductEvaluateCraw;
 		}else if(url.startsWith(EvaluateConstConfig.GUOMEIHEAD)){
 			logger.debug("return gomeProductEvaluate");
 			return gomeProductEvaluate;
@@ -68,67 +69,77 @@ public class ProdcutEvaluateFactory {
 		return null;
 	}
 
-	public IProductEvaluate getTaobaoProductEvaluate() {
+	public IProductEvaluateService getTaobaoProductEvaluate() {
 		return taobaoProductEvaluate;
 	}
 
-	public void setTaobaoProductEvaluate(IProductEvaluate taobaoProductEvaluate) {
+	public void setTaobaoProductEvaluate(IProductEvaluateService taobaoProductEvaluate) {
 		this.taobaoProductEvaluate = taobaoProductEvaluate;
 	}
 
-	public IProductEvaluate getTmallProductEvaluate() {
+	public IProductEvaluateService getTmallProductEvaluate() {
 		return tmallProductEvaluate;
 	}
 
-	public void setTmallProductEvaluate(IProductEvaluate tmallProductEvaluate) {
+	public void setTmallProductEvaluate(IProductEvaluateService tmallProductEvaluate) {
 		this.tmallProductEvaluate = tmallProductEvaluate;
 	}
 
-	public IProductEvaluate getJdProductEvaluate() {
+	public IProductEvaluateService getJdProductEvaluate() {
 		return jdProductEvaluate;
 	}
 
-	public void setJdProductEvaluate(IProductEvaluate jdProductEvaluate) {
+	public void setJdProductEvaluate(IProductEvaluateService jdProductEvaluate) {
 		this.jdProductEvaluate = jdProductEvaluate;
 	}
 
-	public IProductEvaluate getYxProductEvaluate() {
+	public IProductEvaluateService getYxProductEvaluate() {
 		return yxProductEvaluate;
 	}
 
-	public void setYxProductEvaluate(IProductEvaluate yxProductEvaluate) {
+	public void setYxProductEvaluate(IProductEvaluateService yxProductEvaluate) {
 		this.yxProductEvaluate = yxProductEvaluate;
 	}
 
-	public IProductEvaluate getQqProductEvaluate() {
+	public IProductEvaluateService getQqProductEvaluate() {
 		return qqProductEvaluate;
 	}
 
-	public void setQqProductEvaluate(IProductEvaluate qqProductEvaluate) {
+	public void setQqProductEvaluate(IProductEvaluateService qqProductEvaluate) {
 		this.qqProductEvaluate = qqProductEvaluate;
 	}
 
-	public IProductEvaluate getYhdProductEvaluate() {
+	public IProductEvaluateService getYhdProductEvaluate() {
 		return yhdProductEvaluate;
 	}
 
-	public void setYhdProductEvaluate(IProductEvaluate yhdProductEvaluate) {
+	public void setYhdProductEvaluate(IProductEvaluateService yhdProductEvaluate) {
 		this.yhdProductEvaluate = yhdProductEvaluate;
 	}
 
-	public IProductEvaluate getSuningProductEvaluate() {
+	public IProductEvaluateService getSuningProductEvaluate() {
 		return suningProductEvaluate;
 	}
 
-	public void setSuningProductEvaluate(IProductEvaluate suningProductEvaluate) {
+	public void setSuningProductEvaluate(IProductEvaluateService suningProductEvaluate) {
 		this.suningProductEvaluate = suningProductEvaluate;
 	}
 
-	public IProductEvaluate getGomeProductEvaluate() {
+	public IProductEvaluateService getGomeProductEvaluate() {
 		return gomeProductEvaluate;
 	}
 
-	public void setGomeProductEvaluate(IProductEvaluate gomeProductEvaluate) {
+	public void setGomeProductEvaluate(IProductEvaluateService gomeProductEvaluate) {
 		this.gomeProductEvaluate = gomeProductEvaluate;
 	}
+
+	public IProductEvaluateService getTmallProductEvaluateCraw() {
+		return tmallProductEvaluateCraw;
+	}
+
+	public void setTmallProductEvaluateCraw(
+			IProductEvaluateService tmallProductEvaluateCraw) {
+		this.tmallProductEvaluateCraw = tmallProductEvaluateCraw;
+	}
+	
 }

@@ -14,5 +14,4 @@ import org.guili.ecshop.bean.credit.tmall.TmallAnalyzeBean;
  */
 public interface TmallAnalyzeDao {
 	public boolean addTmallAnalyzeBean(TmallAnalyzeBean tmallAnalyzeBean)  throws Exception;
-	public boolean addTmallAnalyzeBeanList(List<TmallAnalyzeBean> tmallAnalyzeBean) throws Exception;
 }

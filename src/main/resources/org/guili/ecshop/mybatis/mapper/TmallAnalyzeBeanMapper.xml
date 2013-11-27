@@ -21,7 +21,7 @@
  <!-- 这里namespace必须是UserMapper接口的路径，不然要运行的时候要报错 "is not known to the MapperRegistry" -->
  <insert id="addTmallAnalyzeBean" parameterType="tmallAnalyzeBean">
   <![CDATA[ 
-  insert into t_tmall_analyze (id, correspond,badWeightALL,total,badAndNormalWeightSingle,badWeightSingle,
+  insert into t_tmall_analyze (correspond,badWeightALL,total,badAndNormalWeightSingle,badWeightSingle,
   								twicePerson,threestimesPerson,moreThreestimesPerson,brandname,brandurl,producturl)
   	 values (#{correspond},#{badWeightALL},#{total},#{badAndNormalWeightSingle},#{badWeightSingle},
   	 		#{twicePerson},#{threestimesPerson},#{moreThreestimesPerson},#{brandname},#{brandurl},#{producturl})

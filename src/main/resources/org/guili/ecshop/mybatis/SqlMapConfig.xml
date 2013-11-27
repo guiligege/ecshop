@@ -12,5 +12,6 @@
 		<!-- 数据库映射文件 -->
 	    <mapper resource="org/guili/ecshop/mybatis/mapper/shopMapper.xml"/>
 	    <mapper resource="org/guili/ecshop/mybatis/mapper/semiconductorMapper.xml"/>
+	    <mapper resource="org/guili/ecshop/mybatis/mapper/TmallAnalyzeBeanMapper.xml"/>
 	</mappers>
 </configuration> 

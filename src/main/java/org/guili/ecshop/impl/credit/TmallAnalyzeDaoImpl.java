@@ -23,19 +23,4 @@ public class TmallAnalyzeDaoImpl extends BasicSqlSupport implements TmallAnalyze
 		return flag;
 	}
 	
-	/**
-	 * 保存天猫分析对象List
-	 */
-	@Override
-	public boolean addTmallAnalyzeBeanList(List<TmallAnalyzeBean> tmallAnalyzeBean) {
-		for(TmallAnalyzeBean onetmallAnalyzeBean:tmallAnalyzeBean){
-			try {
-					this.addTmallAnalyzeBean(onetmallAnalyzeBean);
-			} catch (Exception e) {
-				logger.error("tmallAnalyze 数据保存error！！-->"+onetmallAnalyzeBean.getProducturl());
-			}
-		}
-		return true;
-	}
-
 }

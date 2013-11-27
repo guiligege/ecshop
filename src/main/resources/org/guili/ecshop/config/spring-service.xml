@@ -31,14 +31,21 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	
 	
 	<!-- 评价系统 -->
-	<bean id="taobaoProductEvaluate" class="org.guili.ecshop.business.impl.evaluate.TaobaoProductEvaluate">
+	<bean id="taobaoProductEvaluate" class="org.guili.ecshop.business.impl.evaluate.TaobaoProductEvaluateService">
 	</bean>
-	<bean id="tmallProductEvaluate" class="org.guili.ecshop.business.impl.evaluate.TmallProductEvaluate">
+	<bean id="tmallProductEvaluate" class="org.guili.ecshop.business.impl.evaluate.TmallProductEvaluateService">
+	</bean>
+	<!-- 收集信息 -->
+	<bean id="tmallProductService" class="org.guili.ecshop.business.impl.evaluate.TmallProductService">
 		<property name="tmallAnalyzeDao" ref="tmallAnalyzeDao"></property>
+	</bean>
+	<bean id="tmallProductEvaluateCraw" class="org.guili.ecshop.business.impl.evaluate.TmallProductCrawlServiceImpl">
+		<property name="tmallProductService" ref="tmallProductService"></property>
 	</bean>
 	<bean id="prodcutEvaluateFactory" class="org.guili.ecshop.business.impl.evaluate.ProdcutEvaluateFactory">
 		<property name="taobaoProductEvaluate" ref="taobaoProductEvaluate"></property>
 		<property name="tmallProductEvaluate" ref="tmallProductEvaluate"></property>
+		<property name="tmallProductEvaluateCraw" ref="tmallProductEvaluateCraw"></property>
 	</bean>
 	
 </beans>

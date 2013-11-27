@@ -8,7 +8,7 @@ import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
 import org.guili.ecshop.business.TestBussiness;
-import org.guili.ecshop.business.credit.IProductEvaluate;
+import org.guili.ecshop.business.credit.IProductEvaluateService;
 import org.guili.ecshop.business.impl.evaluate.ProdcutEvaluateFactory;
 import org.guili.ecshop.controller.ResultController;
 import org.springframework.stereotype.Controller;
@@ -48,7 +48,7 @@ public class EvaluateController {
 		}
 		logger.debug(url);
 		//获取具体实现类
-		IProductEvaluate productEvaluate=prodcutEvaluateFactory.getProdcutEvaluate(url);
+		IProductEvaluateService productEvaluate=prodcutEvaluateFactory.getProdcutEvaluate(url);
 		//计算并获得商品评论信息
 		productEvaluate.evaluateCalculate(url,modelMap);
 		if(modelMap!=null && modelMap.size()>0){
@@ -75,7 +75,7 @@ public class EvaluateController {
 		}
 		logger.debug(url);
 		//获取具体实现类
-		IProductEvaluate productEvaluate=prodcutEvaluateFactory.getProdcutEvaluate(url);
+		IProductEvaluateService productEvaluate=prodcutEvaluateFactory.getProdcutEvaluate(url);
 		//productEvaluate.evaluateCalculate(url,modelMap);
 		productEvaluate.AnalyzeTmallBrand();
 		if(modelMap!=null && modelMap.size()>0){

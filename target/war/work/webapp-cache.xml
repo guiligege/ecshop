@@ -276,14 +276,17 @@
           <string>WEB-INF/classes/org/guili/ecshop/bean/payment/SalesOrder.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Semiconductor.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Shop.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/credit/IProductEvaluate.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/credit/IProductEvaluateService.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/credit/ITmallProductService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/ExpireJobTask.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/AnalyzeTmallList.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/EvaluateConfig.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/EvaluateConstConfig.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/ProdcutEvaluateFactory.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TaobaoProductEvaluate.class</string>
-          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TmallProductEvaluate.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TaobaoProductEvaluateService.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TmallProductCrawlServiceImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TmallProductEvaluateService.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/evaluate/TmallProductService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/AvnetSpiderServiceImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/DigikeySpiderServiceImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/MouserSpiderServiceImpl.class</string>

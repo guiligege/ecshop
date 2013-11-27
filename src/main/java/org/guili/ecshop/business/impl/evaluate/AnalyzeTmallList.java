@@ -112,7 +112,7 @@ public class AnalyzeTmallList {
 		
 		//正则解析器
 		SpiderRegex regex = new SpiderRegex();
-		String htmltext=CommonTools.requestUrl(this.convertUrl(url), "gbk");
+		String htmltext=CommonTools.requestUrl(url, "gbk");
 		if(htmltext.equals("")){
 			return null;
 		}
