@@ -137,7 +137,7 @@ public class AnalyzeTmallList {
 				}
 			}
 		}
-		
+		brandItem=null;
 		return onePageBrandItems;
 	}
 	
@@ -148,7 +148,7 @@ public class AnalyzeTmallList {
 	 */
 	public  String convertUrl(String url){
 		String returnUrl="";
-		returnUrl=url.substring(0,url.substring("http://".length()).indexOf("/")+"http://".length())+"/search.htm?search=y&pageNum=1";
+		returnUrl=url.substring(0,url.substring("http://".length()).indexOf("/")+"http://".length())+"/search.htm?search=y&orderType=hotsell_desc&pageNum=1";
 		return returnUrl;
 	}
 	

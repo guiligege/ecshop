@@ -1,5 +1,8 @@
 package org.guili.ecshop.business.impl.evaluate;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -20,6 +23,7 @@ import org.guili.ecshop.business.credit.IProductEvaluateService;
 import org.guili.ecshop.business.credit.ITmallProductService;
 import org.guili.ecshop.dao.credit.TmallAnalyzeDao;
 import org.guili.ecshop.util.CommonTools;
+import org.guili.ecshop.util.FileTools;
 import org.guili.ecshop.util.SpiderRegex;
 import org.springframework.ui.ModelMap;
 
@@ -112,7 +116,7 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 		 * 计算tmall商品评价分数
 		 */
 	@Override
-	public double evaluateCalculate(String url, ModelMap modelMap,List<TmallAnalyzeBean> tmallAnalyzeBeanList) {
+	public double evaluateCalculate(String url, ModelMap modelMap,List<TmallAnalyzeBean> tmallAnalyzeBeanList) throws Exception{
 		//分析url对应的商家用户id和商品id
 		Map<String, String> parammap=this.analyzeUrl(url);
 		String userid=parammap.get("userid")==null?"":parammap.get("userid");
@@ -127,14 +131,20 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 		tmallAnalyzeBean.setProducturl(url);
 		//获取淘宝总体评论对象。
 		TaobaoTotalAllData taobaoTotalAllData=this.analyzeTaobaoTotalAllData(userid, productid);
+		
+		if(taobaoTotalAllData==null || taobaoTotalAllData.getData()==null || taobaoTotalAllData.getData().getCorrespond()==null){
+			logger.info("taobaoTotalAllData.getData(),taobaoTotalAllData.getData().getCorrespond() is null");
+			return 0;
+		}
 		//获得当前商品的评论
-		double prevScore=this.sellerTotalEvaluate(taobaoTotalAllData);
-		double productScore=this.singleProductEvaluate(taobaoTotalAllData);
+		//抓取提升速度
+//		double prevScore=this.sellerTotalEvaluate(taobaoTotalAllData);
+//		double productScore=this.singleProductEvaluate(taobaoTotalAllData);
 		//获得淘宝单个商品的评价信息
 		//一期做前100页，即800条评论的重复率,记录下有用评论
 		Map<String, Map<String, Object>> productEvaluate=analyzeProductUrlAll(userid, productid,taobaoTotalAllData.getData().getCount().getTotal());
 		//计算评论的重复的评分
-		double repeatScore=0;
+		//double repeatScore=0;
 		//收集商品评价
 		if(taobaoTotalAllData!=null){
 			//店铺整体描述
@@ -160,7 +170,8 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 			tmallAnalyzeBean.setBadWeightSingle(badAndNormal);
 		}
 		if(productEvaluate!=null){
-			repeatScore=evaluateSingleRepeat(productEvaluate,taobaoTotalAllData);
+			//抓取提升速度
+			//repeatScore=evaluateSingleRepeat(productEvaluate,taobaoTotalAllData);
 			//查询2,3,3次以上的次数
 			EvaluateTime evaluateTime=this.getEvaluatePeople(productEvaluate.get("usermap"));
 			tmallAnalyzeBean.setTwicePerson(evaluateTime.getTwicePeople());
@@ -173,12 +184,12 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 		}else{
 			modelMap.put("isless", false);
 		}
-		modelMap.put("prevScore", prevScore);
-		modelMap.put("productScore", productScore);
-		modelMap.put("repeatScore", repeatScore);
-		logger.info("卖家总评评分："+prevScore);
-		logger.info("产品总评评分："+productScore);
-		logger.info("重复评论评分："+repeatScore);
+//		modelMap.put("prevScore", prevScore);
+//		modelMap.put("productScore", productScore);
+//		modelMap.put("repeatScore", repeatScore);
+//		logger.info("卖家总评评分："+prevScore);
+//		logger.info("产品总评评分："+productScore);
+//		logger.info("重复评论评分："+repeatScore);
 		double result=0;
 //		double result=CommonTools.doubleFormat(prevScore+productScore+repeatScore);
 //		modelMap.put("result", result);
@@ -381,7 +392,7 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 	}
 	
 	private  TmallEvaluate analyzeProductUrl(String userNumid,String auctionNumId,int page){
-		if(userNumid.equals("") || auctionNumId.equals("")){
+		if( auctionNumId.equals("")){
 			return null;
 		}
 		TmallEvaluate tmallEvaluate=new TmallEvaluate();
@@ -480,6 +491,9 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 			return 0;
 		}
 		TaobaoTotalAllData taobaoTotalAllData=(TaobaoTotalAllData)obj;
+		if(taobaoTotalAllData==null || taobaoTotalAllData.getData()==null || taobaoTotalAllData.getData().getCorrespond()==null){
+			return 0;
+		}
 		//分析淘宝商品总体信誉
 		//看卖家的以前整体信息
 		double prevDescScore=this.calculateTotalDescScore(taobaoTotalAllData);
@@ -496,7 +510,7 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 	 * @return	中差评权重分数
 	 */
 	private double calculateWeightScore(TaobaoTotalAllData taobaoTotalAllData){
-		if(taobaoTotalAllData==null){
+		if(taobaoTotalAllData==null || taobaoTotalAllData.getData()==null || taobaoTotalAllData.getData().getCorrespondList()==null){
 			return 0;
 		}
 		double weightScore=0;
@@ -523,7 +537,7 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 	 * @return
 	 */
 	private double calculateTotalDescScore(TaobaoTotalAllData taobaoTotalAllData){
-		if(taobaoTotalAllData==null){
+		if(taobaoTotalAllData==null || taobaoTotalAllData.getData()==null || taobaoTotalAllData.getData().getCorrespond()==null){
 			return 0;
 		}
 		double correspond=Double.parseDouble(taobaoTotalAllData.getData().getCorrespond());
@@ -637,7 +651,15 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 	
 	public static void main(String[] args) {
 		TmallProductCrawlServiceImpl tmallProductEvaluate=new TmallProductCrawlServiceImpl();
-		tmallProductEvaluate.evaluateCalculate("http://detail.tmall.com/item.htm?spm=a1z10.3.w17-36871585.13.XZLzs0&id=19571165288&",new ModelMap(),new ArrayList<TmallAnalyzeBean>() );
+		int i=0;
+		while (i<100000){
+			//Map<String, String> params=tmallProductEvaluate.analyzeUrl("http://detail.tmall.com/item.htm?spm=a1z10.3.w17-36871585.13.XZLzs0&id=19571165288&");
+			TmallEvaluate tmallEvaluate=tmallProductEvaluate.analyzeProductUrl("", "19571165288", 1);
+			logger.info(i+"params---->"+tmallEvaluate.getItems().size());
+			i++;
+		}
+//		TmallProductCrawlServiceImpl tmallProductEvaluate=new TmallProductCrawlServiceImpl();
+//		tmallProductEvaluate.evaluateCalculate("http://detail.tmall.com/item.htm?spm=a1z10.3.w17-36871585.13.XZLzs0&id=19571165288&",new ModelMap(),new ArrayList<TmallAnalyzeBean>() );
 	}
 
 	@Override
@@ -650,11 +672,25 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 	 * 分析tmallbrand
 	 */
 	@Override
-	public void AnalyzeTmallBrand() {
+	public void AnalyzeTmallBrand(){
 		List<String> tmallBrandurls=AnalyzeTmallList.getInstance().getTmallBrandList();
+		boolean flag=false;
+		String backurl="";
 		for(String brandurl:tmallBrandurls){
 			List<String> allbrandurls=null;
-			
+			//防止重复分析
+			try {
+				backurl=FileTools.read(EvaluateConfig.tmallbackurl);
+			}catch (Exception e) {
+				e.printStackTrace();
+			}
+			if(backurl==null || backurl.equals("") || backurl.equals(brandurl)){
+				flag=true;
+			}
+			if(!flag){
+				continue;
+			}
+			//具体分析
 			if(brandurl!=null && !brandurl.isEmpty()){
 				allbrandurls=AnalyzeTmallList.getInstance().getBrandItemsList(brandurl);
 				if(allbrandurls==null || allbrandurls.isEmpty()){
@@ -673,13 +709,27 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 							break;
 						}
 						String myurl=allbrandurls.get(i*50+j);
-						this.evaluateCalculate(myurl,new ModelMap(), tmallAnalyzeBeanList);
+						try {
+							this.evaluateCalculate(myurl,new ModelMap(), tmallAnalyzeBeanList);
+						} catch (Exception e) {
+							logger.error("AnalyzeTmallBrand evaluateCalculate error url:"+myurl);
+							//备份信息，防止服务器宕机
+							FileTools.appendToFile(EvaluateConfig.tmalllogurl, brandurl);
+							e.printStackTrace();
+						}
 					}
 					logger.debug("AnalyzeTmallBrand page save to db :----->"+i);
 					//this.addTmallAnalyzeBeanList(tmallAnalyzeBeanList);
 					//保存到数据库
 					tmallProductService.addTmallAnalyzeBeanList(tmallAnalyzeBeanList);
 				}
+			}
+			
+			//备份信息，防止服务器宕机
+			try {
+				FileTools.write(EvaluateConfig.tmallbackurl, brandurl);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 				
@@ -693,5 +743,6 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 	public void setTmallProductService(ITmallProductService tmallProductService) {
 		this.tmallProductService = tmallProductService;
 	}
+	
 
 }

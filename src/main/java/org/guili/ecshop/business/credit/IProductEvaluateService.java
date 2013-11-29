@@ -52,7 +52,7 @@ public interface IProductEvaluateService {
 	 * @param tmallAnalyzeBeanList
 	 * @return
 	 */
-	public double evaluateCalculate(String url, ModelMap modelMap,List<TmallAnalyzeBean> tmallAnalyzeBeanList);
+	public double evaluateCalculate(String url, ModelMap modelMap,List<TmallAnalyzeBean> tmallAnalyzeBeanList) throws Exception;
 	
 	public void AnalyzeTmallBrand();
 }

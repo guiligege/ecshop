@@ -29,5 +29,20 @@ public class EvaluateConfig {
 	 */
 	public static String tmall_evaluate_url=ResourceUtil.getValue(ResourceUtil.EVALUATEFILEPATH,"tmall_evaluate_url");
 	
+	/**
+	 * 天猫抓取url备份
+	 */
+	public static String tmallbackurl=ResourceUtil.getValue(ResourceUtil.TMALLBACKPATH,"tmallbackurl");
+	
+	/**
+	 * 天猫抓取url line备份
+	 */
+	public static String tmallbackurlline=ResourceUtil.getValue(ResourceUtil.TMALLBACKPATH,"tmallbackline");
+	
+	/**
+	 * 错误url日志
+	 */
+	public static String tmalllogurl=ResourceUtil.getValue(ResourceUtil.TMALLBACKPATH,"tmalllogurl");
+	
 	
 }

@@ -255,6 +255,7 @@
           <string>WEB-INF/web.xml</string>
           <string>WEB-INF/classes/config/alipay_config.properties</string>
           <string>WEB-INF/classes/config/evaluate_config.properties</string>
+          <string>WEB-INF/classes/config/file_config.properties</string>
           <string>WEB-INF/classes/config/platform.properties</string>
           <string>WEB-INF/classes/log4j.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/EvaluateTime.class</string>
@@ -324,6 +325,7 @@
           <string>WEB-INF/classes/org/guili/ecshop/util/CommonTools.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/Constants.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ExcelWriter.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/util/FileTools.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ImageUtils.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/Md5Encrypt.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/ResourceProperty.class</string>

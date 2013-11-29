@@ -10,6 +10,7 @@ public class ResourceUtil {
 	public static String FILEPATH="config/platform";
 	public static String ALIPAYFILEPATH="config/alipay_config";
 	public static String EVALUATEFILEPATH="config/evaluate_config";
+	public static String TMALLBACKPATH="config/file_config";
 //	private static ResourceBundle rb = ResourceBundle.getBundle(FILEPATH, Locale.getDefault());
 	private final static Logger	log	= Logger.getLogger(ResourceUtil.class);
 	
@@ -53,7 +54,7 @@ public class ResourceUtil {
 		return null;
 	}
 	public static void main(String[] args) {
-		System.out.println(ResourceUtil.getValue(FILEPATH,"imagepath"));
+		System.out.println(ResourceUtil.getValue(TMALLBACKPATH,"tmallbackurl"));
 	}
 	
 }

@@ -11,6 +11,7 @@ org\guili\ecshop\business\impl\evaluate\TaobaoProductEvaluateService.class
 org\guili\ecshop\util\CommonTools.class
 org\guili\ecshop\business\impl\spider\SemiconductorService.class
 org\guili\ecshop\bean\credit\taobao\TaobaoImpress.class
+org\guili\ecshop\util\FileTools.class
 org\guili\ecshop\bean\credit\taobao\TaobaoSingleEvaluate.class
 org\guili\ecshop\impl\spider\ITestTableDaoImpl.class
 org\guili\ecshop\bean\credit\taobao\TaobaoSingleData.class
