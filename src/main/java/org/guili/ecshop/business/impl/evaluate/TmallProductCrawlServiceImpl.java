@@ -678,6 +678,9 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 		String backurl="";
 		for(String brandurl:tmallBrandurls){
 			List<String> allbrandurls=null;
+			if(brandurl.equals("http://jieyouxb.tmall.com/")){
+				continue;
+			}
 			//防止重复分析
 			try {
 				backurl=FileTools.read(EvaluateConfig.tmallbackurl);
@@ -728,6 +731,8 @@ public class TmallProductCrawlServiceImpl implements IProductEvaluateService {
 			//备份信息，防止服务器宕机
 			try {
 				FileTools.write(EvaluateConfig.tmallbackurl, brandurl);
+				//已经抓取过的商家
+				FileTools.appendToFile(EvaluateConfig.tmallbackurlline, brandurl);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

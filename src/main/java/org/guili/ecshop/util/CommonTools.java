@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.httpclient.ProxyHost;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.log4j.Logger;
 
@@ -72,11 +73,18 @@ public class CommonTools {
 	 */
 	public static String requestUrl(String url,String encode){
 		HttpClient client = new HttpClient();
+		// 代理的主机  
+        //ProxyHost proxy = new ProxyHost("openproxy.huawei.com", 8080);  
+        // 使用代理  
+       // client.getHostConfiguration().setProxyHost(proxy);
+       //client.getHostConfiguration().setProxy("110.4.12.170", 80);
 		GetMethod getMethod = new GetMethod(url);
 		//String encodeType = URLEncoder.encode(type.trim(), encode);
 		String jsonString="";
 		try {
 			int statusCode = client.executeMethod(getMethod);
+			logger.info("url:-->"+url);
+			logger.info("Proxy success!");
 			if (statusCode != HttpStatus.SC_OK) {
 				return null;
 			}
@@ -100,4 +108,8 @@ public class CommonTools {
 		return new Double(r.format(result));
 	}
 
+	public static void main(String[] args) {
+		String html=CommonTools.requestUrl("http://www.converse.com.cn", "UTF-8");
+		logger.info(html);
+	}
 }

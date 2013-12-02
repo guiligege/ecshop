@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.guili.ecshop.util.CommonTools;
+import org.guili.ecshop.util.FileTools;
 import org.guili.ecshop.util.SpiderRegex;
 
 /**
@@ -64,7 +65,9 @@ public class AnalyzeTmallList {
 			return null;
 		}
 		//获得总页数
+		//<b class="ui-page-s-len">
 		String pageRegex = "<b class=\"ui-page-s-len\">(.*?)</b>";
+		logger.info(this.convertUrl(url));
 		String[] pages = this.analyzeTotalPage(htmltext,pageRegex,regex);
 		int totalpage=this.getTotalPage(pages);
 		//获得每页的数据
@@ -89,6 +92,7 @@ public class AnalyzeTmallList {
 	 */
 	public String[] analyzeTotalPage(String html,String pageRegex,SpiderRegex regex){
 		//其他品牌处理
+		FileTools.appendToFile(EvaluateConfig.tmallbackurlline, html);
 		String[] pages = regex.htmlregex(html,pageRegex,true);
 		//优衣库特殊处理
 		if(pages==null || pages.length==0){
@@ -97,8 +101,18 @@ public class AnalyzeTmallList {
 			 pages = regex.htmlregex(html,pageRegex,true);
 		}
 		if(pages==null || pages.length==0){
+			 //<b class="ui-page-s-len">1/2</b>
+			 pageRegex = "<span class=\"page-info\">(.*?)</span>";
+			 pages = regex.htmlregex(html,pageRegex,true);
+		}
+		if(pages==null || pages.length==0){
 			logger.info("该商家的商品为空！！！");
 			return null;
+		}
+		if(pages[0].equals("0/0")){
+			//<b class="ui-page-s-len">1/39</b>
+			 pageRegex = "<b class=\"ui-page-s-len\">(.*?)</b>";
+			 pages = regex.htmlregex(html,pageRegex,true);
 		}
 		return pages;
 	}
