@@ -1,15 +1,19 @@
 org\guili\ecshop\business\impl\evaluate\TmallProductService.class
 org\guili\ecshop\bean\credit\taobao\TaobaoSingleScoreInfo.class
+org\guili\ecshop\bean\spider\TopStore.class
 org\guili\ecshop\bean\credit\tmall\TmallEvaluate.class
 org\guili\ecshop\bean\credit\taobao\TaobaoTotalEvaluate.class
 org\guili\ecshop\controller\payment\PaymentAlipayAdaptor.class
 org\guili\ecshop\controller\common\MainController.class
 org\guili\ecshop\bean\credit\taobao\TaobaoEvaluate.class
+org\guili\ecshop\business\spider\ITopStoreService.class
 org\guili\ecshop\business\impl\evaluate\EvaluateConfig.class
 org\guili\ecshop\dao\spider\SemiconductorDao.class
 org\guili\ecshop\business\impl\evaluate\TaobaoProductEvaluateService.class
+org\guili\ecshop\business\impl\spider\TopStoreService.class
 org\guili\ecshop\util\CommonTools.class
 org\guili\ecshop\business\impl\spider\SemiconductorService.class
+org\guili\ecshop\business\impl\spider\TaobaoTopSpider.class
 org\guili\ecshop\bean\credit\taobao\TaobaoImpress.class
 org\guili\ecshop\util\FileTools.class
 org\guili\ecshop\bean\credit\taobao\TaobaoSingleEvaluate.class
@@ -17,8 +21,10 @@ org\guili\ecshop\impl\spider\ITestTableDaoImpl.class
 org\guili\ecshop\bean\credit\taobao\TaobaoSingleData.class
 org\guili\ecshop\business\impl\spider\MouserSpiderServiceImpl.class
 org\guili\ecshop\impl\spider\SemiconductorDaoImpl.class
+org\guili\ecshop\dao\spider\ITopStoreDao.class
 org\guili\ecshop\bean\credit\taobao\TaobaoTotalAllData.class
 org\guili\ecshop\dao\spider\ITestTableDao.class
+org\guili\ecshop\controller\evaluate\TopStoreController.class
 org\guili\ecshop\util\Md5Encrypt.class
 org\guili\ecshop\controller\payment\PaymentAutoController.class
 org\guili\ecshop\bean\credit\tmall\TmallAnalyzeBean.class
@@ -30,6 +36,7 @@ org\guili\ecshop\business\spider\ISpiderService.class
 org\guili\ecshop\business\TestBussiness.class
 org\guili\ecshop\business\credit\ITmallProductService.class
 org\guili\ecshop\business\credit\IProductEvaluateService.class
+org\guili\ecshop\impl\spider\TopStoreDao.class
 org\guili\ecshop\controller\payment\PaymentAdaptor.class
 org\guili\ecshop\util\ResourceProperty.class
 org\guili\ecshop\business\impl\evaluate\TmallProductCrawlServiceImpl.class
@@ -57,6 +64,7 @@ org\guili\ecshop\business\impl\evaluate\TmallProductEvaluateService.class
 org\guili\ecshop\dao\credit\TmallAnalyzeDao.class
 org\guili\ecshop\business\impl\spider\AvnetSpiderServiceImpl.class
 org\guili\ecshop\util\SpiderRegex.class
+org\guili\ecshop\business\spider\ITopSpider.class
 org\guili\ecshop\controller\payment\PaymentAdaptorFactory.class
 org\guili\ecshop\util\ImageUtils.class
 org\guili\ecshop\business\impl\spider\DigikeySpiderServiceImpl.class

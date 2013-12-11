@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  *
  */
 @Controller
-@RequestMapping("/")
 public class MainController {
 	
 	/**
@@ -25,7 +24,7 @@ public class MainController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="index.htm")
+	@RequestMapping(value={ "/index.htm", "/" })
 	public String index(HttpServletRequest request,ModelMap modelMap) throws Exception{
 //		Semiconductor semiconductor=testBusiness.findone();
 //		log.info("logger--->"+semiconductor.getCreateTime());

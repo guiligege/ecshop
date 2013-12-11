@@ -7,6 +7,7 @@
           <string>css/bootstrap-responsive.css</string>
           <string>css/bootstrap.css</string>
           <string>css/docs.css</string>
+          <string>css/main.css</string>
           <string>ico/apple-touch-icon-114-precomposed.png</string>
           <string>ico/apple-touch-icon-144-precomposed.png</string>
           <string>ico/apple-touch-icon-57-precomposed.png</string>
@@ -48,6 +49,12 @@
           <string>img/grid-baseline-20px.png</string>
           <string>img/less-logo-large.png</string>
           <string>img/responsive-illustrations.png</string>
+          <string>img/topshopimage/T1eWL7Fm8fXXbXX2Hb-24-18.png</string>
+          <string>img/topshopimage/T1fBsqFeVbXXbB1.T_-1920-1080.png</string>
+          <string>img/topshopimage/T1jnrhFjBjXXcNyYPg-17-106.png</string>
+          <string>img/topshopimage/T1KNIuFaVdXXcijTje-40-80.png</string>
+          <string>img/topshopimage/T1pmK4XxBgXXb42eYX-15-45.png</string>
+          <string>img/topshopimage/T1RX3sFfXbXXcijTje-40-80.png</string>
           <string>index.jsp</string>
           <string>js/.jshintrc</string>
           <string>js/application.js</string>
@@ -257,6 +264,7 @@
           <string>WEB-INF/classes/config/evaluate_config.properties</string>
           <string>WEB-INF/classes/config/file_config.properties</string>
           <string>WEB-INF/classes/config/platform.properties</string>
+          <string>WEB-INF/classes/config/proxy_config.properties</string>
           <string>WEB-INF/classes/log4j.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/EvaluateTime.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/credit/taobao/TaobaoEvaluate.class</string>
@@ -277,6 +285,7 @@
           <string>WEB-INF/classes/org/guili/ecshop/bean/payment/SalesOrder.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Semiconductor.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/bean/spider/Shop.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/bean/spider/TopStore.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/credit/IProductEvaluateService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/credit/ITmallProductService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/ExpireJobTask.class</string>
@@ -292,8 +301,12 @@
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/DigikeySpiderServiceImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/MouserSpiderServiceImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/SemiconductorService.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/TaobaoTopSpider.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/impl/spider/TopStoreService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/spider/ISemiconductorService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/spider/ISpiderService.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/spider/ITopSpider.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/business/spider/ITopStoreService.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/business/TestBussiness.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/ApplicationContext.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/config/dispatcher-servlet.xml</string>
@@ -304,6 +317,7 @@
           <string>WEB-INF/classes/org/guili/ecshop/controller/common/MainController.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/evaluate/EvaluateConstConfig.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/evaluate/EvaluateController.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/controller/evaluate/TopStoreController.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/payment/AbstractPaymentAdaptor.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/payment/AliPayConfig.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/controller/payment/PaymentAdaptor.class</string>
@@ -313,13 +327,16 @@
           <string>WEB-INF/classes/org/guili/ecshop/controller/ResultController.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/dao/credit/TmallAnalyzeDao.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/dao/spider/ITestTableDao.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/dao/spider/ITopStoreDao.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/dao/spider/SemiconductorDao.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/impl/credit/TmallAnalyzeDaoImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/impl/spider/ITestTableDaoImpl.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/impl/spider/SemiconductorDaoImpl.class</string>
+          <string>WEB-INF/classes/org/guili/ecshop/impl/spider/TopStoreDao.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/semiconductorMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/shopMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/TmallAnalyzeBeanMapper.xml</string>
+          <string>WEB-INF/classes/org/guili/ecshop/mybatis/mapper/topStoreMapper.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/mybatis/SqlMapConfig.xml</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/BasicSqlSupport.class</string>
           <string>WEB-INF/classes/org/guili/ecshop/util/CommonTools.class</string>

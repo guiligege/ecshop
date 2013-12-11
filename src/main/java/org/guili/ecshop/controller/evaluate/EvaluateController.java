@@ -7,10 +7,8 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.json.JSONObject;
 
 import org.apache.log4j.Logger;
-import org.guili.ecshop.business.TestBussiness;
 import org.guili.ecshop.business.credit.IProductEvaluateService;
 import org.guili.ecshop.business.impl.evaluate.ProdcutEvaluateFactory;
-import org.guili.ecshop.controller.ResultController;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;

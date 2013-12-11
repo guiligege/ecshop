@@ -92,7 +92,7 @@ public class AnalyzeTmallList {
 	 */
 	public String[] analyzeTotalPage(String html,String pageRegex,SpiderRegex regex){
 		//其他品牌处理
-		FileTools.appendToFile(EvaluateConfig.tmallbackurlline, html);
+		//FileTools.appendToFile(EvaluateConfig.tmallbackurlline, html);
 		String[] pages = regex.htmlregex(html,pageRegex,true);
 		//优衣库特殊处理
 		if(pages==null || pages.length==0){

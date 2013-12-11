@@ -1,0 +1,411 @@
+@charset "utf-8";
+
+html {
+	-ms-touch-action: none;
+}
+
+body
+{
+	position:relative;
+	margin:0;
+	padding:0;
+	font-size:12px;
+	color:#000;
+	line-height:1.2;
+	background:#ffffff;
+	font-family: Arial,"Simhei",Helvetica,sans-serif;
+	-webkit-text-size-adjust:none;
+	background: url(../images/T1fBsqFeVbXXbB1.T_-1920-1080.png) no-repeat scroll 0 0 #0A0A0A;
+}
+
+div,span,input,ul,li,dl,dt,dd,label,p,h1,h2,h3,h4,h5,h6,table,tr,th,td,select
+{
+	position:relative;
+	margin:0;
+	padding:0;
+	border:0;
+	list-style-type:none;
+	line-height:1.2;
+	word-wrap:break-word;
+}
+img,input
+{
+	margin:0;
+	padding:0;
+	border:0;
+}
+a{
+	text-decoration: none;
+}
+em {
+    display: none;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    color: #FFFFFF;
+}
+
+.content{
+	margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+    width: 1190px;
+}
+.ad-wall {
+    height: 310px;
+    margin: 0 auto;
+    padding: 0;
+    width: 1190px;
+}
+.ad-wall-content {
+    background: none repeat scroll 0 0 #FFFFFF;
+    height: 290px;
+    overflow: hidden;
+    width: 1190px;
+}
+.ad-wall-content ul {
+    border: 1px solid #D9D9D9;
+    height: 290px;
+    overflow: hidden;
+    width: 1190px;
+}
+.ad-wall-content ul li {
+    border-left: 1px dotted #D9D9D9;
+    border-top: 1px dotted #D9D9D9;
+    height: 85px;
+    padding-top: 10px;
+    position: relative;
+    text-align: center;
+    width: 131px;
+    float: left;
+}
+.ad-wall-content ul li a {
+    display: inline-block;
+    margin: 0 auto;
+    width: 90px;
+}
+.ad-wall-content ul li a img {
+    width: 100%;
+}
+.wall-s {
+    height: 95px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 131px;
+}
+.wall-s span {
+    bottom: 0;
+    color: #000000;
+    display: inline-block;
+    height: 31px;
+    left: 0;
+    line-height: 31px;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+.ad-wall-content ul li:hover .wall-s {
+    border: 2px solid #666666;
+    height: 92px;
+    width: 128px;
+    display: block;
+}
+.ad-wall-content ul li:hover .wall-s span {
+    background: none repeat scroll 0 0 #E22C37;
+    color: #FFFFFF;
+}
+.ad-wall .ad-wall-btn {
+    display: block;
+    position: relative;
+    top: 105px;
+    z-index: 9999;
+}
+.ad-wall .ad-wall-btn a {
+    display: inline-block;
+    height: 80px;
+    position: absolute;
+    text-align: center;
+    width: 40px;
+}
+.ad-wall .ad-wall-btn a.prev {
+    background: url(../images/T1RX3sFfXbXXcijTje-40-80.png) no-repeat scroll 0 0 transparent;
+    left: 0;
+}
+.ad-wall .ad-wall-btn a.next {
+    background: url(../images/T1KNIuFaVdXXcijTje-40-80.png) no-repeat scroll 0 0 transparent;
+    right: 0;
+}
+.ad-wall-nav {
+    bottom: -8px;
+    height: 18px;
+    left: 43%;
+    margin: 0 auto;
+    position: absolute;
+    text-align: center;
+    width: 200px;
+    overflow: hidden;
+}
+.ad-wall-nav li {
+    background: none repeat scroll 0 0 #FFFFFF;
+    cursor: pointer;
+    height: 8px;
+    line-height: 8px;
+    margin-right: 8px;
+    text-indent: -999em;
+    width: 48px;
+    float: left;
+}
+.ad-wall-nav li.selected {
+    background: none repeat scroll 0 0 #F7577F;
+}
+.col-main {
+    float: left;
+    min-height: 1px;
+    width: 890px !important;
+}
+.module-box{
+	background: none repeat scroll 0 0 #FFFFFF;
+    float: left;
+    margin-bottom: 10px;
+    margin-left: 10px;
+    overflow: hidden;
+    width: 288px;
+}
+.module-tit {
+    background: none repeat scroll 0 0 #E22C37;
+    height: 30px;
+    line-height: 30px;
+    overflow: hidden;
+}
+.module-tit .title {
+    color: #FFFFFF;
+    float: left;
+    font-size: 18px;
+    padding-left: 12px;
+}
+.module-tit .more {
+    color: #3E3E3E;
+    float: right;
+    font-size: 12px;
+    padding-right: 10px;
+}
+.module-box dl {
+    border: 1px solid #E8E8E8;
+    width: 286px;
+}
+.col-main dl dt {
+    color: #A5A5A5;
+    font-size: 14px;
+}
+.col-main dl dt, .col-main dl dd {
+    overflow: hidden;
+    padding: 0 15px;
+}
+.col-main dl {
+    float: left;
+    padding-bottom: 20px;
+}
+.col-main dl dt {
+    border-bottom: 1px solid #E8E8E8;
+    color: #A5A5A5;
+    font-size: 14px;
+    margin-bottom: 14px;
+    overflow: hidden;
+    padding: 4px 7px;
+}
+.col-main dl dt .store-name {
+    float: left;
+}
+.col-main dl dt .store-name {
+    float: left;
+}
+.col-main dl dt .rank-level {
+    float: right;
+}
+.col-main dl dd {
+    height: 28px;
+    line-height: 28px;
+    overflow: hidden;
+    position: relative;
+}
+.col-main dl dd em {
+    background: url(../images/T1pmK4XxBgXXb42eYX-15-45.png) no-repeat scroll 0 0 transparent;
+    display: inline-block;
+    height: 15px;
+    line-height: 15px;
+    text-align: center;
+    width: 15px;
+    font-style: normal;
+}
+.col-main dl dd a {
+    color: #666666;
+    font-size: 12px;
+    line-height: 28px;
+    padding-left: 8px;
+}
+.rank {
+    background: url(../images/T1jnrhFjBjXXcNyYPg-17-106.png) repeat-x scroll -999px -999px transparent;
+    display: inline-block;
+    height: 18px;
+    margin-top: 6px;
+    overflow: hidden;
+    text-indent: -999em;
+    vertical-align: text-top;
+    width: 0;
+}
+.rmall {
+    background: url(../images/T1eWL7Fm8fXXbXX2Hb-24-18.png) no-repeat scroll 0 0 transparent;
+    width: 28px;
+}
+.col-main dl dd span {
+    float: right;
+    line-height: 28px;
+    position: absolute;
+    right: 8px;
+    top: 0;
+}
+.r0{width:0}
+.r1{background-position:0 0;width:17px}
+.r2{background-position:0 0;width:34px}
+.r3{background-position:0 0;width:51px}
+.r4{background-position:0 0;width:68px}
+.r5{background-position:0 0;width:85px}
+.r6{background-position:0 -32px;width:17px}
+.r7{background-position:0 -32px;width:34px}
+.r8{background-position:0 -32px;width:51px}
+.r9{background-position:0 -32px;width:68px}
+.r10{background-position:0 -32px;width:85px}
+.r11{background-position:0 -64px;width:17px}
+.r12{background-position:0 -64px;width:34px}
+.r13{background-position:0 -64px;width:51px}
+.r14{background-position:0 -64px;width:68px}
+.r15{background-position:0 -64px;width:85px}
+.r16{background-position:0 -85px;width:17px}
+.r17{background-position:0 -85px;width:34px}
+.r18{background-position:0 -85px;width:51px}
+.r19{background-position:0 -85px;width:68px}
+.r20{background-position:0 -85px;width:85px}
+
+.col-sub {
+    float: right !important;
+    width: 290px;
+}
+.layout:after, .main-wrap:after, .col-sub:after, .col-extra:after {
+    clear: both;
+    content: " ";
+    display: block;
+    height: 0;
+}
+.layout:after, .main-wrap:after, .col-sub:after, .col-extra:after {
+    clear: both;
+    content: " ";
+    display: block;
+    height: 0;
+}
+.sider-box {
+    background: none repeat scroll 0 0 #FFFFFF;
+    margin-bottom: 10px;
+}
+.sider-box ul {
+    border: 1px solid #DDDDDD;
+    overflow: hidden;
+}
+.sider-box ul li {
+    float: left;
+    overflow: hidden;
+}
+.sider-box ul li.s-pic {
+    width: 142px;
+}
+.sider-box ul li a {
+    display: block;
+}
+.sider-box ul li.s-pic a {
+    border-top: 1px solid #E8E8E8;
+    height: 83px;
+    margin-top: -1px;
+    overflow: hidden;
+    padding: 10px 9px;
+}
+.sider-box ul li.b-pic {
+    border-left: 1px solid #E8E8E8;
+    padding: 10px;
+    position: relative;
+    width: 125px;
+}
+.sider-box ul li.b-pic .pro-pic {
+    height: 157px;
+}
+.detail {
+    bottom: 4px;
+    height: 31px;
+    left: 0;
+    line-height: 31px;
+    position: relative;
+    width: 100%;
+}
+.detail span {
+    display: block;
+    height: 31px;
+    line-height: 31px;
+    width: 100%;
+}
+.detail .msk {
+    background: none repeat scroll 0 0 #000000;
+    bottom: 0;
+    left: 0;
+    opacity: 0.3;
+    filter:alpha(opacity = 30);
+    position: absolute;
+    z-index: 9;
+}
+.detail .name {
+    bottom: 0;
+    color: #FFFFFF;
+    font-size: 14px;
+    left: 0;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    z-index: 99;
+}
+.detail .name a {
+    color: #FFFFFF;
+    text-align: center;
+}
+.sider-box dl {
+    border: 1px solid #CCCCCC;
+    overflow: hidden;
+}
+.sider-box dl dt, dl dd {
+    padding: 10px;
+}
+.sider-box dl dt {
+    position: relative;
+}
+.sider-box dl dt a {
+    display: inline-block;
+    height: 279px;
+}
+.sider-box dl dd {
+    border-left: 1px solid #CCCCCC;
+    border-top: 1px solid #CCCCCC;
+    float: left;
+    margin-left: -1px;
+    min-height: 154px;
+    width: 124px;
+}
+.sider-box dl dd strong {
+    color: #666666;
+    display: block;
+    font-size: 16px;
+}
+.sider-box dl dd a {
+    color: #666666;
+    display: inline-block;
+    font-size: 12px;
+}
+.sider-box dl dd .keyword a {
+    padding: 3px 8px;
+}

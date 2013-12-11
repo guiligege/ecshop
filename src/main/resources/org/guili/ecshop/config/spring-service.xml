@@ -48,4 +48,11 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="tmallProductEvaluateCraw" ref="tmallProductEvaluateCraw"></property>
 	</bean>
 	
+	<!-- 优秀商家 -->
+	<bean id="topStoreService" class="org.guili.ecshop.business.impl.spider.TopStoreService">
+		<property name="iTopStoreDao" ref="topStoreDao"></property>
+	</bean>
+	<bean id="taobaoTopSpider" class="org.guili.ecshop.business.impl.spider.TaobaoTopSpider">
+	</bean>
+	
 </beans>
